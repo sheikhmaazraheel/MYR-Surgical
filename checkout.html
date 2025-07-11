@@ -87,50 +87,81 @@
         </a>
       </div>
     </div>
-    <main class="cart-page">
-      <p style="text-align: left; margin: 0 10px">
-        <strong>Order ID:</strong> <span id="order-id"></span>
-      </p>
-      <h1 class="cart-heading">Your Cart</h1>
 
-      <table class="cart-table" id="cart-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Price (Rs.)</th>
-            <th id="Quantity-heading">Quantity</th>
-            <th>Amount (Rs.)</th>
-          </tr>
-        </thead>
 
-        <tbody id="cart-items">
-          <hr />
-        </tbody>
-      </table>
-      <hr />
-      <table id="cart-summary" class="cart-summary">
-        <tr>
-          <td id="summary-headings">Delivery Charges :</td>
-          <td id="delivery-charges">Rs 150</td>
-        </tr>
-      </table>
-      <hr />
-      <table id="total" class="cart-summary">
-        <tr>
-          <td id="totalColumn"></td>
-          <td></td>
-        </tr>
-      </table>
-      <button id="place-order" href="checkout.html">Place Order</button>
-    </main>
-    <!-- =================== Footer Section ===================== -->
-    <footer class="site-footer">
-      <div class="footer-container">
-        <p>&copy; 2025 MYR Surgical. All rights reserved.</p>
-        <p>Designed by BitLion</p>
+<div class="checkout-container">
+  <h2>Checkout</h2>
+  <form  id="checkout-form" onsubmit="handleCheckout();">
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="firstName" name="name" required>
+    </div>
+  
+    <div class="form-group">
+      <label for="contact">Contact Number</label>
+      <input type="tel" id="contact" name="contact" required placeholder="e.g., 03xx-xxxxxxx">
+    </div>
+  
+    <div class="form-group">
+      <label for="city">City</label>
+      <select id="city" name="city" required>
+        <option value="" disabled selected>Select City</option>
+        <option value="Karachi">Karachi</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="house">House Number</label>
+      <input type="text" id="house" name="house" required>
+    </div>
+  
+    <div class="form-group">
+      <label for="block">Block Number</label>
+      <input type="text" id="block" name="block" required>
+    </div>
+  
+    <div class="form-group">
+      <label for="landmark">Nearest Landmark</label>
+      <input type="text" id="landmark" name="landmark" required>
+    </div>
+  
+    <div class="form-group">
+      <label for="area">Area</label>
+      <input type="text" id="area" name="area" required>
+    </div>
+  
+    <div class="form-group">
+      <label>Payment Method</label>
+      <div class="payment-options">
+        <div class="payment-box" data-method="Cash on Delivery">Cash on Delivery</div>
+        <div class="payment-box" data-method="Online Payment">Online Payment</div>
       </div>
-    </footer>
-    <!-- ===================  Script =============== -->
-    <script src="script.js"></script>
-  </body>
+    </div>
+    
+    <input type="hidden" id="paymentMethod" name="payment">
+    <input type="hidden" id="orderId" name="orderId">
+    <input type="hidden" id="cart-items" name="cartSummary">
+    <input type="hidden" id="total" name="total">
+
+    
+    <button type="submit" id="confirm-Order">Confirm Order</button>
+  </form>
+  
+</div>
+
+  <!-- =================== Footer Section ===================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>&copy; 2025 Prince Book Depot. All rights reserved.</p>
+      <p>Designed by BitLion</p>
+    </div>
+  </footer>
+  <!-- ===================  Script =============== -->
+
+
+  <script src="script.js"></script>
+  <script src="checkout.js"></script>
+
+</body>
+
 </html>

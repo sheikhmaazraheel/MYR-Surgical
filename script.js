@@ -47,7 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
       quantity = 1;
       cart[productId] = { name: productName, price: productPrice, quantity };
       localStorage.setItem("cart", JSON.stringify(cart));
-
+      const cartCount = getCartProductCount();
+      const cartCountElement = document.getElementById("cart-count");
+      if (cartCountElement) {
+        cartCountElement.textContent = cartCount;
+      } else {
+        console.error("Cart count element not found");
+      }
       addToCartBtn.style.display = "none";
       qtyControls.classList.add("active");
       qtyDisplay.textContent = quantity;
@@ -280,5 +286,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   // Utility: Get total number of products in cart (not quantity, just count of unique products)
-  
 });

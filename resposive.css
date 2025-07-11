@@ -33,24 +33,24 @@
     width: 100%;
     margin-right: 0;
   }
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 20px 40px;
-  margin: 0px 20px;
-  height: auto;
-}
-.hero-content{
-  max-width: 375px;
-  height: 600px;
-}
-.hero-content h1 span {
-  font-size: 3rem;
-}
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px 40px;
+    margin: 0px 20px;
+    height: auto;
+  }
+  .hero-content {
+    max-width: 375px;
+    height: 600px;
+  }
+  .hero-content h1 span {
+    font-size: 3rem;
+  }
 
-.hero {
+  .hero {
     flex-direction: column;
     text-align: center;
     padding: 20px;
@@ -77,12 +77,12 @@
   #searchInput {
     width: 350px;
   }
-  #Categories{
+  #Categories {
     margin-top: 50px;
   }
-  #Categories>h1{
-  font-size: 2.5rem;
-}
+  #Categories > h1 {
+    font-size: 2.5rem;
+  }
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
     max-width: 700px;
@@ -101,10 +101,9 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  #most-sell>h1{
-  font-size: 2.5rem;
-}
-
+  #most-sell > h1 {
+    font-size: 2.5rem;
+  }
 
   .Product-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -137,7 +136,7 @@
     width: 100%;
     height: auto;
   }
-  .quantity-controls button{
+  .quantity-controls button {
     width: 40px;
   }
 
@@ -232,14 +231,15 @@
     text-wrap: wrap;
     align-self: center;
   }
-  
-  .cart-table th, .cart-table td {
+
+  .cart-table th,
+  .cart-table td {
     padding: 8px 8px;
     text-align: center;
     font-size: 16px;
     text-overflow: ellipsis;
   }
-  
+
   .cart-table th {
     font-size: 16px;
   }
@@ -247,29 +247,45 @@
   #place-order {
     width: 150px;
     font-size: 14px;
-
   }
-  .qty-btn{
+  .qty-btn {
     transform: scale(1);
     padding: 0 5px;
     margin: 0;
   }
-  .qty-cell{
+  .qty-cell {
     gap: 2px;
   }
-  #cart-summary{
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 16px;
-      text-wrap: nowrap;
-      align-self: center;
-      text-align: center;
+  #cart-summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-wrap: nowrap;
+    align-self: center;
+    text-align: center;
   }
-  #cart-headings{
+  #cart-headings {
     text-align: right;
   }
   #place-order {
     width: 100%;
     font-size: 15px;
+  }
+    
+}
+/* FOR CHECKOUT */
+@media (max-width: 600px) {
+  .checkout-container {
+    padding: 20px;
+  }
+  .checkout-container h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
+  input, select, textarea, button {
+    font-size: 0.95rem;
+  }
+  label {
+    font-size: 1.2rem;
   }
 }

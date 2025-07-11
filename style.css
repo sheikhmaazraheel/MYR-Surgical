@@ -407,16 +407,14 @@ select:focus {
 
 /* ----------------------- Product */
 .Product {
-  background: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 100%);
+  background-color: transparent;
   border-radius: 18px;
   width: 100%;
   max-width: 280px;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .Product:hover {
   transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
 }
 .discount {
   background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
@@ -483,7 +481,7 @@ select:focus {
   cursor: pointer;
   text-decoration: none;
   transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
 }
 .add-to-cart-button:hover {
   background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
@@ -598,7 +596,7 @@ select:focus {
   padding: 25px;
   border-radius: 16px;
   width: 300px;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
   transition: transform 0.3s;
   text-align: left;
   border: 2px solid #a5b4fc;
@@ -643,7 +641,14 @@ select:focus {
 
 /* Instagram button with gradient */
 .instagram-button {
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
   color: #fff;
 }
 
@@ -654,8 +659,7 @@ select:focus {
   text-align: center;
   padding: 40px 20px;
   margin-top: 60px;
-  border-radius: 0 0 24px 24px;
-  box-shadow: 0 -2px 16px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 -2px 16px rgba(99, 102, 241, 0.1);
 }
 
 .site-footer p {
@@ -682,6 +686,7 @@ select:focus {
   border-radius: 15px;
   padding: 60px 40px;
   text-align: center;
+  font-family: "Fjalla One", sans-serif;
 }
 .cart-table {
   width: 100%;
@@ -693,7 +698,7 @@ select:focus {
 .cart-table th,
 .cart-table td {
   padding: 0px 10px;
-  text-align: center;
+  text-align: left;
   font-size: 18px;
 }
 
@@ -716,7 +721,7 @@ select:focus {
 }
 
 #place-order {
-  background-color: #9c1f2e;
+  background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
   width: 250px;
   font-size: 16px;
   font-weight: bold;
@@ -731,13 +736,14 @@ select:focus {
 }
 
 #place-order:hover {
-  background-color: #1d3758;
+  background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
+  transform: scale(1.05);
 }
 .qty-cell {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .qty-btn {
@@ -783,7 +789,7 @@ select:focus {
 .delete-svgIcon path {
   fill: #9c1f2e;
 }
-.delete-btn{
+.delete-btn {
   background-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.5);
   border: none;
@@ -791,6 +797,106 @@ select:focus {
   width: 30px;
   height: 20px;
 }
-.delete-btn:hover{
+.delete-btn:hover {
   transform: scale(1.05) translateY(-5px);
+}
+
+/* =========== FOR Checkout */
+
+.checkout-container {
+  max-width: 700px;
+  background-color: transparent;
+  padding: 30px;
+  margin:20px auto;
+  border-radius: 10px;
+}
+
+.checkout-container h2 {
+  text-align: center;
+  color: #9c1f2e;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-family: "Fjalla One", sans-serif;
+  text-transform: uppercase;
+}
+#checkout-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 1.35rem;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input, select, textarea {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+input:focus{
+  border: 3px solid #f43f5e;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+#confirm-Order {
+  background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
+  width: 250px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  align-self: center;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#confirm-Order:hover {
+  background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
+  transform: scale(1.05);
+}
+
+.payment-options{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.payment-box {
+  border: 2px solid #ccc;
+  padding: 12px;
+  width: 48%;
+  margin: 0 auto;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  background: #f0f0f0;
+  transition: 0.3s;
+}
+.payment-box:hover {
+  background: linear-gradient(135deg, #a5b4fc 0%, #f9a8d4 100%);
+  border: 3px solid #6366f1;
+}
+.payment-box.selected {
+  background: linear-gradient(135deg, #a5b4fc 0%, #f9a8d4 100%);
+  border: 3px solid #6366f1;
 }
