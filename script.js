@@ -75,12 +75,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // ➖ Decrease Quantity
     decreaseBtn.addEventListener("click", () => {
       quantity--;
-
+      const cartCount = getCartProductCount();
+      const cartCountElement = document.getElementById("cart-count");
+      if (cartCountElement) {
+        cartCountElement.textContent = cartCount;
+      } else {
+        console.error("Cart count element not found");
+      }
       if (quantity <= 0) {
         delete cart[productId];
         localStorage.setItem("cart", JSON.stringify(cart));
         addToCartBtn.style.display = "inline-block";
         qtyControls.classList.remove("active");
+        // Update cart count after removing item
+        const updatedCartCount = getCartProductCount();
+        if (cartCountElement) {
+          cartCountElement.textContent = updatedCartCount;
+        }
       } else {
         cart[productId].quantity = quantity;
         localStorage.setItem("cart", JSON.stringify(cart));
