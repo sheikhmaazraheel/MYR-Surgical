@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="resposive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>MYR Surgical</title>
+</head>
+<body>
+    <!-- =============== NAV BAR ================ -->
+    <nav>
+      <div id="hamburger" class="hamburger">&#9776;</div>
+      <div id="logo">
+        <div class="logo"></div>
+      </div>
+      <div class="empty"></div>
+      <div id="menu">
+        <div class="home-box hov">
+          <a href="index.html" class="home">
+            <div class="Home-text">HOME</div>
+          </a>
+        </div>
+        <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" >B.P Monitor</option>
+            <option value="Stethoscope.html" >Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html" >Aneroid B.P</option>
+            <option value="Accessories.html">Accessories</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html" disabled selected>Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+        </div>
+        <div class="about hov">
+          <a href="#ABOUT" class="about">
+            <p class="about-text">About</p>
+          </a>
+        </div>
+        <div class="empty"></div>
+      </div>
+      <div class="cart hov">
+        <a href="cart.html" class="cart-symbol-container">
+          <div class="cart-symbol"><span id="cart-count" class="cart-count">0</span></div>
+        </a>
+      </div>
+    </nav>
+    <!-- =========== MOBILE DROPDOWN ============== -->
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <div class="home-box hov">
+        <a href="index.html" class="home">
+          <div class="Home-text">HOME</div>
+        </a>
+      </div>
+      <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" >B.P Monitor</option>
+            <option value="Stethoscope.html" >Stethoscope</option>
+            <option value="Glucose-Monitor.html" >Glocose Monitor</option>
+            <option value="Aneroid.html" >Aneroid B.P</option>
+            <option value="Accessories.html">Accessories</option>
+            <option value="Nebulizer.html" >Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html"  selected disabled>Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+      </div>
+      <div class="about hov">
+        <a href="#ABOUT">
+          <p class="about-text">About</p>
+        </a>
+      </div>
+    </div>
+    <!-- ============= Search BAR ======================= -->
+    <div class="search-bar-container">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search surgical products..."
+        onkeyup="searchProducts()"
+      />
+    </div>
+    <!-- ==================== PRODUCTS ======================== -->
+     <section id="Product-grid-container">
+      <h1>Explore Steamers</h1>
+      <div class="Product-grid">
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+        <div class="Product">
+          <div class="discount">20%</div>
+          <img src="./images/product.jpg" alt="Past Papers Books Title" />
+          <div class="Product-name">
+            Blood Glucose Test Strips MS-1 (2 x 25) – Medisign
+          </div>
+          <span class="price">Rs.2000</span>
+          <span class="dicounted-price">Rs.1500</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="ABOUT" class="about-section">
+      <div class="about-container">
+        <h2>About <span>MYR SURGICAL</span></h2>
+        <p>
+          MYR Surgical is your one stop destination for all kinds of surgical
+          items in any brand comfortable and affordable for you.We offer a wide
+          variety of products and services for our customers at a very
+          affordable price. We try to help Our Customers in every possible way
+          so that they can trust on us. We also provide wholesale services for
+          wholesalers and shoopkeepers.
+        </p>
+
+        <div class="about-boxes">
+          <div class="about-box">
+            <h3>Contact</h3>
+            <p>📞 0329-1148735</p>
+            <p>📧 myrsurgicals@gmail.com <br />📧 myrsurgical@hotmail.com</p>
+          </div>
+
+          <div class="about-box">
+            <h3>Location</h3>
+            <p>📍 Location, Lahore , Pakistan</p>
+            <p>Mon-Sat: 12:00am – 9:00pm</p>
+          </div>
+
+          <div class="about-box">
+            <h3>Home Delivery</h3>
+            <p>🚚 We offer fast, secure delivery all over Lahore.</p>
+            <p>You can also get your order through builty in any city.</p>
+          </div>
+
+          <div class="about-box">
+            <h3>Wholesale Support</h3>
+            <p>
+              ✔ We offer a wholesale prices for shopkeepers and wholesalers and
+              provide items in bulk quantities
+            </p>
+            <p>✔ Trusted by hundreds of shopkeepers and wholesalers</p>
+            <p>✔ For Wholesale prices and support, contact us on :</p>
+            <a
+              href="https://wa.me/+923291148735?text=I want to ask you about ...."
+              class="whatsapp-button"
+              target="_blank"
+              >Chat on WhatsApp</a
+            >
+          </div>
+
+          <div class="about-box">
+            <h3>Brands We Deals</h3>
+          </div>
+
+          <div class="about-support about-box">
+            <h3>Support</h3>
+            <p>📱 Need help or want to place an order?</p>
+            <p>Place an Order on Whatsapp</p>
+            <a
+              href="https://wa.me/+923291148735?text=I want to ask you about ...."
+              class="whatsapp-button"
+              target="_blank"
+              >Chat on WhatsApp</a
+            >
+
+            <br /><br />
+
+            <p>📷 Follow us on Instagram:</p>
+            <a
+              href="https://instagram.com/princebook.depot"
+              class="instagram-button"
+              target="_blank"
+              >Follow on Instagram</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-container">
+        <p>&copy; 2025 MYR Surgical. All rights reserved.</p>
+        <p>Designed by M. Maaz Raheel</p>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

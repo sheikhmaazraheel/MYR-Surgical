@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MYR Surgical</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="resposive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+<body>
+<!-- ================ FOR NAVBAR ======================= -->
+<nav>
+      <div id="hamburger" class="hamburger">&#9776;</div>
+      <div id="logo">
+        <div class="logo"></div>
+      </div>
+      <div class="empty"></div>
+      <div id="menu">
+        <div class="home-box hov">
+          <a href="index.html" class="home">
+            <div class="Home-text">HOME</div>
+          </a>
+        </div>
+        <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" >B.P Monitor</option>
+            <option value="Stethoscope.html" >Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html">Aneroid B.P</option>
+            <option value="Accessories.html" selected disabled>Accessories</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+        </div>
+        <div class="about hov">
+          <a href="#ABOUT" class="about">
+            <p class="about-text">About</p>
+          </a>
+        </div>
+        <div class="empty"></div>
+      </div>
+      <div class="cart hov">
+        <a href="cart.html" class="cart-symbol-container">
+          <div class="cart-symbol"><span class="cart-count" id="cart-count">0</span></div>
+        </a>
+      </div>
+    </nav>
+    <!-- =========== MOBILE DROPDOWN ============== -->
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <div class="home-box hov">
+        <a href="index.html" class="home">
+          <div class="Home-text">HOME</div>
+        </a>
+      </div>
+      <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" >B.P Monitor</option>
+            <option value="Stethoscope.html" >Stethoscope</option>
+            <option value="Glucose-Monitor.html" >Glocose Monitor</option>
+            <option value="Aneroid.html" >Aneroid B.P</option>
+            <option value="Accessories.html" selected disabled>Accessories</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+      </div>
+      <div class="about hov">
+        <a href="#ABOUT">
+          <p class="about-text">About</p>
+        </a>
+      </div>
+    </div>
+<main class="cart-page">
+  <p style="text-align: left;margin:0 10px;"><strong>Order ID:</strong> <span id="order-id"></span></p>
+  <h1 class="cart-heading">Your Cart</h1>
+
+  <table class="cart-table" id="cart-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price (Rs.)</th>
+        <th id="Quantity-heading">Quantity</th>
+        <th>Amount (Rs.)</th>
+      </tr>
+    </thead>
+    
+    <tbody id="cart-items">
+      <hr>
+    </tbody>
+  </table>
+  <hr>
+  <table id="cart-summary" class="cart-summary">
+    <tr>
+      <td id="summary-headings"> Delivery Charges :</td>
+      <td id="delivery-charges"> Rs 150</td>
+    </tr>
+  </table>
+  <hr>
+     <table id="total" class="cart-summary">
+      <tr>
+        <td id="totalColumn"></td>
+        <td></td>
+      </tr>
+    
+  </table>
+    <button id="place-order" href="checkout.html">Place Order</button>
+</main>
+  <!-- =================== Footer Section ===================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>&copy; 2025 MYR Surgical. All rights reserved.</p>
+      <p>Designed by M. Maaz Raheel</p>
+    </div>
+  </footer>
+  <!-- ===================  Script =============== -->
+  <script src="script.js"></script>
+</body>
+</html>

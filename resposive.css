@@ -1,0 +1,274 @@
+@media screen and (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  /*  ================ Navigation Bar  ================== */
+  nav {
+    height: 80px;
+    width: 100%;
+    margin-right: 0;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  #logo {
+    transform: scale(0.7);
+    margin: 0;
+    padding: 0 10px;
+    align-self: flex-start;
+  }
+
+  .empty {
+    display: none;
+  }
+
+  nav,
+  #hero,
+  #Categories,
+  .about-section,
+  .search-bar-container,
+  footer,
+  .categories {
+    width: 100%;
+    margin-right: 0;
+  }
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px 40px;
+  margin: 0px 20px;
+  height: auto;
+}
+.hero-content{
+  max-width: 375px;
+  height: 600px;
+}
+.hero-content h1 span {
+  font-size: 3rem;
+}
+.hero-image{
+  width: 280px;
+  height: 280px;
+}
+.hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  #searchInput {
+    width: 350px;
+  }
+  #Categories{
+    margin-top: 50px;
+  }
+  #Categories>h1{
+  font-size: 2.5rem;
+}
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 700px;
+  }
+  .category-box {
+    width: 180px;
+    height: 180px;
+  }
+  .category-icon {
+    height: 80px;
+    width: 80px;
+    margin: 10px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    background-color: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  #most-sell>h1{
+  font-size: 2.5rem;
+}
+
+
+  .Product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .Product {
+    max-width: 100%;
+    transform: none;
+    padding: 10px;
+  }
+  .Product-name {
+    font-size: 1.1rem;
+  }
+
+  .add-to-cart-button {
+    width: 100%;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .discount {
+    right: 10px;
+    top: 10px;
+  }
+
+  .Product > img {
+    width: 100%;
+    height: auto;
+  }
+  .quantity-controls button{
+    width: 40px;
+  }
+
+  .about-section h2 span {
+    display: block;
+  }
+}
+/* Hamburger default */
+.hamburger {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: block;
+    z-index: 1001;
+    color: black;
+  }
+
+  .hamburger.active::before {
+    content: "✖";
+    font-size: 25px;
+    text-align: center;
+    color: black;
+  }
+
+  .hamburger.active {
+    color: transparent;
+  }
+
+  #menu {
+    display: none;
+  }
+
+  .mobile-dropdown {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    width: 100%;
+    position: absolute;
+    top: 80px; /* IMPORTANT: should match nav height */
+    left: 0;
+    height: 150px;
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+  }
+
+  .mobile-dropdown.show {
+    display: flex;
+  }
+
+  .mobile-dropdown .home-box,
+  .mobile-dropdown .selector,
+  .mobile-dropdown .about {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .mobile-dropdown select {
+    font-size: 16px;
+  }
+
+  .mobile-dropdown a {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  #mobile-dropdown {
+    display: none;
+  }
+}
+
+/* ============= FOR CART ================== */
+@media screen and (max-width: 768px) {
+  .cart-page {
+    padding: 30px 5px;
+    max-width: 340px;
+  }
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-wrap: wrap;
+    align-self: center;
+  }
+  
+  .cart-table th, .cart-table td {
+    padding: 8px 8px;
+    text-align: center;
+    font-size: 16px;
+    text-overflow: ellipsis;
+  }
+  
+  .cart-table th {
+    font-size: 16px;
+  }
+
+  #place-order {
+    width: 150px;
+    font-size: 14px;
+
+  }
+  .qty-btn{
+    transform: scale(1);
+    padding: 0 5px;
+    margin: 0;
+  }
+  .qty-cell{
+    gap: 2px;
+  }
+  #cart-summary{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+      text-wrap: nowrap;
+      align-self: center;
+      text-align: center;
+  }
+  #cart-headings{
+    text-align: right;
+  }
+  #place-order {
+    width: 100%;
+    font-size: 15px;
+  }
+}
