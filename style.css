@@ -425,6 +425,10 @@ select:focus {
   height: 28px;
   font-weight: 600;
   border: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 8px;
   color: #fff;
   position: relative;
