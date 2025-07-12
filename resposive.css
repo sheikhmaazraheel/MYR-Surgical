@@ -57,14 +57,21 @@
   }
 
   .hero-image {
-    width: 60vw;
-    max-width: 200px;
-    aspect-ratio: 1 / 1;
+    display: none;
+  }
+  /* .banner-image {
+    display: block;
+    width: 100vh;
+    height: 300px;
+    
     height: auto;
     margin-top: 20px;
-    object-fit: cover;
-    display: block;
   }
+  .banner-image img {
+    aspect-ratio: 2/1;
+    width: 600px;
+    height: 300px;
+  } */
 
   .hero-content h1 {
     font-size: 2.2rem;

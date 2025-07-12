@@ -276,6 +276,9 @@ select:focus {
   background: url("./images/logo.jpeg") no-repeat center;
   background-size: cover;
 }
+.banner-image {
+  display: none; /* Hide the banner image by default */
+}
 
 /* ================== Categories ===================== */
 #Categories {
@@ -596,6 +599,10 @@ select:focus {
   padding: 25px;
   border-radius: 16px;
   width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;  
+  align-items: center;
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
   transition: transform 0.3s;
   text-align: left;
@@ -616,6 +623,16 @@ select:focus {
 .about-support {
   text-align: center;
   font-size: 17px;
+}
+.Download-Btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .whatsapp-button,
