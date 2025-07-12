@@ -633,6 +633,7 @@ select:focus {
   text-decoration: none;
   font-size: 1.1rem;
   transition: background 0.3s, transform 0.2s;
+  margin-bottom: 20px;
 }
 
 .whatsapp-button,
