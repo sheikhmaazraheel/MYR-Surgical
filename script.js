@@ -126,6 +126,87 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.error("Cart count element not found");
   }
+  // Products are rendered dynamically, so we need to wait for the DOM to be ready
+
+  fetch('./Backend/product.json') // or just '/products.json' if hosted
+    .then((res) => res.json())
+    .then((products) => {
+      const container = document.getElementById("Product-grid");
+
+      // ✅ Get the category from <body data-category="Nebulizer">
+      const category = document.body.dataset.category;
+
+      const filtered = products.filter(
+        (p) => p.category === category && !!p.available
+      );
+         // Render Most Selling
+    const mostSellContainer = document.getElementById("most-sell-products");
+    const mostSelling = products.filter(p => p.mostSell && p.available);
+
+    mostSelling.forEach(product => {
+      const discountedPrice = Math.round(
+          product.price - (product.price * product.discount) / 100
+        );
+
+      const div = document.createElement('div');
+      div.className = 'Product';
+      div.dataset.id = product.id;
+      div.dataset.name = product.name;
+      div.dataset.price = product.price;
+
+      div.innerHTML = `
+        <div class="discount">${product.discount || 0}%</div>
+        <img src="backend/uploads/${product.image}" alt="${product.name}" />
+        <div class="Product-name">${product.name}</div>
+        <span class="price">Rs.${product.price}</span>
+        <span class="dicounted-price">Rs.${discountedPrice}</span>
+        <button class="add-to-cart-button">Add to Cart</button>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity">1</span>
+          <button class="increase">+</button>
+        </div>
+      `;
+
+      mostSellContainer.appendChild(div);
+    });
+      // Render filtered products
+      filtered.forEach((product) => {
+        const discountedPrice = Math.round(
+          product.price - (product.price * product.discount) / 100
+        );
+
+        const div = document.createElement("div");
+        div.className = "Product";
+        div.dataset.id = product.id;
+        div.dataset.name = product.name;
+        div.dataset.price = discountedPrice;
+          console.log(product.image)
+        div.innerHTML = `
+          <div class="discount">${product.discount}%</div>
+          <img src="Backend/uploads/${product.image}" alt="${product.name}" />
+          <div class="Product-name">${product.name}</div>
+          <span class="price">Rs.${product.price}</span>
+          <span class="dicounted-price">Rs.${discountedPrice}</span>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+
+      // ✅ Optionally: Setup add-to-cart functionality
+      document.querySelectorAll(".Product").forEach(setupCartForProduct);
+    })
+    .catch((err) => {
+      console.error("Error loading products:", err);
+    });
+
+  // Setup cart for each product
   document.querySelectorAll(".Product").forEach(setupCartForProduct);
 
   const cartItemsTbody = document.getElementById("cart-items");
