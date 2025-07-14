@@ -1,3 +1,11 @@
 [
-  
+  {
+    "name": "Nebulizer",
+    "price": "1234",
+    "discount": "25%",
+    "category": "BP-Monitor",
+    "mostSell": true,
+    "available": true,
+    "image": "image-1752349881113-960741833.jpg"
+  }
 ]

@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const increaseBtn = product.querySelector(".increase");
     const decreaseBtn = product.querySelector(".decrease");
 
+    if (!addToCartBtn || !qtyControls || !qtyDisplay || !increaseBtn || !decreaseBtn) return;
+
     const productId = product.dataset.id;
     const productName = product.dataset.name;
     const productPrice = parseFloat(product.dataset.price);
@@ -127,38 +129,44 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Cart count element not found");
   }
   // Products are rendered dynamically, so we need to wait for the DOM to be ready
+  // Check for null before using elements
+  const container = document.getElementById("Product-grid");
+  const mostSellContainer = document.getElementById("most-sell-products");
+  if (!container && !mostSellContainer) return;
+  // Fetch products from the server
 
-  fetch('./Backend/product.json') // or just '/products.json' if hosted
+  fetch("http://localhost:3000/products")
     .then((res) => res.json())
     .then((products) => {
-      const container = document.getElementById("Product-grid");
-
-      // ✅ Get the category from <body data-category="Nebulizer">
       const category = document.body.dataset.category;
 
       const filtered = products.filter(
         (p) => p.category === category && !!p.available
       );
-         // Render Most Selling
-    const mostSellContainer = document.getElementById("most-sell-products");
-    const mostSelling = products.filter(p => p.mostSell && p.available);
+      const mostSelling = products.filter((p) => p.mostSell && p.available);
 
-    mostSelling.forEach(product => {
-      const discountedPrice = Math.round(
-          product.price - (product.price * product.discount) / 100
+      mostSelling.forEach((product) => {
+        const basePrice = parseFloat(product.price);
+
+        const discountValue =
+          typeof product.discount === "string"
+            ? parseFloat(product.discount)
+            : product.discount || 0;
+        const discountedPrice = Math.round(
+          basePrice - (basePrice * discountValue) / 100
         );
 
-      const div = document.createElement('div');
-      div.className = 'Product';
-      div.dataset.id = product.id;
-      div.dataset.name = product.name;
-      div.dataset.price = product.price;
+        const div = document.createElement("div");
+        div.className = "Product";
+        div.dataset.id = product.id;
+        div.dataset.name = product.name;
+        div.dataset.price = basePrice;
 
-      div.innerHTML = `
+        div.innerHTML = `
         <div class="discount">${product.discount || 0}%</div>
-        <img src="backend/uploads/${product.image}" alt="${product.name}" />
+        <img src="/uploads/${product.image}" alt="${product.name}" />
         <div class="Product-name">${product.name}</div>
-        <span class="price">Rs.${product.price}</span>
+        <span class="price">Rs.${basePrice}</span>
         <span class="dicounted-price">Rs.${discountedPrice}</span>
         <button class="add-to-cart-button">Add to Cart</button>
         <div class="quantity-controls">
@@ -168,25 +176,30 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      mostSellContainer.appendChild(div);
-    });
-      // Render filtered products
+        mostSellContainer.appendChild(div);
+      });
+
       filtered.forEach((product) => {
+        const basePrice = parseFloat(product.price);
+        const discountValue =
+          typeof product.discount === "string"
+            ? parseFloat(product.discount)
+            : product.discount || 0;
         const discountedPrice = Math.round(
-          product.price - (product.price * product.discount) / 100
+          basePrice - (basePrice * discountValue) / 100
         );
 
         const div = document.createElement("div");
         div.className = "Product";
         div.dataset.id = product.id;
         div.dataset.name = product.name;
-        div.dataset.price = discountedPrice;
-          console.log(product.image)
+        div.dataset.price = basePrice;
+
         div.innerHTML = `
-          <div class="discount">${product.discount}%</div>
-          <img src="Backend/uploads/${product.image}" alt="${product.name}" />
+          <div class="discount">${discountValue}%</div>
+          <img src="/uploads/${product.image}" alt="${product.name}" />
           <div class="Product-name">${product.name}</div>
-          <span class="price">Rs.${product.price}</span>
+          <span class="price">Rs.${basePrice}</span>
           <span class="dicounted-price">Rs.${discountedPrice}</span>
           <button class="add-to-cart-button">Add to Cart</button>
           <div class="quantity-controls">
@@ -199,15 +212,12 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(div);
       });
 
-      // ✅ Optionally: Setup add-to-cart functionality
+      // Only call setupCartForProduct after rendering
       document.querySelectorAll(".Product").forEach(setupCartForProduct);
     })
     .catch((err) => {
       console.error("Error loading products:", err);
     });
-
-  // Setup cart for each product
-  document.querySelectorAll(".Product").forEach(setupCartForProduct);
 
   const cartItemsTbody = document.getElementById("cart-items");
   const orderIdSpan = document.getElementById("order-id");
@@ -377,5 +387,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Your Cart is Empty. Please add items before placing an Order");
     }
   });
+
   // Utility: Get total number of products in cart (not quantity, just count of unique products)
 });
