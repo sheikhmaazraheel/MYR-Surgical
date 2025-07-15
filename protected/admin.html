@@ -85,8 +85,9 @@
 
     <h1>Admin Panel – Add Product</h1>
     <form id="product-form" class="product-form" enctype="multipart/form-data">
-      <label for="productId">Product ID</label>
-      <input type="text" name="productId" id="productId" required />
+      <div id="upload-status" style="margin-top:10px;font-weight:bold;"></div>
+      <label for="id">Product ID</label>
+      <input type="text" name="id" id="id" required />
 
       <label for="name">Product Name</label>
       <input type="text" name="name" id="name" required />
@@ -94,7 +95,7 @@
       <label for="price">Original Price (Rs.)</label>
       <input type="number" name="price" id="price" required />
 
-      <label for="discount">Discount Label (e.g. 20%)</label>
+      <label for="discount">Discount Label (e.g. 20)</label>
       <input type="text" name="discount" id="discount" required />
 
       <label for="category">Category</label>
@@ -131,6 +132,7 @@
 
       <button type="submit">Upload Product</button>
     </form>
+    
 
     <section id="edit-product-section">
       <h2>Edit Product</h2>
@@ -147,6 +149,7 @@
         style="display: none"
         enctype="multipart/form-data"
       >
+      <label for="id">Product Id</label>
         <input
           type="text"
           id="edit-id"
@@ -154,39 +157,51 @@
           placeholder="Product ID"
           readonly
         />
+        <label for="name">Product Name</label>
         <input
           type="text"
           id="edit-name"
           name="name"
           placeholder="Product Name"
         />
+        <label for="price">Original Price (Rs.)</label>
         <input type="number" id="edit-price" name="price" placeholder="Price" />
+        <label for="discount">Discount Label (e.g. 20)</label>
         <input
           type="number"
           id="edit-discount"
           name="discount"
           placeholder="Discount %"
         />
-        <input
-          type="text"
-          id="edit-description"
-          name="description"
-          placeholder="Description"
-        />
-        <select id="edit-category" name="category">
-          <option value="" disabled selected>Select Category</option>
-          <option value="Stethoscope">Stethoscope</option>
-          <option value="Nebulizer">Nebulizer</option>
-          <!-- Add all your categories here -->
-        </select>
-        <label>
-          <input type="checkbox" id="edit-mostSell" name="mostSell" />
-          Most Selling Product
-        </label>
-        <label>
-          <input type="checkbox" id="edit-available" name="available" />
-          Available
-        </label>
+
+        <label for="category">Category</label>
+      <select id="edit-category" name="category" required>
+        <option value="" disabled selected>Select a category</option>
+        <option value="BP-Monitor">BP Monitor</option>
+        <option value="Stethoscope">Stethoscope</option>
+        <option value="Glucose-Monitor">Glucose Monitor</option>
+        <option value="Aneroid">Aneroid B.P</option>
+        <option value="Nebulizer">Nebulizer</option>
+        <option value="Pulse-Oximeter">Pulse Oximeter</option>
+        <option value="Steamer">Steamer</option>
+        <option value="Strips">Test Strips</option>
+        <option value="Thermometer">Thermometer</option>
+        <option value="Others">Others</option>
+        <!-- Add more categories as needed -->
+      </select>
+        <!-- Most Selling (Optional) -->
+      <label for="mostSell">Mark as Most Selling?</label>
+      <select name="mostSell" id="edit-mostSell">
+        <option value="">No</option>
+        <option value="true">Yes</option>
+      </select>
+
+      <!-- Availability -->
+      <label for="available">Available</label>
+      <select name="available" id="edit-available" required>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
         <input type="file" id="edit-image" name="image" />
 
         <button type="submit">Save Changes</button>
@@ -209,7 +224,7 @@
         const searchInput = document.getElementById("searchIdOrName");
         const form = document.getElementById("editProductForm");
 
-        let currentProductId = null;
+        let currentId = null;
 
         loadBtn.addEventListener("click", async () => {
           const query = searchInput.value.trim();
@@ -229,15 +244,13 @@
             document.getElementById("edit-name").value = product.name;
             document.getElementById("edit-price").value = product.price;
             document.getElementById("edit-discount").value = product.discount;
-            document.getElementById("edit-description").value =
-              product.description;
             document.getElementById("edit-category").value = product.category;
             document.getElementById("edit-mostSell").checked = product.mostSell;
             document.getElementById("edit-available").checked =
               product.available;
 
             form.style.display = "block";
-            currentProductId = product.id;
+            currentId = product.id;
           } catch (err) {
             alert("Failed to load product");
             console.error(err);
@@ -252,7 +265,7 @@
 
           try {
             const res = await fetch(
-              `http://localhost:3000/products/${currentProductId}`,
+              `http://localhost:3000/products/${currentId}`,
               {
                 method: "PUT",
                 body: formData,
@@ -279,7 +292,7 @@
 
             try {
               const res = await fetch(
-                `http://localhost:3000/products/${currentProductId}`,
+                `http://localhost:3000/products/${currentId}`,
                 {
                   method: "DELETE",
                 }
@@ -298,19 +311,30 @@
           .getElementById("product-form")
           .addEventListener("submit", async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.target);
+            const form = e.target;
+            const formData = new FormData(form);
+            const statusDiv = document.getElementById("upload-status");
+            statusDiv.textContent = "Uploading...";
 
             try {
               const res = await fetch("http://localhost:3000/upload", {
                 method: "POST",
                 body: formData,
+                credentials: "include"
               });
 
-              const data = await res.json();
-              alert("Product uploaded successfully!\nImage Path: " + data.path);
+              const result = await res.json();
+
+              if (res.ok && result.product) {
+                statusDiv.textContent = "✅ Product uploaded!";
+                form.reset();
+              } else {
+                statusDiv.textContent = "❌ Upload failed: " + (result.message || "Unknown error.");
+                console.error(result);
+              }
             } catch (err) {
-              alert("Upload failed. Check server.");
-              console.error(err);
+              console.error("Upload error:", err);
+              statusDiv.textContent = "❌ Server error.";
             }
           });
       });

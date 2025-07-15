@@ -1,5 +1,5 @@
 // For Hamburger
-let cart = JSON.parse(localStorage.getItem("cart")) || {};
+const cart = JSON.parse(localStorage.getItem("cart")) || {};
 const hamburger = document.getElementById("hamburger");
 const dropdown = document.getElementById("mobile-dropdown");
 
@@ -27,7 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const increaseBtn = product.querySelector(".increase");
     const decreaseBtn = product.querySelector(".decrease");
 
-    if (!addToCartBtn || !qtyControls || !qtyDisplay || !increaseBtn || !decreaseBtn) return;
+    if (
+      !addToCartBtn ||
+      !qtyControls ||
+      !qtyDisplay ||
+      !increaseBtn ||
+      !decreaseBtn
+    )
+      return;
 
     const productId = product.dataset.id;
     const productName = product.dataset.name;
@@ -132,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Check for null before using elements
   const container = document.getElementById("Product-grid");
   const mostSellContainer = document.getElementById("most-sell-products");
-  if (!container && !mostSellContainer) return;
+  
   // Fetch products from the server
 
   fetch("http://localhost:3000/products")
@@ -143,26 +150,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const filtered = products.filter(
         (p) => p.category === category && !!p.available
       );
-      const mostSelling = products.filter((p) => p.mostSell && p.available);
+      const mostSelling = products.filter((p) => p.mostSell && !!p.available);
+      if (mostSellContainer) {
+        mostSelling.forEach((product) => {
+          const basePrice = parseFloat(product.price);
 
-      mostSelling.forEach((product) => {
-        const basePrice = parseFloat(product.price);
+          const discountValue =
+            typeof product.discount === "string"
+              ? parseFloat(product.discount)
+              : product.discount || 0;
+          const discountedPrice = Math.round(
+            basePrice - (basePrice * discountValue) / 100
+          );
 
-        const discountValue =
-          typeof product.discount === "string"
-            ? parseFloat(product.discount)
-            : product.discount || 0;
-        const discountedPrice = Math.round(
-          basePrice - (basePrice * discountValue) / 100
-        );
+          const div = document.createElement("div");
+          div.className = "Product";
+          div.dataset.id = product.id;
+          div.dataset.name = product.name;
+          div.dataset.price = discountedPrice;
 
-        const div = document.createElement("div");
-        div.className = "Product";
-        div.dataset.id = product.id;
-        div.dataset.name = product.name;
-        div.dataset.price = basePrice;
-
-        div.innerHTML = `
+          div.innerHTML = `
         <div class="discount">${product.discount || 0}%</div>
         <img src="/uploads/${product.image}" alt="${product.name}" />
         <div class="Product-name">${product.name}</div>
@@ -176,9 +183,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-        mostSellContainer.appendChild(div);
-      });
-
+          mostSellContainer.appendChild(div);
+        });
+      }
+      if (container){
       filtered.forEach((product) => {
         const basePrice = parseFloat(product.price);
         const discountValue =
@@ -188,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const discountedPrice = Math.round(
           basePrice - (basePrice * discountValue) / 100
         );
-
+        console.log("Product:", product);
         const div = document.createElement("div");
         div.className = "Product";
         div.dataset.id = product.id;
@@ -197,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         div.innerHTML = `
           <div class="discount">${discountValue}%</div>
-          <img src="/uploads/${product.image}" alt="${product.name}" />
+          <img src="./Backend/uploads/${product.image}" alt="${product.name}" />
           <div class="Product-name">${product.name}</div>
           <span class="price">Rs.${basePrice}</span>
           <span class="dicounted-price">Rs.${discountedPrice}</span>
@@ -211,14 +219,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         container.appendChild(div);
       });
-
+    }
       // Only call setupCartForProduct after rendering
       document.querySelectorAll(".Product").forEach(setupCartForProduct);
     })
     .catch((err) => {
       console.error("Error loading products:", err);
     });
-
+    console.log(localStorage.getItem("cart"));
+  // Cart Logic
   const cartItemsTbody = document.getElementById("cart-items");
   const orderIdSpan = document.getElementById("order-id");
   const Quantity = document.getElementById("Quantity-heading");
@@ -227,20 +236,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartHeadings = document.getElementById("summary-headings");
   const totalRow = document.getElementById("total");
   const totalColumn = document.getElementById("totalColumn");
-
+    console.log(localStorage.getItem("cart"));
   let subtotal = 0;
   let total = 0;
-  cartItemsTbody.innerHTML = "";
+  if (cartItemsTbody) {
+    cartItemsTbody.innerHTML = "";
 
-  Object.keys(cart).forEach((id) => {
-    const item = cart[id];
-    const price = item.price || 0;
-    const qty = item.quantity || 0;
-    const amount = price * qty;
-    subtotal += amount;
+    Object.keys(cart).forEach((id) => {
+      const item = cart[id];
+      const price = item.price || 0;
+      const qty = item.quantity || 0;
+      const amount = price * qty;
+      subtotal += amount;
 
-    const row = document.createElement("tr");
-    row.innerHTML = `
+      const row = document.createElement("tr");
+      row.innerHTML = `
       <td>${item.name || "Unnamed"}</td>
       <td>${price}</td>
       <td class="qty-cell">
@@ -260,17 +270,17 @@ document.addEventListener("DOMContentLoaded", () => {
       </td>
     `;
 
-    // Add delete button event
-    const deleteBtn = row.querySelector(".delete-btn");
-    deleteBtn.addEventListener("click", () => {
-      delete cart[id];
-      localStorage.setItem("cart", JSON.stringify(cart));
-      location.reload();
+      // Add delete button event
+      const deleteBtn = row.querySelector(".delete-btn");
+      deleteBtn.addEventListener("click", () => {
+        delete cart[id];
+        localStorage.setItem("cart", JSON.stringify(cart));
+        location.reload();
+      });
+
+      cartItemsTbody.appendChild(row);
     });
-
-    cartItemsTbody.appendChild(row);
-  });
-
+  }
   // ======= SYNC COLUMNS WIDTH
   function syncColumnWidths() {
     // Get first row of cartTable

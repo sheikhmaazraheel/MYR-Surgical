@@ -696,11 +696,10 @@ select:focus {
   font-size: 2.7rem;
   font-weight: 700;
 }
-
+/* ==================== Cart Page */
 .cart-page {
   max-width: 800px;
   margin: 50px auto;
-  /* background-color: white; */
   border-radius: 15px;
   padding: 60px 40px;
   text-align: center;
@@ -718,6 +717,9 @@ select:focus {
   padding: 0px 10px;
   text-align: left;
   font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Fjalla One", sans-serif;
 }
 
 .cart-table th {
@@ -792,6 +794,7 @@ select:focus {
   font-weight: bold;
   align-self: center;
   padding: 0px 10px;
+  text-align: left;
 }
 #summary-headings {
   text-align: right;
@@ -917,4 +920,31 @@ textarea {
 .payment-box.selected {
   background: linear-gradient(135deg, #a5b4fc 0%, #f9a8d4 100%);
   border: 3px solid #6366f1;
+}
+/* ----- Floating WA Icon */
+.floating-whatsapp-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-whatsapp-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: white;
+}
+
+.floating-whatsapp-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
