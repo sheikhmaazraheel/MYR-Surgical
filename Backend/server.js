@@ -73,13 +73,14 @@ app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Logout error:", err);
-      return res.status(500).json({ success: false, message: "Failed to logout" });
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to logout" });
     }
     res.clearCookie("connect.sid"); // default session cookie name
     res.json({ success: true });
   });
 });
-
 
 // Middleware to protect routes
 function isAuthenticated(req, res, next) {
@@ -113,29 +114,41 @@ app.post(
   isAuthenticated,
   upload.single("image"),
   async (req, res) => {
-    const {
-      id,
-      name,
-      price,
-      discount,
-      description,
-      category,
-      mostSell,
-      available,
-    } = req.body;
-    const image = req.file ? req.file.filename : null;
-
     try {
+      // Normalize and validate fields
+      const { id, name, price, discount, category, mostSell, available } =
+        req.body;
+      const colors = req.body.colors
+        ? req.body.colors
+            .split(",")
+            .map((c) => c.trim())
+            .filter((c) => c)
+        : [];
+
+      const sizes = req.body.sizes
+        ? req.body.sizes
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [];
+
+      if (!id || !name || !price || !category) {
+        return res.status(400).json({ message: "Missing required fields." });
+      }
+
+      const image = req.file ? req.file.filename : null;
+
       const product = new Product({
-        id,
-        name,
-        price,
-        discount,
-        description,
+        id: id.trim(),
+        name: name.trim(),
+        price: parseFloat(price),
+        discount: discount ? parseFloat(discount) : 0,
         category,
         mostSell: mostSell === "true" || mostSell === true,
         available: available === "true" || available === true,
         image,
+        colors,
+        sizes,
       });
 
       await product.save();
@@ -145,6 +158,7 @@ app.post(
         product,
       });
     } catch (error) {
+      console.error("Upload error:", error);
       res.status(500).json({ message: "Failed to save product", error });
     }
   }
@@ -162,7 +176,14 @@ app.get("/products", async (req, res) => {
 
 app.put("/products/:id", upload.single("image"), async (req, res) => {
   const id = req.params.id;
-  const updateFields = { ...req.body };
+  const updateFields = { ...req.body,
+    colors: req.body.colors
+    ? req.body.colors.split(",").map((c) => c.trim()).filter(Boolean)
+    : [],
+  sizes: req.body.sizes
+    ? req.body.sizes.split(",").map((s) => s.trim()).filter(Boolean)
+    : [],
+   };
 
   if (typeof updateFields.available !== "undefined") {
     updateFields.available =
@@ -185,11 +206,17 @@ app.put("/products/:id", upload.single("image"), async (req, res) => {
   }
 });
 app.delete("/products/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Product.deleteOne({ id: req.params.id });
+    const deletedProduct = await Product.findOneAndDelete({ id }); // use the custom id field, not _id
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
     res.json({ message: "Product deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to delete product", error });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ message: "Failed to delete product" });
   }
 });
 // Protected admin panel route

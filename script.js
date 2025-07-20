@@ -19,6 +19,8 @@ hamburger.addEventListener("click", () => {
 
 // ============== Rendering Products ===============
 document.addEventListener("DOMContentLoaded", () => {
+  // ✅ Size Button Toggle (only one selected at a time)
+
   // Shared Cart Logic Setup
   function setupCartForProduct(product) {
     const addToCartBtn = product.querySelector(".add-to-cart-button");
@@ -139,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Check for null before using elements
   const container = document.getElementById("Product-grid");
   const mostSellContainer = document.getElementById("most-sell-products");
-  
+
   // Fetch products from the server
 
   fetch("http://localhost:3000/products")
@@ -168,13 +170,76 @@ document.addEventListener("DOMContentLoaded", () => {
           div.dataset.id = product.id;
           div.dataset.name = product.name;
           div.dataset.price = discountedPrice;
+          if (
+            (product.sizes && product.sizes.length > 0) ||
+            (product.colors && product.colors.length > 0)
+          ) {
+            const row = document.createElement("div");
+            row.className = "size-color-row flex flex-col gap-2 mt-2";
 
-          div.innerHTML = `
+            // ✅ Size Section
+            if (product.sizes && product.sizes.length > 0) {
+              const sizeGroup = document.createElement("div");
+              sizeGroup.className = "option-group";
+
+              const sizeLabel = document.createElement("div");
+              sizeLabel.className = "option-label text-sm font-semibold";
+              sizeLabel.innerText = "Size:";
+              sizeGroup.appendChild(sizeLabel);
+
+              const sizeOptions = document.createElement("div");
+              sizeOptions.className = "size-options flex gap-2 mt-1";
+
+              product.sizes.forEach((size) => {
+                const btn = document.createElement("button");
+                btn.className =
+                  "size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition";
+                btn.innerText = size;
+                btn.dataset.size = size;
+                sizeOptions.appendChild(btn);
+              });
+
+              sizeGroup.appendChild(sizeOptions);
+              row.appendChild(sizeGroup);
+            }
+
+            // ✅ Color Section
+            if (product.colors && product.colors.length > 0) {
+              const colorGroup = document.createElement("div");
+              colorGroup.className = "option-group";
+
+              const colorLabel = document.createElement("div");
+              colorLabel.className = "option-label text-sm font-semibold";
+              colorLabel.innerText = "Color:";
+              colorGroup.appendChild(colorLabel);
+
+              const colorOptions = document.createElement("div");
+              colorOptions.className = "color-options flex gap-2 mt-1";
+
+              product.colors.forEach((color) => {
+                const btn = document.createElement("button");
+                btn.className =
+                  "color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform";
+                btn.dataset.color = color;
+                btn.title = color;
+                btn.style.backgroundColor = color;
+                colorOptions.appendChild(btn);
+              });
+
+              colorGroup.appendChild(colorOptions);
+              row.appendChild(colorGroup);
+            }
+
+            // Append to your product div
+            div.appendChild(row);
+
+            div.innerHTML = `
         <div class="discount">${product.discount || 0}%</div>
         <img src="/uploads/${product.image}" alt="${product.name}" />
         <div class="Product-name">${product.name}</div>
         <span class="price">Rs.${basePrice}</span>
         <span class="dicounted-price">Rs.${discountedPrice}</span>
+        ${row.outerHTML}
         <button class="add-to-cart-button">Add to Cart</button>
         <div class="quantity-controls">
           <button class="decrease">−</button>
@@ -183,50 +248,166 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-          mostSellContainer.appendChild(div);
+            mostSellContainer.appendChild(div);
+          } else {
+            div.innerHTML = `
+        <div class="discount">${product.discount || 0}%</div>
+        <img src="/uploads/${product.image}" alt="${product.name}" />
+        <div class="Product-name">${product.name}</div>
+        <span class="price">Rs.${basePrice}</span>
+        <span class="dicounted-price">Rs.${discountedPrice}</span>        
+        <button class="add-to-cart-button">Add to Cart</button>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity">1</span>
+          <button class="increase">+</button>
+        </div>
+      `;
+
+            mostSellContainer.appendChild(div);
+          }
         });
       }
-      if (container){
-      filtered.forEach((product) => {
-        const basePrice = parseFloat(product.price);
-        const discountValue =
-          typeof product.discount === "string"
-            ? parseFloat(product.discount)
-            : product.discount || 0;
-        const discountedPrice = Math.round(
-          basePrice - (basePrice * discountValue) / 100
-        );
-        console.log("Product:", product);
-        const div = document.createElement("div");
-        div.className = "Product";
-        div.dataset.id = product.id;
-        div.dataset.name = product.name;
-        div.dataset.price = basePrice;
+      if (container) {
+        filtered.forEach((product) => {
+          const basePrice = parseFloat(product.price);
+          const discountValue =
+            typeof product.discount === "string"
+              ? parseFloat(product.discount)
+              : product.discount || 0;
+          const discountedPrice = Math.round(
+            basePrice - (basePrice * discountValue) / 100
+          );
 
-        div.innerHTML = `
-          <div class="discount">${discountValue}%</div>
-          <img src="./Backend/uploads/${product.image}" alt="${product.name}" />
-          <div class="Product-name">${product.name}</div>
-          <span class="price">Rs.${basePrice}</span>
-          <span class="dicounted-price">Rs.${discountedPrice}</span>
-          <button class="add-to-cart-button">Add to Cart</button>
-          <div class="quantity-controls">
-            <button class="decrease">−</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
-          </div>
-        `;
+          const div = document.createElement("div");
+          div.className = "Product";
+          div.dataset.id = product.id;
+          div.dataset.name = product.name;
+          div.dataset.price = basePrice;
+          if (
+            (product.sizes && product.sizes.length > 0) ||
+            (product.colors && product.colors.length > 0)
+          ) {
+            const row = document.createElement("div");
+            row.className = "size-color-row flex flex-col gap-2 mt-2";
 
-        container.appendChild(div);
-      });
-    }
+            // ✅ Size Section
+            if (product.sizes && product.sizes.length > 0) {
+              const sizeGroup = document.createElement("div");
+              sizeGroup.className = "option-group";
+
+              const sizeLabel = document.createElement("div");
+              sizeLabel.className = "option-label text-sm font-semibold";
+              sizeLabel.innerText = "Size:";
+              sizeGroup.appendChild(sizeLabel);
+
+              const sizeOptions = document.createElement("div");
+              sizeOptions.className = "size-options flex gap-2 mt-1";
+
+              product.sizes.forEach((size) => {
+                const btn = document.createElement("button");
+                btn.className =
+                  "size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition";
+                btn.innerText = size;
+                btn.dataset.size = size;
+                sizeOptions.appendChild(btn);
+              });
+
+              sizeGroup.appendChild(sizeOptions);
+              row.appendChild(sizeGroup);
+            }
+
+            // ✅ Color Section
+            if (product.colors && product.colors.length > 0) {
+              const colorGroup = document.createElement("div");
+              colorGroup.className = "option-group";
+
+              const colorLabel = document.createElement("div");
+              colorLabel.className = "option-label text-sm font-semibold";
+              colorLabel.innerText = "Color:";
+              colorGroup.appendChild(colorLabel);
+
+              const colorOptions = document.createElement("div");
+              colorOptions.className = "color-options flex gap-2 mt-1";
+
+              product.colors.forEach((color) => {
+                const btn = document.createElement("button");
+                btn.className =
+                  "color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform";
+                btn.dataset.color = color;
+                btn.title = color;
+                btn.style.backgroundColor = color;
+                colorOptions.appendChild(btn);
+              });
+
+              colorGroup.appendChild(colorOptions);
+              row.appendChild(colorGroup);
+            }
+
+            // Append to your product div
+            div.appendChild(row);
+
+            div.innerHTML = `
+        <div class="discount">${product.discount || 0}%</div>
+        <img src="/uploads/${product.image}" alt="${product.name}" />
+        <div class="Product-name">${product.name}</div>
+        <span class="price">Rs.${basePrice}</span>
+        <span class="dicounted-price">Rs.${discountedPrice}</span>
+        ${row.outerHTML}
+        <button class="add-to-cart-button">Add to Cart</button>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity">1</span>
+          <button class="increase">+</button>
+        </div>
+      `;
+
+            container.appendChild(div);
+          } else {
+            div.innerHTML = `
+        <div class="discount">${product.discount || 0}%</div>
+        <img src="/uploads/${product.image}" alt="${product.name}" />
+        <div class="Product-name">${product.name}</div>
+        <span class="price">Rs.${basePrice}</span>
+        <span class="dicounted-price">Rs.${discountedPrice}</span>        
+        <button class="add-to-cart-button">Add to Cart</button>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity">1</span>
+          <button class="increase">+</button>
+        </div>
+      `;
+
+            container.appendChild(div);
+          }
+        });
+      }
       // Only call setupCartForProduct after rendering
       document.querySelectorAll(".Product").forEach(setupCartForProduct);
     })
     .catch((err) => {
       console.error("Error loading products:", err);
     });
-    console.log(localStorage.getItem("cart"));
+    document.querySelectorAll(".size-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("selected-size"));
+    if (!btn.classList.contains("selected-size")) {
+      btn.classList.add("selected-size");
+    }
+  });
+});
+
+// ✅ Color Swatch Toggle (only one selected at a time)
+document.querySelectorAll(".color-swatch").forEach(swatch => {
+  swatch.addEventListener("click", () => {
+    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected-color"));
+    if (!swatch.classList.contains("selected-color")) {
+      swatch.classList.add("selected-color");
+    }
+  });
+});
+
+  console.log(localStorage.getItem("cart"));
   // Cart Logic
   const cartItemsTbody = document.getElementById("cart-items");
   const orderIdSpan = document.getElementById("order-id");
@@ -236,7 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartHeadings = document.getElementById("summary-headings");
   const totalRow = document.getElementById("total");
   const totalColumn = document.getElementById("totalColumn");
-    console.log(localStorage.getItem("cart"));
+  console.log(localStorage.getItem("cart"));
   let subtotal = 0;
   let total = 0;
   if (cartItemsTbody) {

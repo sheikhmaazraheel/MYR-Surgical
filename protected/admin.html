@@ -66,26 +66,26 @@
   </head>
   <body>
     <script>
-  fetch("http://localhost:3000/check-auth", {
-    credentials: "include"
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Not authenticated");
-      return res.json();
-    })
-    .then(data => {
-      if (!data.authenticated) {
-        window.location.href = "login.html";
-      }
-    })
-    .catch(() => {
-      window.location.href = "login.html";
-    });
-</script>
+      fetch("http://localhost:3000/check-auth", {
+        credentials: "include",
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Not authenticated");
+          return res.json();
+        })
+        .then((data) => {
+          if (!data.authenticated) {
+            window.location.href = "login.html";
+          }
+        })
+        .catch(() => {
+          window.location.href = "login.html";
+        });
+    </script>
 
     <h1>Admin Panel – Add Product</h1>
     <form id="product-form" class="product-form" enctype="multipart/form-data">
-      <div id="upload-status" style="margin-top:10px;font-weight:bold;"></div>
+      <div id="upload-status" style="margin-top: 10px; font-weight: bold"></div>
       <label for="id">Product ID</label>
       <input type="text" name="id" id="id" required />
 
@@ -127,12 +127,29 @@
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
+
+      <!-- Color Names (comma-separated) -->
+      <label for="colors">Colors (comma separated):</label>
+      <input
+        type="text"
+        name="colors"
+        id="colors"
+        placeholder="e.g. Red, Blue, Green"
+      />
+
+      <!-- Sizes (comma-separated) -->
+      <label for="sizes">Sizes (comma separated):</label>
+      <input
+        type="text"
+        name="sizes"
+        id="sizes"
+        placeholder="e.g. S, M, L, XL"
+      />
       <label for="image">Product Image</label>
       <input type="file" name="image" id="image" accept="image/*" required />
 
       <button type="submit">Upload Product</button>
     </form>
-    
 
     <section id="edit-product-section">
       <h2>Edit Product</h2>
@@ -149,7 +166,7 @@
         style="display: none"
         enctype="multipart/form-data"
       >
-      <label for="id">Product Id</label>
+        <label for="id">Product Id</label>
         <input
           type="text"
           id="edit-id"
@@ -175,33 +192,51 @@
         />
 
         <label for="category">Category</label>
-      <select id="edit-category" name="category" required>
-        <option value="" disabled selected>Select a category</option>
-        <option value="BP-Monitor">BP Monitor</option>
-        <option value="Stethoscope">Stethoscope</option>
-        <option value="Glucose-Monitor">Glucose Monitor</option>
-        <option value="Aneroid">Aneroid B.P</option>
-        <option value="Nebulizer">Nebulizer</option>
-        <option value="Pulse-Oximeter">Pulse Oximeter</option>
-        <option value="Steamer">Steamer</option>
-        <option value="Strips">Test Strips</option>
-        <option value="Thermometer">Thermometer</option>
-        <option value="Others">Others</option>
-        <!-- Add more categories as needed -->
-      </select>
+        <select id="edit-category" name="category" required>
+          <option value="" disabled selected>Select a category</option>
+          <option value="BP-Monitor">BP Monitor</option>
+          <option value="Stethoscope">Stethoscope</option>
+          <option value="Glucose-Monitor">Glucose Monitor</option>
+          <option value="Aneroid">Aneroid B.P</option>
+          <option value="Nebulizer">Nebulizer</option>
+          <option value="Pulse-Oximeter">Pulse Oximeter</option>
+          <option value="Steamer">Steamer</option>
+          <option value="Strips">Test Strips</option>
+          <option value="Thermometer">Thermometer</option>
+          <option value="Others">Others</option>
+          <!-- Add more categories as needed -->
+        </select>
         <!-- Most Selling (Optional) -->
-      <label for="mostSell">Mark as Most Selling?</label>
-      <select name="mostSell" id="edit-mostSell">
-        <option value="">No</option>
-        <option value="true">Yes</option>
-      </select>
+        <label for="mostSell">Mark as Most Selling?</label>
+        <select name="mostSell" id="edit-mostSell">
+          <option value="true">Yes</option>
+          <option value="">No</option>
+        </select>
 
-      <!-- Availability -->
-      <label for="available">Available</label>
-      <select name="available" id="edit-available" required>
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
+        <!-- Availability -->
+        <label for="available">Available</label>
+        <select name="available" id="edit-available" required>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+        <!-- Color Names (comma-separated) -->
+        <label for="colors">Colors (comma separated):</label>
+        <input
+          type="text"
+          name="colors"
+          id="edit-colors"
+          placeholder="e.g. Red, Blue, Green"
+        />
+
+        <!-- Sizes (comma-separated) -->
+        <label for="sizes">Sizes (comma separated):</label>
+        <input
+          type="text"
+          name="sizes"
+          id="edit-sizes"
+          placeholder="e.g. S, M, L, XL"
+        />
+
         <input type="file" id="edit-image" name="image" />
 
         <button type="submit">Save Changes</button>
@@ -215,8 +250,9 @@
       </form>
     </section>
 
-
-    <button id="logout-btn" style="margin: 50px auto;width: 100%;">Logout</button>
+    <button id="logout-btn" style="margin: 50px auto; width: 100%">
+      Logout
+    </button>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -245,9 +281,15 @@
             document.getElementById("edit-price").value = product.price;
             document.getElementById("edit-discount").value = product.discount;
             document.getElementById("edit-category").value = product.category;
-            document.getElementById("edit-mostSell").checked = product.mostSell;
-            document.getElementById("edit-available").checked =
-              product.available;
+            document.getElementById("edit-mostSell").value = product.mostSell ? "true" : "";
+            document.getElementById("edit-available").value = product.available ? "true" : "false";
+
+            document.getElementById("edit-colors").value = (
+              product.colors || []
+            ).join(",");
+            document.getElementById("edit-sizes").value = (
+              product.sizes || []
+            ).join(",");
 
             form.style.display = "block";
             currentId = product.id;
@@ -320,7 +362,7 @@
               const res = await fetch("http://localhost:3000/upload", {
                 method: "POST",
                 body: formData,
-                credentials: "include"
+                credentials: "include",
               });
 
               const result = await res.json();
@@ -329,7 +371,8 @@
                 statusDiv.textContent = "✅ Product uploaded!";
                 form.reset();
               } else {
-                statusDiv.textContent = "❌ Upload failed: " + (result.message || "Unknown error.");
+                statusDiv.textContent =
+                  "❌ Upload failed: " + (result.message || "Unknown error.");
                 console.error(result);
               }
             } catch (err) {
@@ -340,26 +383,27 @@
       });
     </script>
     <!-- For Logout Button -->
-     <script>
-  document.getElementById("logout-btn").addEventListener("click", async () => {
-    try {
-      const res = await fetch("http://localhost:3000/logout", {
-        method: "POST",
-        credentials: "include"
-      });
+    <script>
+      document
+        .getElementById("logout-btn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch("http://localhost:3000/logout", {
+              method: "POST",
+              credentials: "include",
+            });
 
-      const result = await res.json();
-      if (result.success) {
-        window.location.href = "/login.html";
-      } else {
-        alert("Logout failed.");
-      }
-    } catch (err) {
-      console.error("Logout error:", err);
-      alert("Something went wrong.");
-    }
-  });
-</script>
-
+            const result = await res.json();
+            if (result.success) {
+              window.location.href = "/login.html";
+            } else {
+              alert("Logout failed.");
+            }
+          } catch (err) {
+            console.error("Logout error:", err);
+            alert("Something went wrong.");
+          }
+        });
+    </script>
   </body>
 </html>

@@ -945,3 +945,79 @@ textarea {
   transform: scale(1.1);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
+
+
+
+.option-group {
+  width: 45%;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.option-label {
+  font-size: 13px;
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+
+.size-options,
+.color-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.size-btn:hover,
+.size-btn.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border 0.2s ease;
+}
+
+.color-swatch:hover,
+.color-swatch.active {
+  border-color: #007bff;
+}
+.size-color-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.size-btn,
+  .color-swatch {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .selected-size {
+    background-color: #2563eb; /* Tailwind blue-600 */
+    color: white;
+  }
+
+  .selected-color {
+    outline: 2px solid #2563eb; /* Tailwind blue-600 */
+    outline-offset: 2px;
+  }
