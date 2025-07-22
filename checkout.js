@@ -102,4 +102,5 @@ form.addEventListener("submit", async (e) => {
     alert("Please select a payment method.");
     return;
   }
+  
 });
