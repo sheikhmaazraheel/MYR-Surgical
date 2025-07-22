@@ -5,237 +5,189 @@ const multer = require("multer");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
+const session = require("express-session");
+
 const Product = require("./models/Product");
+const Order = require("./models/Orders");
 
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-const PORT = 3000;
-
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+// ✅ MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Middleware
+// ✅ Middleware
 app.use(cors());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve frontend static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "..")));
 
-const session = require("express-session");
-
+// ✅ Session Config
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "your-default-secret",
+    secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false, // set to true if using HTTPS
-      maxAge: 1000 * 60 * 60, // 1 hour
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 1000 * 60 * 60,
     },
   })
 );
 
-// Dummy user
-const ADMIN = {
-  username: process.env.ADMIN_USER,
-  password: process.env.ADMIN_HASH,
-};
+// ✅ Authentication Middleware
+function isAuthenticated(req, res, next) {
+  if (req.session.loggedIn) return next();
+  res.redirect("/login.html");
+}
 
-// Login route
+// ✅ Multer Config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${file.fieldname}-${unique}${path.extname(file.originalname)}`);
+  },
+});
+const upload = multer({ storage });
 
+// ✅ Routes
+app.get("/", (req, res) => res.send("Server is running..."));
+
+// ✅ Admin Login/Logout
 app.post("/login", async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (username === process.env.ADMIN_USER) {
-      const match = await bcrypt.compare(password, process.env.ADMIN_HASH);
-      if (match) {
-        req.session.loggedIn = true;
-        return res.json({ success: true });
-      }
+  const { username, password } = req.body;
+  if (username === process.env.ADMIN_USER) {
+    const match = await bcrypt.compare(password, process.env.ADMIN_HASH);
+    if (match) {
+      req.session.loggedIn = true;
+      return res.json({ success: true });
     }
-    res.json({ success: false, message: "Invalid credentials" });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Server error" });
   }
+  res.json({ success: false, message: "Invalid credentials" });
 });
 
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
-    if (err) {
-      console.error("Logout error:", err);
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to logout" });
-    }
-    res.clearCookie("connect.sid"); // default session cookie name
+    if (err) return res.status(500).json({ success: false, message: "Logout failed" });
+    res.clearCookie("connect.sid");
     res.json({ success: true });
   });
 });
 
-// Middleware to protect routes
-function isAuthenticated(req, res, next) {
-  if (req.session.loggedIn) {
-    return next();
-  }
-  res.redirect("/login.html");
-}
-
-// Multer Setup
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
-  },
-});
-const upload = multer({ storage: storage });
-
-// Test Route
-app.get("/", (req, res) => {
-  res.send("Server is running...");
+app.get("/check-auth", (req, res) => {
+  res.json({ authenticated: !!req.session.loggedIn });
 });
 
-// Upload Product Route
-app.post(
-  "/upload",
-  isAuthenticated,
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      // Normalize and validate fields
-      const { id, name, price, discount, category, mostSell, available } =
-        req.body;
-      const colors = req.body.colors
-        ? req.body.colors
-            .split(",")
-            .map((c) => c.trim())
-            .filter((c) => c)
-        : [];
+// ✅ Serve protected admin panel
+app.get("/admin.html", isAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, "../protected/admin.html"));
+});
 
-      const sizes = req.body.sizes
-        ? req.body.sizes
-            .split(",")
-            .map((s) => s.trim())
-            .filter((s) => s)
-        : [];
+// ✅ Upload Product
+app.post("/upload", isAuthenticated, upload.single("image"), async (req, res) => {
+  try {
+    const { id, name, price, discount, category, mostSell, available } = req.body;
 
-      if (!id || !name || !price || !category) {
-        return res.status(400).json({ message: "Missing required fields." });
-      }
+    const colors = req.body.colors?.split(",").map(c => c.trim()).filter(Boolean) || [];
+    const sizes = req.body.sizes?.split(",").map(s => s.trim()).filter(Boolean) || [];
+    const image = req.file?.filename || null;
 
-      const image = req.file ? req.file.filename : null;
-
-      const product = new Product({
-        id: id.trim(),
-        name: name.trim(),
-        price: parseFloat(price),
-        discount: discount ? parseFloat(discount) : 0,
-        category,
-        mostSell: mostSell === "true" || mostSell === true,
-        available: available === "true" || available === true,
-        image,
-        colors,
-        sizes,
-      });
-
-      await product.save();
-
-      res.status(200).json({
-        message: "Product saved to MongoDB",
-        product,
-      });
-    } catch (error) {
-      console.error("Upload error:", error);
-      res.status(500).json({ message: "Failed to save product", error });
+    if (!id || !name || !price || !category) {
+      return res.status(400).json({ message: "Missing required fields." });
     }
-  }
-);
 
-// ✅ NEW Route: Get All Products from DB
+    const product = new Product({
+      id: id.trim(),
+      name: name.trim(),
+      price: parseFloat(price),
+      discount: parseFloat(discount || 0),
+      category,
+      mostSell: mostSell === "true" || mostSell === true,
+      available: available === "true" || available === true,
+      image,
+      colors,
+      sizes,
+    });
+
+    await product.save();
+    res.status(200).json({ message: "Product saved to MongoDB", product });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ message: "Failed to save product" });
+  }
+});
+
+// ✅ Product Routes
 app.get("/products", async (req, res) => {
   try {
     const products = await Product.find();
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to load products", error });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: "Error loading products" });
   }
 });
 
 app.put("/products/:id", upload.single("image"), async (req, res) => {
   const id = req.params.id;
-  const updateFields = { ...req.body,
-    colors: req.body.colors
-    ? req.body.colors.split(",").map((c) => c.trim()).filter(Boolean)
-    : [],
-  sizes: req.body.sizes
-    ? req.body.sizes.split(",").map((s) => s.trim()).filter(Boolean)
-    : [],
-   };
+  const updateFields = {
+    ...req.body,
+    colors: req.body.colors?.split(",").map(c => c.trim()).filter(Boolean) || [],
+    sizes: req.body.sizes?.split(",").map(s => s.trim()).filter(Boolean) || [],
+  };
 
-  if (typeof updateFields.available !== "undefined") {
-    updateFields.available =
-      updateFields.available === "true" || updateFields.available === "on";
+  if (req.file) updateFields.image = req.file.filename;
+  if (updateFields.available !== undefined) {
+    updateFields.available = updateFields.available === "true" || updateFields.available === "on";
   }
-  if (typeof updateFields.mostSell !== "undefined") {
-    updateFields.mostSell =
-      updateFields.mostSell === "true" || updateFields.mostSell === "on";
-  }
-
-  if (req.file) {
-    updateFields.image = req.file.filename;
+  if (updateFields.mostSell !== undefined) {
+    updateFields.mostSell = updateFields.mostSell === "true" || updateFields.mostSell === "on";
   }
 
   try {
     await Product.updateOne({ id }, { $set: updateFields });
     res.json({ message: "Product updated successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to update product", error: err });
+    res.status(500).json({ message: "Update failed", error: err });
   }
 });
-app.delete("/products/:id", async (req, res) => {
-  const { id } = req.params;
 
+app.delete("/products/:id", async (req, res) => {
   try {
-    const deletedProduct = await Product.findOneAndDelete({ id }); // use the custom id field, not _id
-    if (!deletedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
+    const deleted = await Product.findOneAndDelete({ id: req.params.id });
+    if (!deleted) return res.status(404).json({ message: "Product not found" });
     res.json({ message: "Product deleted successfully" });
   } catch (err) {
-    console.error("Delete error:", err);
-    res.status(500).json({ message: "Failed to delete product" });
-  }
-});
-// Protected admin panel route
-app.get("/admin.html", isAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, "../protected/admin.html"));
-});
-
-app.get("/check-auth", (req, res) => {
-  if (req.session.loggedIn) {
-    res.json({ authenticated: true });
-  } else {
-    res.status(401).json({ authenticated: false });
+    res.status(500).json({ message: "Delete failed", error: err });
   }
 });
 
-// Start Server
+// ✅ Orders
+app.post("/orders", async (req, res) => {
+  try {
+    const newOrder = new Order(req.body);
+    await newOrder.save();
+    res.status(201).json({ success: true, message: "Order placed successfully." });
+  } catch (err) {
+    console.error("Order error:", err);
+    res.status(500).json({ success: false, message: "Failed to save order." });
+  }
+});
+
+app.get("/orders", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching orders" });
+  }
+});
+
+// ✅ Start server
 app.listen(PORT, () => {
-  const bcrypt = require("bcrypt");
-  bcrypt.hash("MYRsecure25", 10).then(console.log);
-
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

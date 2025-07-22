@@ -1,5 +1,5 @@
 // For Hamburger
-const cart = JSON.parse(localStorage.getItem("cart")) || {};
+const myrcart = JSON.parse(localStorage.getItem("myrcart")) || {};
 const hamburger = document.getElementById("hamburger");
 const dropdown = document.getElementById("mobile-dropdown");
 
@@ -19,565 +19,320 @@ hamburger.addEventListener("click", () => {
 
 // ============== Rendering Products ===============
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Size Button Toggle (only one selected at a time)
+  const myrcart = JSON.parse(localStorage.getItem("myrcart")) || {};
+  const container = document.getElementById("Product-grid");
+  const mostSellContainer = document.getElementById("most-sell-products");
+  const cartCountElement = document.getElementById("cart-count");
+  const select = document.getElementById("selector");
 
-  // Shared Cart Logic Setup
-  function setupCartForProduct(product) {
-    const addToCartBtn = product.querySelector(".add-to-cart-button");
-    const qtyControls = product.querySelector(".quantity-controls");
-    const qtyDisplay = product.querySelector(".quantity");
-    const increaseBtn = product.querySelector(".increase");
-    const decreaseBtn = product.querySelector(".decrease");
+  if (select) {
+    select.addEventListener("change", () => {
+      const selectedPage = select.value;
+      if (selectedPage) {
+        select.selectedIndex = 0;
+        window.location.href = selectedPage;
+      }
+    });
+  }
 
-    if (
-      !addToCartBtn ||
-      !qtyControls ||
-      !qtyDisplay ||
-      !increaseBtn ||
-      !decreaseBtn
-    )
-      return;
+  // ✅ Utility Functions
+  function getCartProductCount() {
+    return Object.keys(myrcart).length;
+  }
 
-    const productId = product.dataset.id;
-    const productName = product.dataset.name;
-    const productPrice = parseFloat(product.dataset.price);
+  function updateCartStorage() {
+    localStorage.setItem("myrcart", JSON.stringify(myrcart));
+    if (cartCountElement) {
+      cartCountElement.textContent = getCartProductCount();
+    }
+  }
 
-    // ✅ Load cart from localStorage
+  function toggleSelection(e, selectorClass, selectedClass) {
+    const parent = e.target.closest(`.${selectorClass}`);
+    if (!parent) return;
+    parent.querySelectorAll(`.${selectedClass}`).forEach((btn) =>
+      btn.classList.remove(selectedClass)
+    );
+    e.target.classList.add(selectedClass);
+  }
 
-    let quantity = cart[productId]?.quantity || 0;
+  // ✅ Set up individual product's cart logic
+  function setupCartForProduct(productEl) {
+    const sizeBtns = productEl.querySelectorAll(".size-btn");
+    const colorBtns = productEl.querySelectorAll(".color-swatch");
+    const addToCartBtn = productEl.querySelector(".add-to-cart-button");
+    const qtyControls = productEl.querySelector(".quantity-controls");
+    const qtyDisplay = productEl.querySelector(".quantity");
+    const increaseBtn = productEl.querySelector(".increase");
+    const decreaseBtn = productEl.querySelector(".decrease");
 
-    // ✅ If product is already in cart, show quantity controls
+    const id = productEl.dataset.id;
+    const name = productEl.dataset.name;
+    const price = parseFloat(productEl.dataset.price);
+
+    if (!addToCartBtn || !qtyControls || !qtyDisplay) return;
+
+    let quantity = myrcart[id]?.quantity ;
+
     if (quantity > 0) {
       addToCartBtn.style.display = "none";
       qtyControls.classList.add("active");
       qtyDisplay.textContent = quantity;
     }
 
-    // ➕ Add to Cart
+    // Add to Cart Logic
     addToCartBtn.addEventListener("click", () => {
-      quantity = 1;
-      cart[productId] = { name: productName, price: productPrice, quantity };
-      localStorage.setItem("cart", JSON.stringify(cart));
-      const cartCount = getCartProductCount();
-      const cartCountElement = document.getElementById("cart-count");
-      if (cartCountElement) {
-        cartCountElement.textContent = cartCount;
-      } else {
-        console.error("Cart count element not found");
+      const selectedSizeBtn = productEl.querySelector(".size-btn.selected-size");
+      const selectedColorBtn = productEl.querySelector(".color-swatch.selected-color");
+
+      if (sizeBtns.length > 0 && !selectedSizeBtn) {
+        alert("Please select a size.");
+        return;
       }
+
+      if (colorBtns.length > 0 && !selectedColorBtn) {
+        alert("Please select a color.");
+        return;
+      }
+
+      quantity = 1;
+      myrcart[id] = {
+        name,
+        price,
+        quantity,
+        selectedSize: selectedSizeBtn?.dataset.size || null,
+        selectedColor: selectedColorBtn?.dataset.color || null,
+      };
+
+      updateCartStorage();
       addToCartBtn.style.display = "none";
       qtyControls.classList.add("active");
       qtyDisplay.textContent = quantity;
     });
 
-    // ➕ Increase Quantity
-    increaseBtn.addEventListener("click", () => {
+    // Quantity Controls
+    increaseBtn?.addEventListener("click", () => {
       quantity++;
-      cart[productId].quantity = quantity;
-      localStorage.setItem("cart", JSON.stringify(cart));
-
+      myrcart[id].quantity = quantity;
+      updateCartStorage();
       qtyDisplay.textContent = quantity;
       qtyDisplay.style.transform = "scale(1.2)";
-      setTimeout(() => {
-        qtyDisplay.style.transform = "scale(1)";
-      }, 150);
+      setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
     });
 
-    // ➖ Decrease Quantity
-    decreaseBtn.addEventListener("click", () => {
+    decreaseBtn?.addEventListener("click", () => {
       quantity--;
-      const cartCount = getCartProductCount();
-      const cartCountElement = document.getElementById("cart-count");
-      if (cartCountElement) {
-        cartCountElement.textContent = cartCount;
-      } else {
-        console.error("Cart count element not found");
-      }
       if (quantity <= 0) {
-        delete cart[productId];
-        localStorage.setItem("cart", JSON.stringify(cart));
+        delete myrcart[id];
+        updateCartStorage();
         addToCartBtn.style.display = "inline-block";
         qtyControls.classList.remove("active");
-        // Update cart count after removing item
-        const updatedCartCount = getCartProductCount();
-        if (cartCountElement) {
-          cartCountElement.textContent = updatedCartCount;
-        }
       } else {
-        cart[productId].quantity = quantity;
-        localStorage.setItem("cart", JSON.stringify(cart));
+        myrcart[id].quantity = quantity;
+        updateCartStorage();
         qtyDisplay.textContent = quantity;
-
         qtyDisplay.style.transform = "scale(1.2)";
-        setTimeout(() => {
-          qtyDisplay.style.transform = "scale(1)";
-        }, 150);
+        setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
       }
     });
   }
-  const select = document.getElementById("selector");
 
-  select.addEventListener("change", function () {
-    console.log("Fuction Run");
-    const selectedPage = this.value;
-    if (selectedPage) {
-      console.log("selected page is running");
-      select.selectedIndex = 0;
-      window.location.href = selectedPage;
+  // ✅ Event Delegation for Selection (CSS toggle)
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("size-btn")) {
+      toggleSelection(e, "size-options", "selected-size");
+    }
+
+    if (e.target.classList.contains("color-swatch")) {
+      toggleSelection(e, "color-options", "selected-color");
     }
   });
-  function getCartProductCount() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || {};
-    return Object.keys(cart).length;
-  }
-  const cartCount = getCartProductCount();
-  const cartCountElement = document.getElementById("cart-count");
+
+  // ✅ Initial Cart Count Setup
   if (cartCountElement) {
-    cartCountElement.textContent = cartCount;
-  } else {
-    console.error("Cart count element not found");
+    cartCountElement.textContent = getCartProductCount();
   }
-  // Products are rendered dynamically, so we need to wait for the DOM to be ready
-  // Check for null before using elements
-  const container = document.getElementById("Product-grid");
-  const mostSellContainer = document.getElementById("most-sell-products");
 
-  // Fetch products from the server
-
+  // ✅ Fetch & Render Products
   fetch("http://localhost:3000/products")
     .then((res) => res.json())
     .then((products) => {
       const category = document.body.dataset.category;
-
-      const filtered = products.filter(
-        (p) => p.category === category && !!p.available
-      );
+      const filtered = products.filter((p) => p.category === category && !!p.available);
       const mostSelling = products.filter((p) => p.mostSell && !!p.available);
-      if (mostSellContainer) {
-        mostSelling.forEach((product) => {
-          const basePrice = parseFloat(product.price);
 
-          const discountValue =
-            typeof product.discount === "string"
-              ? parseFloat(product.discount)
-              : product.discount || 0;
-          const discountedPrice = Math.round(
-            basePrice - (basePrice * discountValue) / 100
-          );
-
+      function renderProducts(list, container) {
+        list.forEach((product) => {
           const div = document.createElement("div");
+          const basePrice = parseFloat(product.price);
+          const discount = parseFloat(product.discount) || 0;
+          const finalPrice = Math.round(basePrice - (basePrice * discount) / 100);
+
           div.className = "Product";
           div.dataset.id = product.id;
           div.dataset.name = product.name;
-          div.dataset.price = discountedPrice;
-          if (
-            (product.sizes && product.sizes.length > 0) ||
-            (product.colors && product.colors.length > 0)
-          ) {
-            const row = document.createElement("div");
-            row.className = "size-color-row flex flex-col gap-2 mt-2";
+          div.dataset.price = finalPrice;
 
-            // ✅ Size Section
-            if (product.sizes && product.sizes.length > 0) {
-              const sizeGroup = document.createElement("div");
-              sizeGroup.className = "option-group";
+          const hasOptions = (product.sizes?.length || 0) > 0 || (product.colors?.length || 0) > 0;
+          const sizeHTML = product.sizes?.map(size => `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`).join("") || "";
+          const colorHTML = product.colors?.map(color => `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`).join("") || "";
 
-              const sizeLabel = document.createElement("div");
-              sizeLabel.className = "option-label text-sm font-semibold";
-              sizeLabel.innerText = "Size:";
-              sizeGroup.appendChild(sizeLabel);
+          div.innerHTML = `
+            <div class="discount">${product.discount || 0}%</div>
+            <img src="/uploads/${product.image}" alt="${product.name}" />
+            <div class="Product-name">${product.name}</div>
+            <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
+            ${hasOptions ? `
+              <div class="size-color-row flex flex-col gap-2 mt-2">
+                ${sizeHTML ? `<div class="option-group"><div class="option-label text-sm font-semibold">Size:</div><div class="size-options flex gap-2 mt-1">${sizeHTML}</div></div>` : ""}
+                ${colorHTML ? `<div class="option-group"><div class="option-label text-sm font-semibold">Color:</div><div class="color-options flex gap-2 mt-1">${colorHTML}</div></div>` : ""}
+              </div>` : ""}
+            <button class="add-to-cart-button">Add to Cart</button>
+            <div class="quantity-controls">
+              <button class="decrease">−</button>
+              <span class="quantity">1</span>
+              <button class="increase">+</button>
+            </div>
+          `;
 
-              const sizeOptions = document.createElement("div");
-              sizeOptions.className = "size-options flex gap-2 mt-1";
-
-              product.sizes.forEach((size) => {
-                const btn = document.createElement("button");
-                btn.className =
-                  "size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition";
-                btn.innerText = size;
-                btn.dataset.size = size;
-                sizeOptions.appendChild(btn);
-              });
-
-              sizeGroup.appendChild(sizeOptions);
-              row.appendChild(sizeGroup);
-            }
-
-            // ✅ Color Section
-            if (product.colors && product.colors.length > 0) {
-              const colorGroup = document.createElement("div");
-              colorGroup.className = "option-group";
-
-              const colorLabel = document.createElement("div");
-              colorLabel.className = "option-label text-sm font-semibold";
-              colorLabel.innerText = "Color:";
-              colorGroup.appendChild(colorLabel);
-
-              const colorOptions = document.createElement("div");
-              colorOptions.className = "color-options flex gap-2 mt-1";
-
-              product.colors.forEach((color) => {
-                const btn = document.createElement("button");
-                btn.className =
-                  "color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform";
-                btn.dataset.color = color;
-                btn.title = color;
-                btn.style.backgroundColor = color;
-                colorOptions.appendChild(btn);
-              });
-
-              colorGroup.appendChild(colorOptions);
-              row.appendChild(colorGroup);
-            }
-
-            // Append to your product div
-            div.appendChild(row);
-
-            div.innerHTML = `
-        <div class="discount">${product.discount || 0}%</div>
-        <img src="/uploads/${product.image}" alt="${product.name}" />
-        <div class="Product-name">${product.name}</div>
-        <span class="price">Rs.${basePrice}</span>
-        <span class="dicounted-price">Rs.${discountedPrice}</span>
-        ${row.outerHTML}
-        <button class="add-to-cart-button">Add to Cart</button>
-        <div class="quantity-controls">
-          <button class="decrease">−</button>
-          <span class="quantity">1</span>
-          <button class="increase">+</button>
-        </div>
-      `;
-
-            mostSellContainer.appendChild(div);
-          } else {
-            div.innerHTML = `
-        <div class="discount">${product.discount || 0}%</div>
-        <img src="/uploads/${product.image}" alt="${product.name}" />
-        <div class="Product-name">${product.name}</div>
-        <span class="price">Rs.${basePrice}</span>
-        <span class="dicounted-price">Rs.${discountedPrice}</span>        
-        <button class="add-to-cart-button">Add to Cart</button>
-        <div class="quantity-controls">
-          <button class="decrease">−</button>
-          <span class="quantity">1</span>
-          <button class="increase">+</button>
-        </div>
-      `;
-
-            mostSellContainer.appendChild(div);
-          }
+          container.appendChild(div);
+          setupCartForProduct(div);
         });
       }
-      if (container) {
-        filtered.forEach((product) => {
-          const basePrice = parseFloat(product.price);
-          const discountValue =
-            typeof product.discount === "string"
-              ? parseFloat(product.discount)
-              : product.discount || 0;
-          const discountedPrice = Math.round(
-            basePrice - (basePrice * discountValue) / 100
-          );
 
-          const div = document.createElement("div");
-          div.className = "Product";
-          div.dataset.id = product.id;
-          div.dataset.name = product.name;
-          div.dataset.price = basePrice;
-          if (
-            (product.sizes && product.sizes.length > 0) ||
-            (product.colors && product.colors.length > 0)
-          ) {
-            const row = document.createElement("div");
-            row.className = "size-color-row flex flex-col gap-2 mt-2";
-
-            // ✅ Size Section
-            if (product.sizes && product.sizes.length > 0) {
-              const sizeGroup = document.createElement("div");
-              sizeGroup.className = "option-group";
-
-              const sizeLabel = document.createElement("div");
-              sizeLabel.className = "option-label text-sm font-semibold";
-              sizeLabel.innerText = "Size:";
-              sizeGroup.appendChild(sizeLabel);
-
-              const sizeOptions = document.createElement("div");
-              sizeOptions.className = "size-options flex gap-2 mt-1";
-
-              product.sizes.forEach((size) => {
-                const btn = document.createElement("button");
-                btn.className =
-                  "size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition";
-                btn.innerText = size;
-                btn.dataset.size = size;
-                sizeOptions.appendChild(btn);
-              });
-
-              sizeGroup.appendChild(sizeOptions);
-              row.appendChild(sizeGroup);
-            }
-
-            // ✅ Color Section
-            if (product.colors && product.colors.length > 0) {
-              const colorGroup = document.createElement("div");
-              colorGroup.className = "option-group";
-
-              const colorLabel = document.createElement("div");
-              colorLabel.className = "option-label text-sm font-semibold";
-              colorLabel.innerText = "Color:";
-              colorGroup.appendChild(colorLabel);
-
-              const colorOptions = document.createElement("div");
-              colorOptions.className = "color-options flex gap-2 mt-1";
-
-              product.colors.forEach((color) => {
-                const btn = document.createElement("button");
-                btn.className =
-                  "color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform";
-                btn.dataset.color = color;
-                btn.title = color;
-                btn.style.backgroundColor = color;
-                colorOptions.appendChild(btn);
-              });
-
-              colorGroup.appendChild(colorOptions);
-              row.appendChild(colorGroup);
-            }
-
-            // Append to your product div
-            div.appendChild(row);
-
-            div.innerHTML = `
-        <div class="discount">${product.discount || 0}%</div>
-        <img src="/uploads/${product.image}" alt="${product.name}" />
-        <div class="Product-name">${product.name}</div>
-        <span class="price">Rs.${basePrice}</span>
-        <span class="dicounted-price">Rs.${discountedPrice}</span>
-        ${row.outerHTML}
-        <button class="add-to-cart-button">Add to Cart</button>
-        <div class="quantity-controls">
-          <button class="decrease">−</button>
-          <span class="quantity">1</span>
-          <button class="increase">+</button>
-        </div>
-      `;
-
-            container.appendChild(div);
-          } else {
-            div.innerHTML = `
-        <div class="discount">${product.discount || 0}%</div>
-        <img src="/uploads/${product.image}" alt="${product.name}" />
-        <div class="Product-name">${product.name}</div>
-        <span class="price">Rs.${basePrice}</span>
-        <span class="dicounted-price">Rs.${discountedPrice}</span>        
-        <button class="add-to-cart-button">Add to Cart</button>
-        <div class="quantity-controls">
-          <button class="decrease">−</button>
-          <span class="quantity">1</span>
-          <button class="increase">+</button>
-        </div>
-      `;
-
-            container.appendChild(div);
-          }
-        });
-      }
-      // Only call setupCartForProduct after rendering
-      document.querySelectorAll(".Product").forEach(setupCartForProduct);
+      if (container) renderProducts(filtered, container);
+      if (mostSellContainer) renderProducts(mostSelling, mostSellContainer);
     })
-    .catch((err) => {
-      console.error("Error loading products:", err);
-    });
-    document.querySelectorAll(".size-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("selected-size"));
-    if (!btn.classList.contains("selected-size")) {
-      btn.classList.add("selected-size");
-    }
-  });
-});
-
-// ✅ Color Swatch Toggle (only one selected at a time)
-document.querySelectorAll(".color-swatch").forEach(swatch => {
-  swatch.addEventListener("click", () => {
-    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected-color"));
-    if (!swatch.classList.contains("selected-color")) {
-      swatch.classList.add("selected-color");
-    }
-  });
-});
-
-  console.log(localStorage.getItem("cart"));
-  // Cart Logic
+    .catch((err) => console.error("Error loading products:", err));
   const cartItemsTbody = document.getElementById("cart-items");
-  const orderIdSpan = document.getElementById("order-id");
-  const Quantity = document.getElementById("Quantity-heading");
-  const cartSummary = document.getElementById("cart-summary");
-  const cartTable = document.getElementById("cart-table");
-  const cartHeadings = document.getElementById("summary-headings");
-  const totalRow = document.getElementById("total");
-  const totalColumn = document.getElementById("totalColumn");
-  console.log(localStorage.getItem("cart"));
-  let subtotal = 0;
-  let total = 0;
-  if (cartItemsTbody) {
-    cartItemsTbody.innerHTML = "";
+const orderIdSpan = document.getElementById("order-id");
+const quantityHeading = document.getElementById("Quantity-heading");
+const cartSummary = document.getElementById("cart-summary");
+const cartTable = document.getElementById("cart-table");
+const cartHeadings = document.getElementById("summary-headings");
+const totalRow = document.getElementById("total");
+const totalColumn = document.getElementById("totalColumn");
+const checkoutForm = document.getElementById("checkout-form");
 
-    Object.keys(cart).forEach((id) => {
-      const item = cart[id];
-      const price = item.price || 0;
-      const qty = item.quantity || 0;
-      const amount = price * qty;
-      subtotal += amount;
+let subtotal = 0;
+let deliveryCharges = 0;
+let total = 0;
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
+if (cartItemsTbody || checkoutForm) {
+  cartItemsTbody.innerHTML = "";
+
+  Object.entries(myrcart).forEach(([id, item]) => {
+    const price = item.price || 0;
+    const qty = item.quantity || 0;
+    const amount = price * qty;
+    subtotal += amount;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
       <td>${item.name || "Unnamed"}</td>
       <td>${price}</td>
       <td class="qty-cell">
-      <button class="qty-btn decrease" data-id="${id}">−</button>
-      <span class="quantity" id="qty-${id}">${qty}</span>
-      <button class="qty-btn increase" data-id="${id}">+</button>
+        <button class="qty-btn decrease" data-id="${id}">−</button>
+        <span class="quantity" id="qty-${id}">${qty}</span>
+        <button class="qty-btn increase" data-id="${id}">+</button>
       </td>
       <td>${amount}</td>
       <td>
         <button class="delete-btn" data-id="${id}" title="Remove from cart">
-          <svg class="delete-svgIcon" viewBox="0 0 448 512">
-              <path
-                  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z">
-              </path>
-          </svg>
+          🗑️
         </button>
       </td>
     `;
 
-      // Add delete button event
-      const deleteBtn = row.querySelector(".delete-btn");
-      deleteBtn.addEventListener("click", () => {
-        delete cart[id];
-        localStorage.setItem("cart", JSON.stringify(cart));
-        location.reload();
-      });
-
-      cartItemsTbody.appendChild(row);
+    row.querySelector(".delete-btn").addEventListener("click", () => {
+      delete myrcart[id];
+      localStorage.setItem("myrcart", JSON.stringify(myrcart));
+      location.reload();
     });
-  }
-  // ======= SYNC COLUMNS WIDTH
-  function syncColumnWidths() {
-    // Get first row of cartTable
-    const cartTableRow = cartTable.rows[0];
-    // Sum width of first three columns
-    const width1 = cartTableRow.cells[0].getBoundingClientRect().width;
-    const width2 = cartTableRow.cells[1].getBoundingClientRect().width;
-    const width3 = cartTableRow.cells[2].getBoundingClientRect().width;
-    const totalWidth = width1 + width2 + width3;
 
-    // Apply the calculated width
-    cartHeadings.style.width = totalWidth + "px";
-    totalColumn.style.width = totalWidth + "px";
-  }
+    cartItemsTbody.appendChild(row);
+  });
 
-  // Run on load and on resize
+  // Width Sync
+  const syncColumnWidths = () => {
+    const row = cartTable.rows[0];
+    const widthSum =
+      row.cells[0].offsetWidth + row.cells[1].offsetWidth + row.cells[2].offsetWidth;
+    cartHeadings.style.width = totalColumn.style.width = `${widthSum}px`;
+  };
   window.addEventListener("load", syncColumnWidths);
   window.addEventListener("resize", syncColumnWidths);
 
-  //  ======== ADDING CART SUMMARY
-  let deliveryCharges = 0;
-  if (subtotal != 0) {
-    deliveryCharges = 150;
-  }
+  // Delivery + Totals
+  if (subtotal > 0) deliveryCharges = 150;
   total = subtotal + deliveryCharges;
-  const deliveryCell = document.getElementById("delivery-charges");
 
-  const Summaryrow = document.createElement("tr");
-  Summaryrow.innerHTML = ` 
-        <td id="summary-headings">Sub-total :</td>
-        <td id="summary-data">Rs.${subtotal}</td>
+  const deliveryCell = document.getElementById("delivery-charges");
+  deliveryCell.textContent = `Rs.${deliveryCharges}`;
+
+  cartSummary.insertAdjacentHTML(
+    "afterbegin",
+    `<tr><td id="summary-headings">Sub-total :</td><td id="summary-data">Rs.${subtotal}</td></tr>`
+  );
+  totalRow.innerHTML = `
+    <tr>
+      <td id="summary-headings">Total :</td>
+      <td id="summary-data">Rs.${total}</td>
+    </tr>
   `;
-  deliveryCell.innerHTML = `Rs.${deliveryCharges}`;
-  cartSummary.prepend(Summaryrow);
-  const Row = document.createElement("tr");
-  Row.innerHTML = ` 
-        <td id="summary-headings">Total :</td>
-        <td id="summary-data">Rs.${total}</td>
-      
-  `;
-  totalRow.appendChild(Row);
-  const smallScreenQuery = window.matchMedia("(max-width:768px)");
-  function changeQuantityText() {
-    if (smallScreenQuery.matches && Quantity) {
-      Quantity.textContent = "Qty.";
-    }
+
+  // Mobile Text Fix
+  if (window.matchMedia("(max-width:768px)").matches && quantityHeading) {
+    quantityHeading.textContent = "Qty.";
   }
-  changeQuantityText();
+
+  // Quantity Control
   document.querySelectorAll(".qty-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.dataset.id;
       const isIncrease = button.classList.contains("increase");
-      const cart = JSON.parse(localStorage.getItem("cart")) || {};
-      const item = cart[id];
 
-      if (!item) return;
+      if (!myrcart[id]) return;
 
-      // Update quantity
-      item.quantity += isIncrease ? 1 : -1;
+      myrcart[id].quantity += isIncrease ? 1 : -1;
 
-      // If quantity is 0, remove item
-      if (item.quantity <= 0) {
-        delete cart[id];
-      } else {
-        cart[id] = item;
+      if (myrcart[id].quantity <= 0) {
+        delete myrcart[id];
       }
 
-      // Save and reload
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("myrcart", JSON.stringify(myrcart));
       location.reload();
     });
   });
-  // ORDER ID
+
+  // Generate Order ID
   function generateOrderId() {
     const now = new Date();
-
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // 0-based
-    const year = now.getFullYear();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-
-    // Optional: Add milliseconds for extra uniqueness
-    const ms = String(now.getMilliseconds()).padStart(3, "0");
-
-    return `MYR-${day}${month}${year}-${hours}${minutes}${seconds}${ms}`;
+    const pad = (val) => String(val).padStart(2, "0");
+    return `MYR-${pad(now.getDate())}${pad(now.getMonth() + 1)}${now.getFullYear()}-${pad(
+      now.getHours()
+    )}${pad(now.getMinutes())}${pad(now.getSeconds())}${String(now.getMilliseconds()).padStart(3, "0")}`;
   }
 
-  let orderId = localStorage.getItem("orderId");
-  const cartArray = JSON.parse(localStorage.getItem("cart")) || {};
-  const hasItem = Object.keys(cartArray).length > 0;
-  if (hasItem) {
-    if (!orderId) {
-      orderId = generateOrderId();
+  let myrorderId = localStorage.getItem("myrorderId");
+  if (Object.keys(myrcart).length) {
+    if (!myrorderId) {
+      myrorderId = generateOrderId();
     }
-  } else {
-    orderId = generateOrderId();
+    localStorage.setItem("myrorderId", myrorderId);
   }
-  localStorage.setItem("orderId", orderId);
-  orderIdSpan.textContent = orderId;
+  orderIdSpan.textContent = myrorderId;
 
+  // Checkout button navigation
   const placeOrderBtn = document.getElementById("place-order");
-  if (!placeOrderBtn) return;
-
-  placeOrderBtn.addEventListener("click", () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || {};
-    const hasItem = Object.keys(cart).length > 0;
-
-    if (hasItem) {
-      window.location.href = "checkout.html";
-    } else {
-      alert("Your Cart is Empty. Please add items before placing an Order");
-    }
-  });
-
-  // Utility: Get total number of products in cart (not quantity, just count of unique products)
-});
+  if (placeOrderBtn) {
+    placeOrderBtn.addEventListener("click", () => {
+      if (Object.keys(myrcart).length > 0) {
+        window.location.href = "checkout.html";
+      } else {
+        alert("Your cart is empty. Please add items first.");
+      }
+    });
+  }
+}
+})
