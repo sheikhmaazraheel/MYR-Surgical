@@ -86,7 +86,7 @@
 
             const result = await res.json();
             if (result.success) {
-              window.location.href = "admin.html";
+              window.location.href = "protected/admin.html";
             } else {
               document.getElementById("error").innerText =
                 result.message || "Invalid login";
