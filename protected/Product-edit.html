@@ -193,7 +193,7 @@
   </head>
   <body>
     <script>
-      fetch("http://localhost:3000/check-auth", {
+      fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
         credentials: "include",
       })
         .then((res) => {
@@ -344,7 +344,7 @@
           if (!query) return alert("Please enter product ID or name");
 
           try {
-            const res = await fetch(`http://localhost:3000/products`);
+            const res = await fetch(`https://myr-backend-7nx6.onrender.com/products`);
             const products = await res.json();
 
             const product = products.find(
@@ -388,7 +388,7 @@
 
           try {
             const res = await fetch(
-              `http://localhost:3000/products/${currentId}`,
+              `https://myr-backend-7nx6.onrender.com/products/${currentId}`,
               {
                 method: "PUT",
                 body: formData,
@@ -415,7 +415,7 @@
 
             try {
               const res = await fetch(
-                `http://localhost:3000/products/${currentId}`,
+                `https://myr-backend-7nx6.onrender.com/products/${currentId}`,
                 {
                   method: "DELETE",
                 }
@@ -437,7 +437,7 @@
         .getElementById("logout-btn")
         .addEventListener("click", async () => {
           try {
-            const res = await fetch("http://localhost:3000/logout", {
+            const res = await fetch("https://myr-backend-7nx6.onrender.com/logout", {
               method: "POST",
               credentials: "include",
             });

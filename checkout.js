@@ -72,7 +72,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("http://localhost:3000/orders", {
+    const res = await fetch("https://myr-backend-7nx6.onrender.com/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData),

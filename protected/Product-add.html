@@ -189,7 +189,7 @@
   </head>
   <body>
     <script>
-      fetch("http://localhost:3000/check-auth", {
+      fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
         credentials: "include",
       })
         .then((res) => {
@@ -310,7 +310,7 @@
             statusDiv.textContent = "Uploading...";
 
             try {
-              const res = await fetch("http://localhost:3000/upload", {
+              const res = await fetch("https://myr-backend-7nx6.onrender.com/upload", {
                 method: "POST",
                 body: formData,
                 credentials: "include",
@@ -339,7 +339,7 @@
         .getElementById("logout-btn")
         .addEventListener("click", async () => {
           try {
-            const res = await fetch("http://localhost:3000/logout", {
+            const res = await fetch("https://myr-backend-7nx6.onrender.com/logout", {
               method: "POST",
               credentials: "include",
             });

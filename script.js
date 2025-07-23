@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ✅ Fetch & Render Products
-  fetch("http://localhost:3000/products")
+  fetch("https://myr-backend-7nx6.onrender.com/products")
     .then((res) => res.json())
     .then((products) => {
       const category = document.body.dataset.category;
