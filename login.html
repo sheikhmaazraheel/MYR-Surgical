@@ -76,6 +76,7 @@
 
           try {
             const res = await fetch("https://myr-backend-7nx6.onrender.com/login", {
+              credentials: "include", // Include cookies for session management
               method: "POST",
               headers: {
                 "Content-Type": "application/json", // Send as JSON
