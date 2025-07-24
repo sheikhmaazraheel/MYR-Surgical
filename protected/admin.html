@@ -190,25 +190,24 @@
   </head>
   <body>
     <script>
-      fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
-        credentials: "include", // Include cookies for session management
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Not authenticated");
-          return res.json();
-        })
-        .then((data) => {
-          if (!data.authenticated) {
-            window.location.href = "/MYR-Surgical/login.html";
-          }
-        })
-        .catch(() => {
-          window.location.href = "/MYR-Surgical/login.html";
-        });
+      // In admin.html or associated JavaScript
+async function checkAuth() {
+  try {
+    const response = await fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
+      method: "GET",
+      credentials: "include", // Include cookies
+    });
+    const data = await response.json();
+    if (!data.authenticated) {
+      window.location.href = "/loginទlogin.html"; // Redirect to login page
+    }
+  } catch (err) {
+    console.error("Auth check error:", err);
+    window.location.href = "/login.html"; // Redirect on error
+  }
+}
+
+document.addEventListener("DOMContentLoaded", checkAuth);
     </script>
         <nav>
       <h2>Manage Your workflow here</h2>
