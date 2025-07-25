@@ -4,256 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-    <style>
-      html {
-        scroll-behavior: smooth !important;
-      }
-      @import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-      }
-      body {
-        background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
-        display: flex;
-      }
-      html,
-      body {
-        width: 100%;
-      }
-
-      body {
-        overflow-x: hidden;
-      }
-      nav {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        background-color: #333;
-        height: 100vh;
-        width: 15%;
-        padding: 100px 20px;
-      }
-      .body {
-        width: 100%;
-        height: 100vh;
-        margin-left: 15%;
-      }
-      .upperHeader {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        height: 80px;
-        font-size: 14px;
-        display: flex;
-        justify-content: center;
-        color: #222;
-        background-color: #fff; /* Keep navbar white */
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 2px 12px rgba(44, 62, 80, 0.05);
-        transition: box-shadow 0.2s;
-      }
-      /* For logo*/
-      #logo {
-        height: 80px;
-        width: auto;
-        margin: 0 0 0 30px;
-        padding: 4px 0 0;
-        font-size: 14px;
-      }
-      .logo {
-        background-image: url("/images/logo.jpeg");
-        background-size: cover;
-        aspect-ratio: 1/1;
-        margin: 1px;
-        padding: 1px 8px 0px 6px;
-        width: 100px;
-        height: 70px;
-        position: static;
-        float: none;
-      }
-      nav a {
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        padding: 10px;
-        margin: 5px 0;
-        width: 100%;
-        text-align: center;
-        border-radius: 4px;
-        transition: background-color 0.3s, color 0.3s;
-      }
-      nav h2 {
-        color: #fff;
-        font-size: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .hero-content {
-        max-width: 700px;
-        padding: 20px 40px;
-        margin: 50px 20px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .hero-content h1 {
-        font-size: 3rem;
-        color: #6d28d9;
-        margin-bottom: 10px;
-        text-align: left;
-        align-self: baseline;
-      }
-      .hero-content h1 span {
-        font-size: 4rem;
-        color: #f43f5e;
-        margin-bottom: 20px;
-        white-space: nowrap;
-      }
-      .hero-content p {
-        font-size: 1.2rem;
-        color: #333;
-        text-align: left;
-        margin-bottom: 30px;
-      }
-
-      .hero-button {
-        padding: 12px 24px;
-        background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
-        color: #fff;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        border: none;
-        transition: background 0.3s, transform 0.2s;
-        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
-      }
-
-      .hero-button:hover {
-        background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
-        transform: scale(1.05);
-      }
-      button {
-        background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
-        width: 250px;
-        font-size: 16px;
-        font-weight: bold;
-        color: white;
-        align-self: center;
-        padding: 10px 20px;
-        border: none;
-        margin-top: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-      }
-
-      button:hover {
-        background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
-        transform: scale(1.05);
-      }
-      /* Hamburger default */
-      .hamburger {
-        display: none;
-        font-size: 30px;
-        cursor: pointer;
-        margin: 0 10px;
-        align-self: baseline;
-      }
-    </style>
-    <style>
-      @media (max-width: 768px) {
-        nav {
-          display: none;
-        }
-        .body{
-          margin: 0px;
-        }
-
-        #logo {
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .hamburger {
-          display: block;
-          margin-right: auto;
-          margin-top: auto;
-          margin-bottom: auto;
-        }
-        nav.active {
-          display: flex;
-          flex-direction: column;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 50%;
-          background-color: #333;
-          padding: 20px;
-        }
-        .hero-content > h1 {
-          font-size: 2rem;
-        }
-        .hero-content > h1 > span {
-          font-size: 2.7rem;
-          text-wrap: wrap;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="admin.css" />
   </head>
   <body>
-    <div id="adminpage"></div>
-    <nav>
-      <h2>Manage Your workflow here</h2>
-      <a href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/admin"
-        >HOME</a
-      >
-      <a
-        href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Product-add"
-        >Add Products</a
-      >
-      <a
-        href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Product-edit"
-        >Edit or Delete Products</a
-      >
-      <a href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Orders"
-        >Orders</a
-      >
+    <nav class="top-nav">
+      <img src="https://sheikhmaazraheel.github.io/MYR-Surgical/images/logo.jpeg" alt="logo">
     </nav>
-    <section class="body">
-      <div class="upperHeader">
-        <div id="hamburger" class="hamburger">&#9776;</div>
-        <div id="logo">
-          <div class="logo"></div>
-        </div>
-      </div>
-      <div class="hero-content">
-        <h1>WELCOME TO <br /><span> Dashboard of MYR Surgical</span></h1>
+    <button class="hamburger">☰</button>
+    <nav class="sidebar">
+      <ul>
+        <li>
+          <a
+            href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/admin"
+            >HOME</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Product-add"
+            >Add Products</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Product-edit"
+            >Edit or Delete Products</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://sheikhmaazraheel.github.io/MYR-Surgical/protected/Orders"
+            >Orders</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <main class="main-content">
+      <div class="dashboard">
+        <h1>WELCOME TO <br><span>Dashboard of MYR Surgical</span></h1>
         <p>
           You can easily manage your products, orders, and customer interactions
-          with our user-friendly interface. <br /><br />
+          with our user-friendly interface.
+        </p>
+        <p>
           Our platform is designed to streamline your workflow, allowing you to
           control every aspect of your business from a single dashboard.
-          <br /><br />
         </p>
         <a
-          href="https://sheikhmaazraheel.github.io/MYR-Surgical/"
-          class="hero-button"
+          href="https://sheikhmaazraheel.github.io/MYR-Surgical"
+          class="view-website-btn"
           >View Your Website</a
         >
-        <button id="logout-btn" style="margin: 50px auto; width: 200px">
-          Logout
-        </button>
+        <button id="logout-btn">Logout</button>
       </div>
-    </section>
+    </main>
+    <span id="adminpage"></span>
     <script src="https://sheikhmaazraheel.github.io/MYR-Surgical/admin.js"></script>
   </body>
 </html>

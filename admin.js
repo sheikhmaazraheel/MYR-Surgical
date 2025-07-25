@@ -47,7 +47,7 @@ if (loginForm) {
 
 // Admin Page Logic
 document.addEventListener("DOMContentLoaded", () => {
-  const productForm = document.getElementById("product-form");
+  const productForm = document.getElementById("addProductForm");
   const editForm = document.getElementById("editProductForm");
   const adminPage = document.getElementById("adminpage");
 
@@ -186,14 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🍔 Responsive Navbar Toggle
-  const hamburger = document.getElementById("hamburger");
-  const nav = document.querySelector("nav");
-  if (hamburger && nav) {
-    hamburger.addEventListener("click", () => nav.classList.toggle("active"));
-    document.addEventListener("click", (e) => {
-      if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
-        nav.classList.remove("active");
-      }
+  const hamburger = document.querySelector(".hamburger");
+  const sidebar = document.querySelector(".sidebar");
+  if (hamburger && sidebar) {
+    // Hamburger menu toggle
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
     });
   }
 });
