@@ -9,10 +9,10 @@ async function checkAuth() {
     });
     const data = await res.json();
     if (!data.authenticated) {
-      window.location.href = `${githubBase}/login.html`;
+      window.location.href = `${githubBase}/login`;
     }
   } catch {
-    window.location.href = `${githubBase}/login.html`;
+    window.location.href = `${githubBase}/login`;
   }
 }
 
@@ -34,7 +34,7 @@ if (loginForm) {
 
       const data = await res.json();
       if (data.success) {
-        window.location.href = `${githubBase}/protected/admin.html`;
+        window.location.href = `${githubBase}/protected/admin`;
       } else {
         alert(data.message || "Login failed");
       }
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         const result = await res.json();
         if (result.success) {
-          window.location.href = `${githubBase}/login.html`;
+          window.location.href = `${githubBase}/login`;
         } else {
           alert("Logout failed.");
         }
