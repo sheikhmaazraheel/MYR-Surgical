@@ -29,8 +29,8 @@
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
-                position: sticky;
-        top: 0;  
+        position: sticky;
+        top: 0;
         left: 0;
         padding: 10px;
         background-color: #333;
@@ -184,31 +184,14 @@
         form {
           min-width: 90%;
         }
-        #edit-product-section{
-            width: 100%;
-            padding: 20px;
+        #edit-product-section {
+          width: 100%;
+          padding: 20px;
         }
       }
     </style>
   </head>
   <body>
-    <script>
-      fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
-        credentials: "include",
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Not authenticated");
-          return res.json();
-        })
-        .then((data) => {
-          if (!data.authenticated) {
-            window.location.href = "/login.html";
-          }
-        })
-        .catch(() => {
-          window.location.href = "/login.html";
-        });
-    </script>
     <nav>
       <h2>Manage Your workflow here</h2>
       <a href="./admin.html">HOME</a>
@@ -331,144 +314,6 @@
         Logout
       </button>
     </section>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const loadBtn = document.getElementById("loadProductBtn");
-        const searchInput = document.getElementById("searchIdOrName");
-        const form = document.getElementById("editProductForm");
-
-        let currentId = null;
-
-        loadBtn.addEventListener("click", async () => {
-          const query = searchInput.value.trim();
-          if (!query) return alert("Please enter product ID or name");
-
-          try {
-            const res = await fetch(`https://myr-backend-7nx6.onrender.com/products`);
-            const products = await res.json();
-
-            const product = products.find(
-              (p) => p.id === query || p.name === query
-            );
-            if (!product) return alert("Product not found");
-
-            // Fill the form
-            document.getElementById("edit-id").value = product.id;
-            document.getElementById("edit-name").value = product.name;
-            document.getElementById("edit-price").value = product.price;
-            document.getElementById("edit-discount").value = product.discount;
-            document.getElementById("edit-category").value = product.category;
-            document.getElementById("edit-mostSell").value = product.mostSell
-              ? "true"
-              : "";
-            document.getElementById("edit-available").value = product.available
-              ? "true"
-              : "false";
-
-            document.getElementById("edit-colors").value = (
-              product.colors || []
-            ).join(",");
-            document.getElementById("edit-sizes").value = (
-              product.sizes || []
-            ).join(",");
-
-            form.style.display = "block";
-            currentId = product.id;
-          } catch (err) {
-            alert("Failed to load product");
-            console.error(err);
-          }
-        });
-
-        // ✏️ Save/Update Product
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          const formData = new FormData(form);
-
-          try {
-            const res = await fetch(
-              `https://myr-backend-7nx6.onrender.com/products/${currentId}`,
-              {
-                method: "PUT",
-                body: formData,
-              }
-            );
-
-            const result = await res.json();
-            alert(result.message || "Product updated");
-            form.style.display = "none";
-          } catch (err) {
-            alert("Failed to update product");
-            console.error(err);
-          }
-        });
-
-        // ❌ Delete Product
-        document
-          .getElementById("deleteProductBtn")
-          .addEventListener("click", async () => {
-            const confirmed = confirm(
-              "Are you sure you want to delete this product?"
-            );
-            if (!confirmed) return;
-
-            try {
-              const res = await fetch(
-                `https://myr-backend-7nx6.onrender.com/products/${currentId}`,
-                {
-                  method: "DELETE",
-                }
-              );
-              const result = await res.json();
-              alert(result.message);
-              form.reset();
-              form.style.display = "none";
-            } catch (err) {
-              alert("Failed to delete product");
-              console.error(err);
-            }
-          });
-      });
-    </script>
-    <!-- For Logout Button -->
-    <script>
-      document
-        .getElementById("logout-btn")
-        .addEventListener("click", async () => {
-          try {
-            const res = await fetch("https://myr-backend-7nx6.onrender.com/logout", {
-              method: "POST",
-              credentials: "include",
-            });
-
-            const result = await res.json();
-            if (result.success) {
-              window.location.href = "/login.html";
-            } else {
-              alert("Logout failed.");
-            }
-          } catch (err) {
-            console.error("Logout error:", err);
-            alert("Something went wrong.");
-          }
-        });
-    </script>
-
-    <script>
-      const hamburger = document.getElementById("hamburger");
-      const nav = document.querySelector("nav");
-
-      hamburger.addEventListener("click", () => {
-        nav.classList.toggle("active");
-      });
-
-      // Close the navigation when clicking outside of it
-      document.addEventListener("click", (event) => {
-        if (!nav.contains(event.target) && !hamburger.contains(event.target)) {
-          nav.classList.remove("active");
-        }
-      });
-    </script>
   </body>
+  <script src="admin.js"></script>
 </html>

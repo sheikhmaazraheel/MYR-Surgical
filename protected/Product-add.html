@@ -189,21 +189,6 @@
   </head>
   <body>
     <script>
-      fetch("https://myr-backend-7nx6.onrender.com/check-auth", {
-        credentials: "include",
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Not authenticated");
-          return res.json();
-        })
-        .then((data) => {
-          if (!data.authenticated) {
-            window.location.href = "/login.html";
-          }
-        })
-        .catch(() => {
-          window.location.href = "/login.html";
-        });
     </script>
     <nav>
       <h2>Manage Your workflow here</h2>
@@ -298,79 +283,6 @@
         Logout
       </button>
     </section>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        document
-          .getElementById("product-form")
-          .addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const form = e.target;
-            const formData = new FormData(form);
-            const statusDiv = document.getElementById("upload-status");
-            statusDiv.textContent = "Uploading...";
-
-            try {
-              const res = await fetch("https://myr-backend-7nx6.onrender.com/upload", {
-                method: "POST",
-                body: formData,
-                credentials: "include",
-              });
-
-              const result = await res.json();
-
-              if (res.ok && result.product) {
-                statusDiv.textContent = "✅ Product uploaded!";
-                form.reset();
-              } else {
-                statusDiv.textContent =
-                  "❌ Upload failed: " + (result.message || "Unknown error.");
-                console.error(result);
-              }
-            } catch (err) {
-              console.error("Upload error:", err);
-              statusDiv.textContent = "❌ Server error.";
-            }
-          });
-      });
-    </script>
-    <!-- For Logout Button -->
-    <script>
-      document
-        .getElementById("logout-btn")
-        .addEventListener("click", async () => {
-          try {
-            const res = await fetch("https://myr-backend-7nx6.onrender.com/logout", {
-              method: "POST",
-              credentials: "include",
-            });
-
-            const result = await res.json();
-            if (result.success) {
-              window.location.href = "/login.html";
-            } else {
-              alert("Logout failed.");
-            }
-          } catch (err) {
-            console.error("Logout error:", err);
-            alert("Something went wrong.");
-          }
-        });
-    </script>
-
-    <script>
-      const hamburger = document.getElementById("hamburger");
-      const nav = document.querySelector("nav");
-
-      hamburger.addEventListener("click", () => {
-        nav.classList.toggle("active");
-      });
-
-      // Close the navigation when clicking outside of it
-      document.addEventListener("click", (event) => {
-        if (!nav.contains(event.target) && !hamburger.contains(event.target)) {
-          nav.classList.remove("active");
-        }
-      });
-    </script>
+    <script src="admin.js"></script>
   </body>
 </html>

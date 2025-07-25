@@ -55,7 +55,7 @@
         transform: scale(1.05);
       }
       @media (max-width: 768px) {
-        body{
+        body {
           flex-direction: column;
           justify-content: center;
           align-items: center;
@@ -71,46 +71,29 @@
         button {
           width: 100%;
         }
-
       }
     </style>
   </head>
   <body>
     <form id="login-form">
       <h2>Admin Login</h2>
-      <input type="text" name="username" placeholder="Username" id="username" required />
-      <input type="password" name="password" placeholder="Password" id="password" required />
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        id="username"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        id="password"
+        required
+      />
       <button type="submit">Login</button>
       <p id="error" style="color: red"></p>
     </form>
-
-    <script>
-      document.getElementById("login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const response = await fetch("https://myr-backend-7nx6.onrender.com/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: "include", // Include cookies in the request
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      window.location.href = "https://sheikhmaazraheel.github.io/MYR-Surgical/protected/admin.html"; // Redirect to admin page
-    } else {
-      alert(data.message || "Login failed");
-    }
-  } catch (err) {
-    console.error("Login error:", err);
-    alert("An error occurred during login");
-  }
-});
-    </script>
+    <script src="admin.js"></script>
   </body>
 </html>
