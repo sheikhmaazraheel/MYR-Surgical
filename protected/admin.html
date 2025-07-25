@@ -199,11 +199,14 @@ async function checkAuth() {
     });
     const data = await response.json();
     if (!data.authenticated) {
-      window.location.href = "https://sheikhmaazraheel.github.io/MYR-Surgical/login.html"; // Redirect to login page
+      console.log("Not authenticated, redirecting to login...");
+      window.location.href = "https://sheikhmaazraheel.github.io/MYR-Surgical/login.html";
+    } else {
+      console.log("Authenticated, staying on admin page");
     }
   } catch (err) {
     console.error("Auth check error:", err);
-    window.location.href = "https://sheikhmaazraheel.github.io/MYR-Surgical/login.html"; // Redirect on error
+    window.location.href = "https://sheikhmaazraheel.github.io/MYR-Surgical/login.html";
   }
 }
 
