@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You for Your Order - MYR Surgical</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="resposive.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .order-details {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .error-message {
+      color: #e53e3e;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+     <!-- =============== NAV BAR ================ -->
+    <nav>
+      <div id="hamburger" class="hamburger">&#9776;</div>
+      <div id="logo">
+        <div class="logo"></div>
+      </div>
+      <div class="empty"></div>
+      <div id="menu">
+        <div class="home-box hov">
+          <a href="index.html" class="home">
+            <div class="Home-text">HOME</div>
+          </a>
+        </div>
+        <div class="selector hov">
+          <select name="Products" id="selector"  class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" selected disabled >B.P Monitor</option>
+            <option value="Stethoscope.html">Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html">Aneroid B.P</option>
+            <option value="Accessories.html">Other Surgical Items</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+        </div>
+        <div class="about hov">
+          <a href="#ABOUT" class="about">
+            <p class="about-text">About</p>
+          </a>
+        </div>
+        <div class="empty"></div>
+      </div>
+      <div class="cart hov">
+        <a href="cart.html" class="cart-symbol-container">
+          <div class="cart-symbol"><span class="cart-count" id="cart-count">0</span></div>
+        </a>
+      </div>
+    </nav>
+    <!-- =========== MOBILE DROPDOWN ============== -->
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <div class="home-box hov">
+        <a href="index.html" class="home">
+          <div class="Home-text">HOME</div>
+        </a>
+      </div>
+      <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value=""  disabled>Products</option>
+            <option value="BP-Monitor.html" selected disabled >B.P Monitor</option>
+            <option value="Stethoscope.html">Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html">Aneroid B.P</option>
+            <option value="Accessories.html">Other Surgical Items</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Test-Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
+      </div>
+      <div class="about hov">
+        <a href="#ABOUT">
+          <p class="about-text">About</p>
+        </a>
+      </div>
+    </div>
+
+
+  <!-- Main Content -->
+  <main class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900">Thank You for Your Order!</h2>
+        <p class="mt-4 text-lg text-gray-600">
+          Your order has been successfully placed. You'll receive a confirmation email soon.
+        </p>
+      </div>
+
+      <!-- Order Details -->
+      <div class="order-details mt-8 bg-white p-6 rounded-lg shadow">
+        <h3 class="text-xl font-semibold text-gray-900">Order Summary</h3>
+        <div id="order-details" class="mt-4 text-gray-600">
+          <p>Loading order details...</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-8 text-center">
+        <a
+          href="https://sheikhmaazraheel.github.io/MYR-Surgical/"
+          class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+        >
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+      <div class="footer-container">
+        <p>&copy; 2025 MYR Surgical. All rights reserved.</p>
+        <p>Designed by BitLion</p>
+      </div>
+    </footer>
+
+  <!-- <script>
+    const backendURL = "https://myr-backend-7nx6.onrender.com";
+
+    // Get orderId from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get("orderId");
+
+    async function loadOrderDetails() {
+      const orderDetailsDiv = document.getElementById("order-details");
+
+      if (!orderId) {
+        orderDetailsDiv.innerHTML = '<p class="error-message">Error: No order ID provided.</p>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${backendURL}/orders/${orderId}`, {
+          credentials: "include",
+        });
+        const order = await res.json();
+
+        if (!res.ok || !order) {
+          orderDetailsDiv.innerHTML = '<p class="error-message">Failed to load order details.</p>';
+          return;
+        }
+
+        // Format order details
+        orderDetailsDiv.innerHTML = `
+          <p><strong>Order ID:</strong> ${order._id}</p>
+          <p><strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+          <p><strong>Total:</strong> Rs. ${order.total.toFixed(2)}</p>
+          <h4 class="mt-4 font-medium">Items:</h4>
+          <ul class="list-disc list-inside">
+            ${order.items
+              .map(
+                item => `
+                  <li>
+                    ${item.name} (Qty: ${item.quantity}) - Rs. ${item.price.toFixed(2)}
+                    <img src="${item.image || ''}" alt="${item.name}" class="inline-block w-12 h-12 object-cover ml-2" onerror="this.style.display='none'" />
+                  </li>
+                `
+              )
+              .join("")}
+          </ul>
+        `;
+      } catch (err) {
+        console.error("Load order error:", err);
+        orderDetailsDiv.innerHTML = '<p class="error-message">Error loading order details: ' + err.message + '</p>';
+      }
+    }
+
+    // Load order details on page load
+    document.addEventListener("DOMContentLoaded", loadOrderDetails);
+  </script> -->
+  <script src="script.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>
