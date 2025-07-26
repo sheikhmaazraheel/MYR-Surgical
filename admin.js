@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Add Product
   if (productForm) {
+    console.log(productForm);
     productForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(productForm);
