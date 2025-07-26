@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           div.innerHTML = `
             <div class="discount">${product.discount || 0}%</div>
-            <img src="/uploads/${product.image}" alt="${product.name}" />
+            <img src="${product.image}" alt="${product.name}" />
             <div class="Product-name">${product.name}</div>
             <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
             ${hasOptions ? `
