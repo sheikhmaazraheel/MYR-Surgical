@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(productForm);
       const statusDiv = document.getElementById("upload-status");
       statusDiv.textContent = "Uploading...";
-
+      console.log("FormData:", formData);
       try {
         const res = await fetch(`${backendURL}/upload`, {
           method: "POST",
