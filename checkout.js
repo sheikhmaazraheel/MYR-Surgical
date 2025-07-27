@@ -67,6 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Form submission
     checkoutForm.addEventListener("submit", async (e) => {
+     console.log( checkoutForm.area.value)
+     setTimeout(() => {
+      console.log("Checkout form submitted");
+      console.log("Selected payment method:", selectedPayment);
+      console.log("Cart items:", cart); 
+      console.log("Total amount:", total);
+      }, 10000);
       e.preventDefault();
 
       // Validate payment method
@@ -105,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })),
         totalAmount: total,
       };
-      console.log("Order data:", orderData);
+      
 
       try {
         const res = await fetch(`${backendURL}/orders`, {
