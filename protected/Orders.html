@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders - MYR Surgical Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Top Navbar -->
+  <nav class="top-nav flex items-center justify-center">
+    <img src="https://sheikhmaazraheel.github.io/MYR-Surgical/images/logo.jpeg" alt="MYR Surgical Logo">
+  </nav>
+
+  <!-- Hamburger Menu -->
+  <button class="hamburger">☰</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html">HOME</a></li>
+      <li><a href="Product-add.html">Add Products</a></li>
+      <li><a href="Product-edit.html">Edit or Delete Products</a></li>
+      <li><a href="Orders.html">Orders</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="dashboard">
+      <h1>Orders <span>Management</span></h1>
+      <p>View and manage all customer orders below.</p>
+      <div id="orders-table" class="mt-6 overflow-x-auto">
+        <table class="w-full bg-white shadow-md rounded-lg">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="py-2 px-4 text-left text-sm font-medium">Order ID</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Customer</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Contact</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Address</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Payment</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Total</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Date</th>
+              <th class="py-2 px-4 text-left text-sm font-medium">Action</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+        <div id="orders-status" class="text-center mt-4"></div>
+      </div>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -198,7 +198,106 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  async function loadOrders() {
+    const statusDiv = document.getElementById("orders-status");
+    const ordersBody = document.getElementById("orders-body");
+    if (statusDiv) statusDiv.textContent = "Loading orders...";
 
+    try {
+      const res = await fetch(`${backendURL}/orders`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const orders = await res.json();
+      console.log("Orders response:", orders);
+
+      if (!res.ok || !orders) {
+        if (statusDiv) statusDiv.textContent = "❌ Failed to load orders.";
+        return;
+      }
+
+      if (orders.length === 0) {
+        ordersBody.innerHTML = `<tr><td colspan="8" class="py-4 text-center text-gray-500">No orders found.</td></tr>`;
+        if (statusDiv) statusDiv.textContent = "";
+        return;
+      }
+
+      ordersBody.innerHTML = orders
+        .map(
+          (order) => `
+                <tr class="border-b">
+                  <td class="py-2 px-4 text-sm">${order._id}</td>
+                  <td class="py-2 px-4 text-sm">${order.name}</td>
+                  <td class="py-2 px-4 text-sm">${order.contact}</td>
+                  <td class="py-2 px-4 text-sm">${order.houseNo}, ${
+            order.Block
+          }, ${order.Area}, ${order.city}</td>
+                  <td class="py-2 px-4 text-sm">${order.paymentMethod}</td>
+                  <td class="py-2 px-4 text-sm">Rs. ${order.totalAmount.toFixed(
+                    2
+                  )}</td>
+                  <td class="py-2 px-4 text-sm">${new Date(
+                    order.createdAt
+                  ).toLocaleDateString()}</td>
+                  <td class="py-2 px-4 text-sm">
+                    <button class="delete-btn bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700" data-id="${
+                      order._id
+                    }">Delete</button>
+                  </td>
+                </tr>
+              `
+        )
+        .join("");
+      if (statusDiv) statusDiv.textContent = "✅ Orders loaded successfully.";
+    } catch (err) {
+      console.error("Load orders error:", err);
+      if (statusDiv)
+        statusDiv.textContent = `❌ Error loading orders: ${err.message}`;
+    }
+  }
+
+  // Handle delete button clicks
+  if (document.getElementById("orders-body")) {
+    document
+      .getElementById("orders-body")
+      .addEventListener("click", async (e) => {
+        if (e.target.classList.contains("delete-btn")) {
+          const orderId = e.target.dataset.id;
+          if (!confirm(`Are you sure you want to delete order ${orderId}?`))
+            return;
+
+          const statusDiv = document.getElementById("orders-status");
+          if (statusDiv) statusDiv.textContent = `Deleting order ${orderId}...`;
+
+          try {
+            const res = await fetch(`${backendURL}/orders/${orderId}`, {
+              method: "DELETE",
+              credentials: "include",
+            });
+            const result = await res.json();
+            console.log("Delete order response:", result);
+
+            if (res.ok && result.message === "Order deleted") {
+              if (statusDiv)
+                statusDiv.textContent = `✅ Order ${orderId} deleted successfully.`;
+              loadOrders(); // Refresh table
+            } else {
+              if (statusDiv)
+                statusDiv.textContent = `❌ Failed to delete order: ${
+                  result.message || "Unknown error."
+                }`;
+            }
+          } catch (err) {
+            console.error("Delete order error:", err);
+            if (statusDiv)
+              statusDiv.textContent = `❌ Error deleting order: ${err.message}`;
+          }
+        }
+      });
+
+    // Load orders on page load
+    loadOrders();
+  }
   // 🍔 Responsive Navbar Toggle
   const hamburger = document.querySelector(".hamburger");
   const sidebar = document.querySelector(".sidebar");
