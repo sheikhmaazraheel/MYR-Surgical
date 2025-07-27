@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })),
         totalAmount: total,
       };
+      console.log("Order data:", orderData);
 
       try {
         const res = await fetch(`${backendURL}/orders`, {
