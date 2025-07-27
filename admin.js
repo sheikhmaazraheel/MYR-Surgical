@@ -2,16 +2,23 @@ const backendURL = "https://myr-backend-7nx6.onrender.com";
 const githubBase = "https://sheikhmaazraheel.github.io/MYR-Surgical";
 
 // Redirect if not authenticated
+// Redirect if not authenticated
 async function checkAuth() {
   try {
     const res = await fetch(`${backendURL}/check-auth`, {
+      method: "GET",
       credentials: "include",
+      headers: {
+        "Cache-Control": "no-cache",
+      },
     });
     const data = await res.json();
+    console.log("Check-auth response:", data);
     if (!data.authenticated) {
       window.location.href = `${githubBase}/login`;
     }
-  } catch {
+  } catch (err) {
+    console.error("Check-auth error:", err);
     window.location.href = `${githubBase}/login`;
   }
 }
@@ -27,12 +34,16 @@ if (loginForm) {
     try {
       const res = await fetch(`${backendURL}/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
         credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
+      console.log("Login response:", data);
       if (data.success) {
         window.location.href = `${githubBase}/protected/admin`;
       } else {
@@ -40,7 +51,7 @@ if (loginForm) {
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("An error occurred during login");
+      alert("An error occurred during login: " + err.message);
     }
   });
 }
@@ -71,20 +82,26 @@ const formDataObj = {};
           method: "POST",
           body: formData,
           credentials: "include",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
         });
         const result = await res.json();
-
         statusDiv.textContent =
-          res.ok && result.product
+          res.ok && result.message === "Product saved"
             ? "✅ Product uploaded!"
-            : "❌ Upload failed: " + (result.message || "Unknown error.");
+            : `❌ Upload failed: ${result.message || "Unknown error."}`;
         if (res.ok) productForm.reset();
       } catch (err) {
-        console.error("Upload error:", err);
-        statusDiv.textContent = "❌ Server error.";
+        console.error("Upload error:", {
+          message: err.message,
+          stack: err.stack,
+        });
+        statusDiv.textContent = `❌ Server error: ${err.message}`;
       }
     });
   }
+
 
   // ✏️ Load & Edit Product
   const loadBtn = document.getElementById("loadProductBtn");
@@ -97,7 +114,13 @@ const formDataObj = {};
       if (!query) return alert("Please enter product ID or name");
 
       try {
-        const res = await fetch(`${backendURL}/products`);
+        const res = await fetch(`${backendURL}/products`, {
+          credentials: "include",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
+        });
+      
         const products = await res.json();
         const product = products.find(
           (p) => p.id === query || p.name === query
@@ -132,6 +155,9 @@ const formDataObj = {};
           method: "PUT",
           body: formData,
           credentials: "include",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
         });
 
         const result = await res.json();
@@ -153,6 +179,9 @@ const formDataObj = {};
           const res = await fetch(`${backendURL}/products/${currentId}`, {
             method: "DELETE",
             credentials: "include",
+            headers: {
+              "Cache-Control": "no-cache",
+            },
           });
 
           const result = await res.json();
@@ -174,6 +203,9 @@ const formDataObj = {};
         const res = await fetch(`${backendURL}/logout`, {
           method: "POST",
           credentials: "include",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
         });
         const result = await res.json();
         if (result.success) {
