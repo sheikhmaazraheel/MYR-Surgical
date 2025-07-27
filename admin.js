@@ -8,9 +8,6 @@ async function checkAuth() {
     const res = await fetch(`${backendURL}/check-auth`, {
       method: "GET",
       credentials: "include",
-      headers: {
-        "Cache-Control": "no-cache",
-      },
     });
     const data = await res.json();
     console.log("Check-auth response:", data);
@@ -22,7 +19,6 @@ async function checkAuth() {
     window.location.href = `${githubBase}/login`;
   }
 }
-
 // Login Logic
 const loginForm = document.getElementById("login-form");
 if (loginForm) {
@@ -36,7 +32,6 @@ if (loginForm) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
         },
         credentials: "include",
         body: JSON.stringify({ username, password }),
@@ -74,17 +69,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(productForm);
       const statusDiv = document.getElementById("upload-status");
       statusDiv.textContent = "Uploading...";
-const formDataObj = {};
-    formData.forEach((value, key) => (formDataObj[key] = value));
-    console.log("FormData:", formDataObj);
+      const formDataObj = {};
+      formData.forEach((value, key) => (formDataObj[key] = value));
+      console.log("FormData:", formDataObj);
       try {
         const res = await fetch(`${backendURL}/upload`, {
           method: "POST",
           body: formData,
           credentials: "include",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
         });
         const result = await res.json();
         statusDiv.textContent =
@@ -102,7 +94,6 @@ const formDataObj = {};
     });
   }
 
-
   // ✏️ Load & Edit Product
   const loadBtn = document.getElementById("loadProductBtn");
   const searchInput = document.getElementById("searchIdOrName");
@@ -116,11 +107,8 @@ const formDataObj = {};
       try {
         const res = await fetch(`${backendURL}/products`, {
           credentials: "include",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
         });
-      
+
         const products = await res.json();
         const product = products.find(
           (p) => p.id === query || p.name === query
@@ -155,9 +143,6 @@ const formDataObj = {};
           method: "PUT",
           body: formData,
           credentials: "include",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
         });
 
         const result = await res.json();
@@ -179,9 +164,6 @@ const formDataObj = {};
           const res = await fetch(`${backendURL}/products/${currentId}`, {
             method: "DELETE",
             credentials: "include",
-            headers: {
-              "Cache-Control": "no-cache",
-            },
           });
 
           const result = await res.json();
@@ -203,9 +185,6 @@ const formDataObj = {};
         const res = await fetch(`${backendURL}/logout`, {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
         });
         const result = await res.json();
         if (result.success) {
