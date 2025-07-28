@@ -425,9 +425,7 @@ function displayResults(products, resultsContainer) {
     resultsContainer.innerHTML = products
       .map(
         (product) => `
-        <a href="${githubBase}/product.html?id=${
-          product.id
-        }" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
+        <a href="${githubBase}/${product.category}#${product.id}" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
           <img src="${product.image || ""}" alt="${
           product.name
         }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
