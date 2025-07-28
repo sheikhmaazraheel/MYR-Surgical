@@ -16,12 +16,12 @@
   </head>
 
   <body>
-    <!-- ================ FOR NAVBAR ======================= -->
+    <!-- =============== NAV BAR ================ -->
     <nav>
       <div id="hamburger" class="hamburger">&#9776;</div>
-      <div id="logo">
+      <a id="logo" href="index.html">
         <div class="logo"></div>
-      </div>
+      </a>
       <div class="empty"></div>
       <div id="menu">
         <div class="home-box hov">
@@ -29,20 +29,20 @@
             <div class="Home-text">HOME</div>
           </a>
         </div>
-        <div class="selector hov">
-          <select name="Products" id="selector" class="classes">
-            <option value="" disabled selected>Products</option>
-            <option value="BP-Monitor.html">B.P Monitor</option>
-            <option value="Stethoscope.html">Stethoscope</option>
-            <option value="Glucose-Monitor.html">Glocose Monitor</option>
-            <option value="Aneroid.html">Aneroid B.P</option>
-            <option value="Accessories.html">Other Surgical Item</option>
-            <option value="Nebulizer.html">Nebulizer</option>
-            <option value="Oximeter.html">Pulse-Oximeter</option>
-            <option value="Steamer.html">Steamer</option>
-            <option value="Test-Strips.html">Test strips</option>
-            <option value="Thermometer.html">Thermo-meter</option>
-          </select>
+      <div class="selector hov">
+        <select name="Products" id="selector" class="classes">
+          <option value="" selected disabled>Products</option>
+          <option value="BP Monitor.html">B.P Monitor</option>
+          <option value="Stethoscope.html">Stethoscope</option>
+          <option value="Glucose-Monitor.html">Glocose Monitor</option>
+          <option value="Aneroid.html">Aneroid B.P</option>
+          <option value="Others.html">Other Surgical Item</option>
+          <option value="Nebulizer.html">Nebulizer</option>
+          <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
+          <option value="Steamer.html">Steamer</option>
+          <option value="Strips.html">Test strips</option>
+          <option value="Thermometer.html">Thermo-meter</option>
+        </select>
         </div>
         <div class="about hov">
           <a href="#ABOUT" class="about">
@@ -54,7 +54,7 @@
       <div class="cart hov">
         <a href="cart.html" class="cart-symbol-container">
           <div class="cart-symbol">
-            <span class="cart-count" id="cart-count">0</span>
+            <span id="cart-count" class="cart-count">0</span>
           </div>
         </a>
       </div>
@@ -68,16 +68,16 @@
       </div>
       <div class="selector hov">
         <select name="Products" id="selector" class="classes">
-          <option value="" disabled selected>Products</option>
-          <option value="BP-Monitor.html">B.P Monitor</option>
+          <option value="" selected disabled>Products</option>
+          <option value="BP Monitor.html">B.P Monitor</option>
           <option value="Stethoscope.html">Stethoscope</option>
           <option value="Glucose-Monitor.html">Glocose Monitor</option>
           <option value="Aneroid.html">Aneroid B.P</option>
-          <option value="Accessories.html">Other Surgical Item</option>
+          <option value="Others.html">Other Surgical Item</option>
           <option value="Nebulizer.html">Nebulizer</option>
-          <option value="Oximeter.html">Pulse-Oximeter</option>
+          <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
           <option value="Steamer.html">Steamer</option>
-          <option value="Test-Strips.html">Test strips</option>
+          <option value="Strips.html">Test strips</option>
           <option value="Thermometer.html">Thermo-meter</option>
         </select>
       </div>
@@ -87,6 +87,8 @@
         </a>
       </div>
     </div>
+
+    <!-- --------- Cart Page ------------- -->
     <main class="cart-page">
       <p style="text-align: left; margin: 0 10px">
         <strong>Order ID:</strong> <span id="order-id"></span>
