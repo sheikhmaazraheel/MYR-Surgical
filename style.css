@@ -209,7 +209,6 @@ select:focus {
 .search-results {
   position: absolute;
   top: 155px;
-  left: 0;
   width: 500px;
   max-height: 300px;
   overflow-y: auto;
