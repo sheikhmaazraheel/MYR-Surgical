@@ -37,8 +37,8 @@
     width: 100%;
   }
   .search-results {
-    width: 100%;
-    top: 100px;
+    width: 350px;
+    top: 135px;
   }
   .hero {
     display: flex;
