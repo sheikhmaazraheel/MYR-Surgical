@@ -445,7 +445,7 @@ function displayResults(products, resultsContainer) {
 }
 
 async function handleSearch(query, resultsContainer) {
-  if (query.length < 2) {
+  if (query.length < 1) {
     if (resultsContainer) resultsContainer.classList.remove("show");
     return;
   }
