@@ -380,100 +380,102 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   // ============== Search Functionality ===============
-  const searchInput = document.getElementById("search-input");
-  const searchResults = document.getElementById("search-results");
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
 
-  async function fetchProducts(query) {
-    try {
-      const res = await fetch(`${backendURL}/products`, {
-        method: "GET",
-      });
-      const products = await res.json();
-      console.log("Products fetched:", products);
+async function fetchProducts(query) {
+  try {
+    const res = await fetch(`${backendURL}/products`, {
+      method: "GET",
+    });
+    const products = await res.json();
+    console.log("Products fetched:", products);
 
-      if (!res.ok || !products) {
-        const errorMsg =
-          '<p class="p-2 text-gray-500">Failed to load products.</p>';
-        if (searchResults) searchResults.innerHTML = errorMsg;
-        if (searchResults) searchResults.classList.remove("hidden");
-        return [];
-      }
-
-      // Filter products by name or category
-      return products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query.toLowerCase()) ||
-          product.category.toLowerCase().includes(query.toLowerCase())
-      );
-    } catch (err) {
-      console.error("Fetch products error:", err);
-      const errorMsg = `<p class="p-2 text-red-600">Error: ${err.message}</p>`;
+    if (!res.ok || !products) {
+      const errorMsg = `<p class="no-results">Failed to load products.</p>`;
       if (searchResults) searchResults.innerHTML = errorMsg;
-      if (searchResults) searchResults.classList.remove("hidden");
+      if (searchResults) searchResults.classList.add("show");
       return [];
     }
+
+    // Filter products by name or category
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.category.toLowerCase().includes(query.toLowerCase())
+    );
+  } catch (err) {
+    console.error("Fetch products error:", err);
+    const errorMsg = `<p class="no-results">Error: ${err.message}</p>`;
+    if (searchResults) searchResults.innerHTML = errorMsg;
+    if (searchResults) searchResults.classList.add("show");
+    return [];
   }
+}
 
-  function displayResults(products, resultsContainer) {
-    if (resultsContainer) {
-      if (products.length === 0) {
-        resultsContainer.innerHTML =
-          '<p class="p-2 text-gray-500">No products found.</p>';
-        resultsContainer.classList.remove("hidden");
-        return;
-      }
-
-      resultsContainer.innerHTML = products
-        .map(
-          (product) => `
-          <a href="${githubBase}/product.html?id=${
-            product.id
-          }" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
-            <img src="${product.image || ""}" alt="${
-            product.name
-          }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
-            <div>
-              <p class="font-medium">${product.name}</p>
-              <p class="text-sm text-gray-600">${
-                product.category
-              } - Rs. ${product.price.toFixed(2)}</p>
-            </div>
-          </a>
-        `
-        )
-        .join("");
-      resultsContainer.classList.remove("hidden");
-    }
-  }
-
-  async function handleSearch(query, resultsContainer) {
-    if (query.length < 2) {
-      if (resultsContainer) resultsContainer.classList.add("hidden");
+function displayResults(products, resultsContainer) {
+  if (resultsContainer) {
+    if (products.length === 0) {
+      resultsContainer.innerHTML = `<p class="no-results">No products found.</p>`;
+      resultsContainer.classList.add("show");
       return;
     }
-    const products = await fetchProducts(query);
-    displayResults(products, resultsContainer);
-  }
 
-  if (searchInput && searchResults) {
-    searchInput.addEventListener("input", (e) =>
-      handleSearch(e.target.value.trim(), searchResults)
+    resultsContainer.innerHTML = products
+      .map(
+        (product) => `
+        <a href="${githubBase}/product.html?id=${
+          product.id
+        }" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
+          <img src="${product.image || ""}" alt="${
+          product.name
+        }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
+          <div class="result-text">
+            <p class="result-name">${product.name}</p>
+            <p class="result-details">${
+              product.category
+            } - Rs. ${product.price.toFixed(2)}</p>
+          </div>
+        </a>
+      `
+      )
+      .join("");
+    resultsContainer.classList.add("show");
+  }
+}
+
+async function handleSearch(query, resultsContainer) {
+  if (query.length < 2) {
+    if (resultsContainer) resultsContainer.classList.remove("show");
+    return;
+  }
+  const products = await fetchProducts(query);
+  displayResults(products, resultsContainer);
+}
+
+function setupSearch(input, results) {
+  if (input && results) {
+    input.addEventListener("input", (e) =>
+      handleSearch(e.target.value.trim(), results)
     );
-    searchInput.addEventListener("focus", () => {
-      if (searchInput.value.trim().length >= 2) {
-        handleSearch(searchInput.value.trim(), searchResults);
+    input.addEventListener("focus", () => {
+      if (input.value.trim().length >= 2) {
+        handleSearch(input.value.trim(), results);
       }
     });
   }
+}
 
-  document.addEventListener("click", (e) => {
-    if (
-      searchInput &&
-      searchResults &&
-      !searchInput.contains(e.target) &&
-      !searchResults.contains(e.target)
-    ) {
-      searchResults.classList.add("hidden");
-    }
-  });
+setupSearch(searchInput, searchResults);
+
+document.addEventListener("click", (e) => {
+  if (
+    searchInput &&
+    searchResults &&
+    !searchInput.contains(e.target) &&
+    !searchResults.contains(e.target)
+  ) {
+    searchResults.classList.remove("show");
+  }
+});
 });
