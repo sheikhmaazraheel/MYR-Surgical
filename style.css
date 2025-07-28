@@ -208,9 +208,9 @@ select:focus {
 }
 .search-results {
   position: absolute;
-  top: 60px;
+  top: 155px;
   left: 0;
-  width: 100%;
+  width: 500px;
   max-height: 300px;
   overflow-y: auto;
   background-color: #fff;
