@@ -129,61 +129,6 @@
         <p>Designed by BitLion</p>
       </div>
     </footer>
-
-  <!-- <script>
-    const backendURL = "https://myr-backend-7nx6.onrender.com";
-
-    // Get orderId from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get("orderId");
-
-    async function loadOrderDetails() {
-      const orderDetailsDiv = document.getElementById("order-details");
-
-      if (!orderId) {
-        orderDetailsDiv.innerHTML = '<p class="error-message">Error: No order ID provided.</p>';
-        return;
-      }
-
-      try {
-        const res = await fetch(`${backendURL}/orders/${orderId}`, {
-          credentials: "include",
-        });
-        const order = await res.json();
-
-        if (!res.ok || !order) {
-          orderDetailsDiv.innerHTML = '<p class="error-message">Failed to load order details.</p>';
-          return;
-        }
-
-        // Format order details
-        orderDetailsDiv.innerHTML = `
-          <p><strong>Order ID:</strong> ${order._id}</p>
-          <p><strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
-          <p><strong>Total:</strong> Rs. ${order.total.toFixed(2)}</p>
-          <h4 class="mt-4 font-medium">Items:</h4>
-          <ul class="list-disc list-inside">
-            ${order.items
-              .map(
-                item => `
-                  <li>
-                    ${item.name} (Qty: ${item.quantity}) - Rs. ${item.price.toFixed(2)}
-                    <img src="${item.image || ''}" alt="${item.name}" class="inline-block w-12 h-12 object-cover ml-2" onerror="this.style.display='none'" />
-                  </li>
-                `
-              )
-              .join("")}
-          </ul>
-        `;
-      } catch (err) {
-        console.error("Load order error:", err);
-        orderDetailsDiv.innerHTML = '<p class="error-message">Error loading order details: ' + err.message + '</p>';
-      }
-    }
-
-    // Load order details on page load
-    document.addEventListener("DOMContentLoaded", loadOrderDetails);
-  </script> -->
   <script src="script.js"></script>
   <script src="checkout.js"></script>
 </body>
