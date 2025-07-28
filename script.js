@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           div.className = "Product";
+          div.id = `${product.id}`;
           div.dataset.id = product.id;
           div.dataset.name = product.name;
           div.dataset.price = finalPrice;
