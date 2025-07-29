@@ -4,6 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon_io/site.webmanifest" />
+    <link
+      rel="shortcut icon"
+      href="favicon_io/favicon.ico"
+      type="image/x-icon"
+    />
+
     <link rel="stylesheet" href="resposive.css" />
     <link
       rel="stylesheet"
@@ -28,20 +53,22 @@
             <div class="Home-text">HOME</div>
           </a>
         </div>
-      <div class="selector hov">
-        <select name="Products" id="selector" class="classes">
-          <option value="" disabled>Products</option>
-          <option value="BP Monitor.html">B.P Monitor</option>
-          <option value="Stethoscope.html">Stethoscope</option>
-          <option value="Glucose-Monitor.html">Glocose Monitor</option>
-          <option value="Aneroid.html">Aneroid B.P</option>
-          <option value="Others.html" selected disabled>Other Surgical Item</option>
-          <option value="Nebulizer.html">Nebulizer</option>
-          <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
-          <option value="Steamer.html">Steamer</option>
-          <option value="Strips.html">Test strips</option>
-          <option value="Thermometer.html">Thermo-meter</option>
-        </select>
+        <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value="" disabled>Products</option>
+            <option value="BP Monitor.html">B.P Monitor</option>
+            <option value="Stethoscope.html">Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html">Aneroid B.P</option>
+            <option value="Others.html" selected disabled>
+              Other Surgical Item
+            </option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
         </div>
         <div class="about hov">
           <a href="#ABOUT" class="about">
@@ -72,7 +99,9 @@
           <option value="Stethoscope.html">Stethoscope</option>
           <option value="Glucose-Monitor.html">Glocose Monitor</option>
           <option value="Aneroid.html">Aneroid B.P</option>
-          <option value="Others.html" selected disabled>Other Surgical Item</option>
+          <option value="Others.html" selected disabled>
+            Other Surgical Item
+          </option>
           <option value="Nebulizer.html">Nebulizer</option>
           <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
           <option value="Steamer.html">Steamer</option>
@@ -88,10 +117,10 @@
     </div>
 
     <!-- ============= Search BAR ======================= -->
-          <div class="search-bar-container">
-        <input type="text" id="searchInput" placeholder="Search products...">
-        <div id="searchResults" class="search-results"></div>
-      </div>
+    <div class="search-bar-container">
+      <input type="text" id="searchInput" placeholder="Search products..." />
+      <div id="searchResults" class="search-results"></div>
+    </div>
     <!-- ==================== PRODUCTS ======================== -->
     <section id="Product-grid-container">
       <h1>Explore Medical Accessories</h1>

@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Product</title>
-  <link rel="stylesheet" href="admin.css" />
-</head>
-<body>
-  <nav class="top-nav">
-      <img src="https://sheikhmaazraheel.github.io/MYR-Surgical/images/logo.jpeg" alt="logo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Product</title>
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon_io/site.webmanifest" />
+    <link
+      rel="shortcut icon"
+      href="favicon_io/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <nav class="top-nav">
+      <img
+        src="https://sheikhmaazraheel.github.io/MYR-Surgical/images/logo.jpeg"
+        alt="logo"
+      />
     </nav>
     <button class="hamburger">☰</button>
     <nav class="sidebar">
@@ -39,62 +67,62 @@
         </li>
       </ul>
     </nav>
-  <main class="main-content" style="text-align: center;">
-    <h1>Admin Panel – Add Product</h1>
-    <form id="addProductForm">
-      <label for="id">Product ID</label>
-      <input type="text" id="id" name="id" required />
+    <main class="main-content" style="text-align: center">
+      <h1>Admin Panel – Add Product</h1>
+      <form id="addProductForm">
+        <label for="id">Product ID</label>
+        <input type="text" id="id" name="id" required />
 
-      <label for="name">Product Name</label>
-      <input type="text" id="name" name="name" required />
+        <label for="name">Product Name</label>
+        <input type="text" id="name" name="name" required />
 
-      <label for="price">Original Price (Rs.)</label>
-      <input type="number" id="price" name="price" required />
+        <label for="price">Original Price (Rs.)</label>
+        <input type="number" id="price" name="price" required />
 
-      <label for="discount">Discount Label (e.g. 20)</label>
-      <input type="number" id="discount" name="discount" />
+        <label for="discount">Discount Label (e.g. 20)</label>
+        <input type="number" id="discount" name="discount" />
 
-      <label for="category">Category</label>
-      <select id="category" name="category" required>
-        <option value="">Select a category</option>
-        <option value="BP Monitor">BP Monitor</option>
-        <option value="Stethoscope">Stethoscope</option>
-        <option value="Glucose-Monitor">Glucose Monitor</option>
-        <option value="Aneroid">Aneroid B.P</option>
-        <option value="Nebulizer">Nebulizer</option>
-        <option value="Pulse-Oximeter">Pulse Oximeter</option>
-        <option value="Steamer">Steamer</option>
-        <option value="Strips">Test Strips</option>
-        <option value="Thermometer">Thermometer</option>
-        <option value="Others">Others</option>
-      </select>
-<!-- Most Selling (Optional) -->
-          <label for="mostSell">Mark as Most Selling?</label>
-          <select name="mostSell" id="mostSell">
-            <option value="true">Yes</option>
-            <option value="">No</option>
-          </select>
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          <option value="BP Monitor">BP Monitor</option>
+          <option value="Stethoscope">Stethoscope</option>
+          <option value="Glucose-Monitor">Glucose Monitor</option>
+          <option value="Aneroid">Aneroid B.P</option>
+          <option value="Nebulizer">Nebulizer</option>
+          <option value="Pulse-Oximeter">Pulse Oximeter</option>
+          <option value="Steamer">Steamer</option>
+          <option value="Strips">Test Strips</option>
+          <option value="Thermometer">Thermometer</option>
+          <option value="Others">Others</option>
+        </select>
+        <!-- Most Selling (Optional) -->
+        <label for="mostSell">Mark as Most Selling?</label>
+        <select name="mostSell" id="mostSell">
+          <option value="true">Yes</option>
+          <option value="">No</option>
+        </select>
 
-          <!-- Availability -->
-          <label for="available">Available</label>
-          <select name="available" id="available" required>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-      
-      <label for="colors">Colors (comma separated):</label>
-      <input type="text" id="colors" name="colors" />
+        <!-- Availability -->
+        <label for="available">Available</label>
+        <select name="available" id="available" required>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
 
-      <label for="sizes">Sizes (comma separated):</label>
-      <input type="text" id="sizes" name="sizes" />
+        <label for="colors">Colors (comma separated):</label>
+        <input type="text" id="colors" name="colors" />
 
-      <label for="image">Product Image</label>
-      <input type="file" id="image" name="image" accept="image/*" />
-          <div id="upload-status"></div>
-      <button type="submit">Upload Product</button>
-    </form>
-    <button id="logout-btn">Logout</button>
-  </main>
-  <script src="https://sheikhmaazraheel.github.io/MYR-Surgical/admin.js"></script>
-</body>
+        <label for="sizes">Sizes (comma separated):</label>
+        <input type="text" id="sizes" name="sizes" />
+
+        <label for="image">Product Image</label>
+        <input type="file" id="image" name="image" accept="image/*" />
+        <div id="upload-status"></div>
+        <button type="submit">Upload Product</button>
+      </form>
+      <button id="logout-btn">Logout</button>
+    </main>
+    <script src="https://sheikhmaazraheel.github.io/MYR-Surgical/admin.js"></script>
+  </body>
 </html>

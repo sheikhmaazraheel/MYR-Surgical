@@ -4,6 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MYR Surgical</title>
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon_io/site.webmanifest" />
+    <link
+      rel="shortcut icon"
+      href="favicon_io/favicon.ico"
+      type="image/x-icon"
+    />
+
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="resposive.css" />
     <link
@@ -16,7 +41,7 @@
   </head>
 
   <body>
-        <!-- =============== NAV BAR ================ -->
+    <!-- =============== NAV BAR ================ -->
     <nav>
       <div id="hamburger" class="hamburger">&#9776;</div>
       <a id="logo" href="index.html">
@@ -29,20 +54,20 @@
             <div class="Home-text">HOME</div>
           </a>
         </div>
-      <div class="selector hov">
-        <select name="Products" id="selector" class="classes">
-          <option value="" selected disabled>Products</option>
-          <option value="BP Monitor.html">B.P Monitor</option>
-          <option value="Stethoscope.html">Stethoscope</option>
-          <option value="Glucose-Monitor.html">Glocose Monitor</option>
-          <option value="Aneroid.html">Aneroid B.P</option>
-          <option value="Others.html">Other Surgical Item</option>
-          <option value="Nebulizer.html">Nebulizer</option>
-          <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
-          <option value="Steamer.html">Steamer</option>
-          <option value="Strips.html">Test strips</option>
-          <option value="Thermometer.html">Thermo-meter</option>
-        </select>
+        <div class="selector hov">
+          <select name="Products" id="selector" class="classes">
+            <option value="" selected disabled>Products</option>
+            <option value="BP Monitor.html">B.P Monitor</option>
+            <option value="Stethoscope.html">Stethoscope</option>
+            <option value="Glucose-Monitor.html">Glocose Monitor</option>
+            <option value="Aneroid.html">Aneroid B.P</option>
+            <option value="Others.html">Other Surgical Item</option>
+            <option value="Nebulizer.html">Nebulizer</option>
+            <option value="Pulse-Oximeter.html">Pulse-Oximeter</option>
+            <option value="Steamer.html">Steamer</option>
+            <option value="Strips.html">Test strips</option>
+            <option value="Thermometer.html">Thermo-meter</option>
+          </select>
         </div>
         <div class="about hov">
           <a href="#ABOUT" class="about">
@@ -88,81 +113,86 @@
       </div>
     </div>
     <!-- =========== NAV BAR END ================ -->
-  <!-- Checkout form  -->
+    <!-- Checkout form  -->
 
-<div class="checkout-container">
-  <h2>Checkout</h2>
-  <form  id="checkout-form" >
-    <div class="form-group">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required>
+    <div class="checkout-container">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input
+            type="tel"
+            id="contact"
+            name="contact"
+            required
+            placeholder="e.g., 03xx-xxxxxxx"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <select id="city" name="city" required>
+            <option value="" disabled selected>Select City</option>
+            <option value="Lahore">Lahore</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="house">House Number</label>
+          <input type="text" id="house" name="house" required />
+        </div>
+
+        <div class="form-group">
+          <label for="block">Block Number</label>
+          <input type="text" id="block" name="block" required />
+        </div>
+
+        <div class="form-group">
+          <label for="landmark">Nearest Landmark</label>
+          <input type="text" id="landmark" name="landmark" required />
+        </div>
+
+        <div class="form-group">
+          <label for="area">Area</label>
+          <input type="text" id="area" name="area" required />
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <div class="payment-options">
+            <div class="payment-box" data-method="Cash on Delivery">
+              Cash on Delivery
+            </div>
+            <div class="payment-box" data-method="Online Payment">
+              Online Payment
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="paymentMethod" name="payment" />
+        <input type="hidden" id="orderId" name="orderId" />
+        <input type="hidden" id="cart-items" name="cartSummary" />
+        <input type="hidden" id="total" name="total" />
+
+        <button type="submit" id="confirm-Order">Confirm Order</button>
+      </form>
     </div>
-  
-    <div class="form-group">
-      <label for="contact">Contact Number</label>
-      <input type="tel" id="contact" name="contact" required placeholder="e.g., 03xx-xxxxxxx">
-    </div>
-  
-    <div class="form-group">
-      <label for="city">City</label>
-      <select id="city" name="city" required>
-        <option value="" disabled selected>Select City</option>
-        <option value="Lahore">Lahore</option>
-      </select>
-    </div>
-  
-    <div class="form-group">
-      <label for="house">House Number</label>
-      <input type="text" id="house" name="house" required>
-    </div>
-  
-    <div class="form-group">
-      <label for="block">Block Number</label>
-      <input type="text" id="block" name="block" required>
-    </div>
-  
-    <div class="form-group">
-      <label for="landmark">Nearest Landmark</label>
-      <input type="text" id="landmark" name="landmark" required>
-    </div>
-  
-    <div class="form-group">
-      <label for="area">Area</label>
-      <input type="text" id="area" name="area" required>
-    </div>
-  
-    <div class="form-group">
-      <label>Payment Method</label>
-      <div class="payment-options">
-        <div class="payment-box" data-method="Cash on Delivery">Cash on Delivery</div>
-        <div class="payment-box" data-method="Online Payment">Online Payment</div>
+
+    <!-- =================== Footer Section ===================== -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <p>&copy; 2025 Prince Book Depot. All rights reserved.</p>
+        <p>Designed by BitLion</p>
       </div>
-    </div>
-    
-    <input type="hidden" id="paymentMethod" name="payment">
-    <input type="hidden" id="orderId" name="orderId">
-    <input type="hidden" id="cart-items" name="cartSummary">
-    <input type="hidden" id="total" name="total">
+    </footer>
+    <!-- ===================  Script =============== -->
 
-    
-    <button type="submit" id="confirm-Order">Confirm Order</button>
-  </form>
-  
-</div>
-
-  <!-- =================== Footer Section ===================== -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <p>&copy; 2025 Prince Book Depot. All rights reserved.</p>
-      <p>Designed by BitLion</p>
-    </div>
-  </footer>
-  <!-- ===================  Script =============== -->
-
-
-  <script src="script.js"></script>
-  <script src="checkout.js"></script>
-
-</body>
-
+    <script src="script.js"></script>
+    <script src="checkout.js"></script>
+  </body>
 </html>
