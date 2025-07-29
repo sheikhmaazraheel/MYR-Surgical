@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const editForm = document.getElementById("editProductForm");
   const adminPage = document.getElementById("adminpage");
 
-  if (productForm || editForm || adminPage) {
-    checkAuth(); // Only if on admin page
-  }
+  // if (productForm || editForm || adminPage) {
+  //   checkAuth(); // Only if on admin page
+  // }
 
   // ✅ Add Product
   if (productForm) {
