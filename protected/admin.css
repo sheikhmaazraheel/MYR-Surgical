@@ -175,7 +175,9 @@ form button:hover {
   background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
   transform: scale(1.05);
 }
-
+#edit-form{
+  display: none;
+}
 /* Admin Dashboard Styling */
 .dashboard {
   max-width: 650px;
