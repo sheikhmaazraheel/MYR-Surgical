@@ -60,7 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // if (productForm || editForm || adminPage) {
   //   checkAuth(); // Only if on admin page
   // }
-
+  // Validation function for alphanumeric ID
+  function isValidId(id) {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(id);
+  }
   // ✅ Add Product
   if (productForm) {
     console.log(productForm);
@@ -68,6 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const formData = new FormData(productForm);
       const statusDiv = document.getElementById("upload-status");
+      const id = formData.get("id");
+
+      // Validate ID
+      if (!isValidId(id)) {
+        statusDiv.textContent =
+          "❌ Product ID must contain only letters and numbers (no special characters).";
+        return;
+      }
       statusDiv.textContent = "Uploading...";
       const formDataObj = {};
       formData.forEach((value, key) => (formDataObj[key] = value));
@@ -137,7 +149,15 @@ document.addEventListener("DOMContentLoaded", () => {
     editForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(editForm);
+      const id = formData.get("edit-id");
 
+      // Validate ID
+      if (!isValidId(id)) {
+        alert(
+          "Product ID must contain only letters and numbers (no special characters)."
+        );
+        return;
+      }
       try {
         const res = await fetch(`${backendURL}/products/${currentId}`, {
           method: "PUT",
