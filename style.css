@@ -886,6 +886,7 @@ select:focus {
 }
 .delete-btn:hover {
   transform: scale(1.2) translateY(-5px);
+  cursor: pointer;
 }
 
 /* =========== FOR Checkout */
