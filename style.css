@@ -882,9 +882,10 @@ select:focus {
   border-radius: 5px;
   width: 30px;
   height: 20px;
+  animation: transform 2s infinite;
 }
 .delete-btn:hover {
-  transform: scale(1.05) translateY(-5px);
+  transform: scale(1.2) translateY(-5px);
 }
 
 /* =========== FOR Checkout */
