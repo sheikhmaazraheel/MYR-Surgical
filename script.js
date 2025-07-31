@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let deliveryCharges = 0;
   let total = 0;
 
-  if (cartItemsTbody) {
+  if (cartTable) {
     cartItemsTbody.innerHTML = "";
 
     Object.entries(myrcart).forEach(([id, item]) => {
