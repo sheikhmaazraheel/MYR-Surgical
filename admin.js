@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }">Delete</button>
                   </td>
                               <td class="py-2 px-4 text-sm">
-              <a href="${backendURL}/orders/${order._id}/receipt" class="receipt-btn bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500">Download Receipt</a>
+              <a href="${backendURL}/orders/${order._id}/receipt" class="receipt-btn bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500" target="_blank">Download Receipt</a>
             </td>
                 </tr>
               `
