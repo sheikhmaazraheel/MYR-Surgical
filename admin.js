@@ -249,24 +249,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="py-2 px-4 text-sm">${order._id}</td>
                   <td class="py-2 px-4 text-sm">${order.name}</td>
                   <td class="py-2 px-4 text-sm">${order.contact}</td>
-                  <td class="py-2 px-4 text-sm">${order.houseNo}, ${
-            order.Block
-          }, ${order.Area}, ${order.city}</td>
+                  <td class="py-2 px-4 text-sm">${order.houseNo}, ${order.Block}, ${order.Area}, ${order.city}</td>
                   <td class="py-2 px-4 text-sm">${order.paymentMethod}</td>
-                  <td class="py-2 px-4 text-sm">Rs. ${order.totalAmount.toFixed(
-                    2
-                  )}</td>
-                  <td class="py-2 px-4 text-sm">${new Date(
-                    order.createdAt
-                  ).toLocaleDateString()}</td>
+                  <td class="py-2 px-4 text-sm">Rs. ${order.totalAmount.toFixed(2)}</td>
+                  <td class="py-2 px-4 text-sm">${new Date(order.createdAt).toLocaleDateString()}</td>
                   <td class="py-2 px-4 text-sm">
                     <button class="delete-btn bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700" data-id="${
                       order._id
                     }">Delete</button>
                   </td>
-                              <td class="py-2 px-4 text-sm">
-              <a href="${backendURL}/orders/${order._id}/receipt" class="receipt-btn bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500" target="_blank">Download Receipt</a>
-            </td>
+                  <td class="py-2 px-4 text-sm">
+                    <a href="${backendURL}/orders/${order._id}/receipt" class="receipt-btn w-50 bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500" target="_blank">Download Receipt</a>
+                  </td>
                 </tr>
               `
         )
