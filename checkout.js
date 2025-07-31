@@ -1,5 +1,5 @@
-const backendURL = "https://myr-backend-7nx6.onrender.com";
-const githubBase = "https://sheikhmaazraheel.github.io/MYR-Surgical";
+// const backendURL = "https://myr-backend-7nx6.onrender.com";
+// const githubBase = "https://sheikhmaazraheel.github.io/MYR-Surgical";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Shared utilities
