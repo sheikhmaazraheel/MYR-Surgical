@@ -344,91 +344,90 @@ document.addEventListener("DOMContentLoaded", () => {
         location.reload();
       });
     });
-
-    // Generate Order ID
-    function generateOrderId() {
-      const now = new Date();
-      const pad = (val) => String(val).padStart(2, "0");
-      return `MYR-${pad(now.getDate())}${pad(
-        now.getMonth() + 1
-      )}${now.getFullYear()}-${pad(now.getHours())}${pad(
-        now.getMinutes()
-      )}${pad(now.getSeconds())}${String(now.getMilliseconds()).padStart(
-        3,
-        "0"
-      )}`;
-    }
-
-    let myrorderId = localStorage.getItem("myrorderId");
-    if (Object.keys(myrcart).length) {
-      if (!myrorderId) {
-        myrorderId = generateOrderId();
-      }
-      localStorage.setItem("myrorderId", myrorderId);
-    }
-    orderIdSpan.textContent = myrorderId;
-
-    // Checkout button navigation
-    const placeOrderBtn = document.getElementById("place-order");
-    if (placeOrderBtn) {
-      placeOrderBtn.addEventListener("click", () => {
-        if (Object.keys(myrcart).length > 0) {
-          window.location.href = "checkout.html";
-        } else {
-          alert("Your cart is empty. Please add items first.");
-        }
-      });
-    }
   }
-  // ============== Search Functionality ===============
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
+  // Generate Order ID
+  function generateOrderId() {
+    const now = new Date();
+    const pad = (val) => String(val).padStart(2, "0");
+    return `MYR-${pad(now.getDate())}${pad(
+      now.getMonth() + 1
+    )}${now.getFullYear()}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(
+      now.getSeconds()
+    )}${String(now.getMilliseconds()).padStart(3, "0")}`;
+  }
 
-async function fetchProducts(query) {
-  try {
-    const res = await fetch(`${backendURL}/products`, {
-      method: "GET",
+  let myrorderId = localStorage.getItem("myrorderId");
+  if (Object.keys(myrcart).length) {
+    if (!myrorderId) {
+      myrorderId = generateOrderId();
+    }
+    localStorage.setItem("myrorderId", myrorderId);
+  }
+  orderIdSpan.textContent = myrorderId;
+
+  // Checkout button navigation
+  const placeOrderBtn = document.getElementById("place-order");
+  if (placeOrderBtn) {
+    placeOrderBtn.addEventListener("click", () => {
+      if (Object.keys(myrcart).length > 0) {
+        window.location.href = "checkout.html";
+      } else {
+        alert("Your cart is empty. Please add items first.");
+      }
     });
-    const products = await res.json();
-    console.log("Products fetched:", products);
+  }
 
-    if (!res.ok || !products) {
-      const errorMsg = `<p class="no-results">Failed to load products.</p>`;
+  // ============== Search Functionality ===============
+  const searchInput = document.getElementById("searchInput");
+  const searchResults = document.getElementById("searchResults");
+
+  async function fetchProducts(query) {
+    try {
+      const res = await fetch(`${backendURL}/products`, {
+        method: "GET",
+      });
+      const products = await res.json();
+      console.log("Products fetched:", products);
+
+      if (!res.ok || !products) {
+        const errorMsg = `<p class="no-results">Failed to load products.</p>`;
+        if (searchResults) searchResults.innerHTML = errorMsg;
+        if (searchResults) searchResults.classList.add("show");
+        return [];
+      }
+
+      // Filter products by name or category
+      return products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase())
+      );
+    } catch (err) {
+      console.error("Fetch products error:", err);
+      const errorMsg = `<p class="no-results">Error: ${err.message}</p>`;
       if (searchResults) searchResults.innerHTML = errorMsg;
       if (searchResults) searchResults.classList.add("show");
       return [];
     }
-
-    // Filter products by name or category
-    return products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase())
-    );
-  } catch (err) {
-    console.error("Fetch products error:", err);
-    const errorMsg = `<p class="no-results">Error: ${err.message}</p>`;
-    if (searchResults) searchResults.innerHTML = errorMsg;
-    if (searchResults) searchResults.classList.add("show");
-    return [];
   }
-}
 
-function displayResults(products, resultsContainer) {
-  if (resultsContainer) {
-    if (products.length === 0) {
-      resultsContainer.innerHTML = `<p class="no-results">No products found.</p>`;
-      resultsContainer.classList.add("show");
-      return;
-    }
+  function displayResults(products, resultsContainer) {
+    if (resultsContainer) {
+      if (products.length === 0) {
+        resultsContainer.innerHTML = `<p class="no-results">No products found.</p>`;
+        resultsContainer.classList.add("show");
+        return;
+      }
 
-    resultsContainer.innerHTML = products
-      .map(
-        (product) => `
-        <a href="${githubBase}/${product.category}#${product.id}" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
+      resultsContainer.innerHTML = products
+        .map(
+          (product) => `
+        <a href="${githubBase}/${product.category}#${
+            product.id
+          }" class="block p-2 hover:bg-gray-200 flex items-center gap-2">
           <img src="${product.image || ""}" alt="${
-          product.name
-        }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
+            product.name
+          }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
           <div class="result-text">
             <p class="result-name">${product.name}</p>
             <p class="result-details">${
@@ -437,44 +436,44 @@ function displayResults(products, resultsContainer) {
           </div>
         </a>
       `
-      )
-      .join("");
-    resultsContainer.classList.add("show");
+        )
+        .join("");
+      resultsContainer.classList.add("show");
+    }
   }
-}
 
-async function handleSearch(query, resultsContainer) {
-  if (query.length < 1) {
-    if (resultsContainer) resultsContainer.classList.remove("show");
-    return;
+  async function handleSearch(query, resultsContainer) {
+    if (query.length < 1) {
+      if (resultsContainer) resultsContainer.classList.remove("show");
+      return;
+    }
+    const products = await fetchProducts(query);
+    displayResults(products, resultsContainer);
   }
-  const products = await fetchProducts(query);
-  displayResults(products, resultsContainer);
-}
 
-function setupSearch(input, results) {
-  if (input && results) {
-    input.addEventListener("input", (e) =>
-      handleSearch(e.target.value.trim(), results)
-    );
-    input.addEventListener("focus", () => {
-      if (input.value.trim().length >= 2) {
-        handleSearch(input.value.trim(), results);
-      }
-    });
+  function setupSearch(input, results) {
+    if (input && results) {
+      input.addEventListener("input", (e) =>
+        handleSearch(e.target.value.trim(), results)
+      );
+      input.addEventListener("focus", () => {
+        if (input.value.trim().length >= 2) {
+          handleSearch(input.value.trim(), results);
+        }
+      });
+    }
   }
-}
 
-setupSearch(searchInput, searchResults);
+  setupSearch(searchInput, searchResults);
 
-document.addEventListener("click", (e) => {
-  if (
-    searchInput &&
-    searchResults &&
-    !searchInput.contains(e.target) &&
-    !searchResults.contains(e.target)
-  ) {
-    searchResults.classList.remove("show");
-  }
-});
+  document.addEventListener("click", (e) => {
+    if (
+      searchInput &&
+      searchResults &&
+      !searchInput.contains(e.target) &&
+      !searchResults.contains(e.target)
+    ) {
+      searchResults.classList.remove("show");
+    }
+  });
 });
