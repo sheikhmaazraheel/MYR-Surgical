@@ -344,6 +344,15 @@ document.addEventListener("DOMContentLoaded", () => {
         location.reload();
       });
     });
+    let myrorderId = localStorage.getItem("myrorderId");
+  if (Object.keys(myrcart).length) {
+    if (!myrorderId) {
+      myrorderId = generateOrderId();
+    }
+    localStorage.setItem("myrorderId", myrorderId);
+  }
+  orderIdSpan.textContent = myrorderId;
+
   }
   // Generate Order ID
   function generateOrderId() {
@@ -356,15 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
     )}${String(now.getMilliseconds()).padStart(3, "0")}`;
   }
 
-  let myrorderId = localStorage.getItem("myrorderId");
-  if (Object.keys(myrcart).length) {
-    if (!myrorderId) {
-      myrorderId = generateOrderId();
-    }
-    localStorage.setItem("myrorderId", myrorderId);
-  }
-  orderIdSpan.textContent = myrorderId;
-
+  
   // Checkout button navigation
   const placeOrderBtn = document.getElementById("place-order");
   if (placeOrderBtn) {
