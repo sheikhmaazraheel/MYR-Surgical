@@ -162,9 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function showShimmerLoader(container) {
     if (!container) return;
     // Check if loader already exists to avoid duplicates
-    const loader = container.querySelector(".shimmer-loader");
     
-      loader = document.createElement("div");
+    
+      const loader = document.createElement("div");
       loader.className = "shimmer-loader";
       loader.innerHTML = `
         <div class="shimmer-box"></div>
