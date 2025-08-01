@@ -216,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const mostSelling = products.filter((p) => p.mostSell && !!p.available);
 
         function renderProducts(list, container) {
-          if (!container) return;
           list.forEach((product, index) => {
             const div = document.createElement("div");
             const basePrice = parseFloat(product.price);
