@@ -159,59 +159,105 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cartCountElement) {
     cartCountElement.textContent = getCartProductCount();
   }
-   const loader=document.getElementById('loader');
-  // ✅ Fetch & Render Products
-  fetch(`${backendURL}/products`)
-    .then((res) => res.json())
-    .then((products) => {
+    function showShimmerLoader(container) {
+    if (!container) return;
+    // Check if loader already exists to avoid duplicates
+    const loader = container.querySelector(".shimmer-loader");
     
-      const category = document.body.dataset.category;
-      const filtered = products.filter(
-        (p) => p.category === category && !!p.available
-      );
-      const mostSelling = products.filter((p) => p.mostSell && !!p.available);
+      loader = document.createElement("div");
+      loader.className = "shimmer-loader";
+      loader.innerHTML = `
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+        <div class="shimmer-box"></div>
+      `;
+      const paragraph = document.createElement("p");
+      paragraph.style.textAlign = "center";
+      paragraph.textContent = "Loading products, please wait...";
+      paragraph.style.fontSize = "1.2rem";
+      paragraph.style.width = "100%";
+      paragraph.style.color = "#f43f5e";
+      container.parentNode.insertBefore(loader, container);
+      container.parentNode.insertBefore(paragraph, container);
+    loader.style.display = "grid";
+  }
 
-      function renderProducts(list, container) {
-        list.forEach((product) => {
-          const div = document.createElement("div");
-          const basePrice = parseFloat(product.price);
-          const discount = parseFloat(product.discount) || 0;
-          const finalPrice = Math.round(
-            basePrice - (basePrice * discount) / 100
-          );
+  function hideShimmerLoader(container) {
+    if (!container) return;
+    const loader = container.querySelector(".shimmer-loader");
+    if (loader) {
+      loader.remove();
+    }
+  }
+  if (container || mostSellContainer) {
+    // Show shimmer loaders
+    showShimmerLoader(container);
+    showShimmerLoader(mostSellContainer);
+    if (loader) loader.style.display = "grid"; // For index.html
 
-          div.className = "Product";
-          div.id = `${product.id}`;
-          div.dataset.id = product.id;
-          div.dataset.name = product.name;
-          div.dataset.price = finalPrice;
+    // Create a promise that resolves after 2 seconds
+    const minLoaderTime = new Promise((resolve) => setTimeout(resolve, 2000));
 
-          const hasOptions =
-            (product.sizes?.length || 0) > 0 ||
-            (product.colors?.length || 0) > 0;
-          const sizeHTML =
-            product.sizes
-              ?.map(
-                (size) =>
-                  `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`
-              )
-              .join("") || "";
-          const colorHTML =
-            product.colors
-              ?.map(
-                (color) =>
-                  `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
-              )
-              .join("") || "";
+    // Fetch products
+    const fetchProducts = fetch(`${backendURL}/products`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then((products) => {
+        const category = document.body.dataset.category;
+        const filtered = category
+          ? products.filter((p) => p.category === category && !!p.available)
+          : products.filter((p) => !!p.available); // No filtering on index.html
+        const mostSelling = products.filter((p) => p.mostSell && !!p.available);
 
-          div.innerHTML = `
-            <div class="discount">${product.discount || 0}%</div>
-            <img src="${product.image}" alt="${product.name}" />
-            <div class="Product-name">${product.name}</div>
-            <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
-            ${
-              hasOptions
-                ? `
+        function renderProducts(list, container) {
+          if (!container) return;
+          list.forEach((product, index) => {
+            const div = document.createElement("div");
+            const basePrice = parseFloat(product.price);
+            const discount = parseFloat(product.discount) || 0;
+            const finalPrice = Math.round(
+              basePrice - (basePrice * discount) / 100
+            );
+
+            div.className = "Product opacity-0 transition-all duration-500";
+            div.id = `${product.id}`;
+            div.dataset.id = product.id;
+            div.dataset.name = product.name;
+            div.dataset.price = finalPrice;
+
+            const hasOptions =
+              (product.sizes?.length || 0) > 0 ||
+              (product.colors?.length || 0) > 0;
+            const sizeHTML =
+              product.sizes
+                ?.map(
+                  (size) =>
+                    `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`
+                )
+                .join("") || "";
+            const colorHTML =
+              product.colors
+                ?.map(
+                  (color) =>
+                    `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
+                )
+                .join("") || "";
+
+            div.innerHTML = `
+              <div class="discount">${product.discount || 0}%</div>
+              <img src="${product.image}" alt="${product.name}" />
+              <div class="Product-name">${product.name}</div>
+              <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
+              ${
+                hasOptions
+                  ? `
               <div class="size-color-row flex flex-col gap-2 mt-2">
                 ${
                   sizeHTML
@@ -224,25 +270,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     : ""
                 }
               </div>`
-                : ""
-            }
-            <button class="add-to-cart-button">Add to Cart</button>
-            <div class="quantity-controls">
-              <button class="decrease">−</button>
-              <span class="quantity">1</span>
-              <button class="increase">+</button>
-            </div>
-          `;
+                  : ""
+              }
+              <button class="add-to-cart-button">Add to Cart</button>
+              <div class="quantity-controls">
+                <button class="decrease">−</button>
+                <span class="quantity">1</span>
+                <button class="increase">+</button>
+              </div>
+            `;
 
-          container.appendChild(div);
-          setupCartForProduct(div);
-        });
-      }
+            container.appendChild(div);
+            setupCartForProduct(div);
 
-      if (container) renderProducts(filtered, container);
-      if (mostSellContainer) renderProducts(mostSelling, mostSellContainer);
-    })
-    .catch((err) => console.error("Error loading products:", err));
+            // Animate product entry
+            setTimeout(() => {
+              div.style.opacity = "1";
+              div.style.transform = "scale(1)";
+            }, index * 100);
+          });
+        }
+
+        return { filtered, mostSelling };
+      });
+
+    // Wait for both fetch and minimum loader time
+    Promise.all([fetchProducts, minLoaderTime])
+      .then(([{ filtered, mostSelling }]) => {
+        // Hide loaders after both promises resolve
+        hideShimmerLoader(container);
+        hideShimmerLoader(mostSellContainer);
+        if (loader) loader.style.display = "none";
+
+        // Render products
+        if (container) renderProducts(filtered, container);
+        if (mostSellContainer) renderProducts(mostSelling, mostSellContainer);
+      })
+      .catch((err) => {
+        console.error("Error loading products:", err);
+        hideShimmerLoader(container);
+        hideShimmerLoader(mostSellContainer);
+      });
+  }
   const cartItemsTbody = document.getElementById("cart-items");
   const orderIdSpan = document.getElementById("order-id");
   const quantityHeading = document.getElementById("Quantity-heading");
