@@ -194,6 +194,84 @@ document.addEventListener("DOMContentLoaded", () => {
       loader.remove();
     }
   }
+  
+  // ✅ Render Products
+  function renderProducts(list, container) {
+    if (!container) return;
+    list.forEach((product, index) => {
+      const div = document.createElement("div");
+      const basePrice = parseFloat(product.price);
+      const discount = parseFloat(product.discount) || 0;
+      const finalPrice = Math.round(
+        basePrice - (basePrice * discount) / 100
+      );
+
+      div.className = "Product opacity-0 transition-all duration-500";
+      div.id = `${product.id}`;
+      div.dataset.id = product.id;
+      div.dataset.name = product.name;
+      div.dataset.price = finalPrice;
+
+      const hasOptions =
+        (product.sizes?.length || 0) > 0 ||
+        (product.colors?.length || 0) > 0;
+      const sizeHTML =
+        product.sizes
+          ?.map(
+            (size) =>
+              `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`
+          )
+          .join("") || "";
+      const colorHTML =
+        product.colors
+          ?.map(
+            (color) =>
+              `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
+          )
+          .join("") || "";
+
+      div.innerHTML = `
+        <div class="discount">${product.discount || 0}%</div>
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="Product-name">${product.name}</div>
+        <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
+        ${
+          hasOptions
+            ? `
+        <div class="size-color-row flex flex-col gap-2 mt-2">
+          ${
+            sizeHTML
+              ? `<div class="option-group"><div class="option-label text-sm font-semibold">Size:</div><div class="size-options flex gap-2 mt-1">${sizeHTML}</div></div>`
+              : ""
+          }
+          ${
+            colorHTML
+              ? `<div class="option-group"><div class="option-label text-sm font-semibold">Color:</div><div class="color-options flex gap-2 mt-1">${colorHTML}</div></div>`
+              : ""
+          }
+        </div>`
+            : ""
+        }
+        <button class="add-to-cart-button">Add to Cart</button>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity">1</span>
+          <button class="increase">+</button>
+        </div>
+      `;
+
+      container.appendChild(div);
+      setupCartForProduct(div);
+
+      // Animate product entry
+      setTimeout(() => {
+        div.style.opacity = "1";
+        div.style.transform = "scale(1)";
+      }, index * 100);
+    });
+  }
+
+// ✅ Fetch & Render Products with Minimum 2-Second Loader
   if (container || mostSellContainer) {
     // Show shimmer loaders
     showShimmerLoader(container);
@@ -212,82 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const category = document.body.dataset.category;
         const filtered = category
           ? products.filter((p) => p.category === category && !!p.available)
-          : products.filter((p) => !!p.available); // No filtering on index.html
+          : products.filter((p) => !!p.available);
         const mostSelling = products.filter((p) => p.mostSell && !!p.available);
-
-        function renderProducts(list, container) {
-          list.forEach((product, index) => {
-            const div = document.createElement("div");
-            const basePrice = parseFloat(product.price);
-            const discount = parseFloat(product.discount) || 0;
-            const finalPrice = Math.round(
-              basePrice - (basePrice * discount) / 100
-            );
-
-            div.className = "Product opacity-0 transition-all duration-500";
-            div.id = `${product.id}`;
-            div.dataset.id = product.id;
-            div.dataset.name = product.name;
-            div.dataset.price = finalPrice;
-
-            const hasOptions =
-              (product.sizes?.length || 0) > 0 ||
-              (product.colors?.length || 0) > 0;
-            const sizeHTML =
-              product.sizes
-                ?.map(
-                  (size) =>
-                    `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`
-                )
-                .join("") || "";
-            const colorHTML =
-              product.colors
-                ?.map(
-                  (color) =>
-                    `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
-                )
-                .join("") || "";
-
-            div.innerHTML = `
-              <div class="discount">${product.discount || 0}%</div>
-              <img src="${product.image}" alt="${product.name}" />
-              <div class="Product-name">${product.name}</div>
-              <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
-              ${
-                hasOptions
-                  ? `
-              <div class="size-color-row flex flex-col gap-2 mt-2">
-                ${
-                  sizeHTML
-                    ? `<div class="option-group"><div class="option-label text-sm font-semibold">Size:</div><div class="size-options flex gap-2 mt-1">${sizeHTML}</div></div>`
-                    : ""
-                }
-                ${
-                  colorHTML
-                    ? `<div class="option-group"><div class="option-label text-sm font-semibold">Color:</div><div class="color-options flex gap-2 mt-1">${colorHTML}</div></div>`
-                    : ""
-                }
-              </div>`
-                  : ""
-              }
-              <button class="add-to-cart-button">Add to Cart</button>
-              <div class="quantity-controls">
-                <button class="decrease">−</button>
-                <span class="quantity">1</span>
-                <button class="increase">+</button>
-              </div>
-            `;
-
-            container.appendChild(div);
-            setupCartForProduct(div);
-
-            // Animate product entry
-            setTimeout(() => {
-              div.style.opacity = "1";
-              div.style.transform = "scale(1)";
-            }, index * 100);
-          });
-        }
 
         return { filtered, mostSelling };
       });
