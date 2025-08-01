@@ -189,19 +189,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function hideShimmerLoader(container) {
     const loader = container.querySelector(".shimmer-loader");
-    if (loader) {
       loader.style.display = "none";
       // const paragraph = container.previousElementSibling;
       // if (paragraph && paragraph.tagName === "P") {
       //   paragraph.remove();
       // }
       loader.remove();
-    }
   }
   
   // ✅ Render Products
   function renderProducts(list, container) {
-    if (!container) return;
     list.forEach((product, index) => {
       const div = document.createElement("div");
       const basePrice = parseFloat(product.price);
