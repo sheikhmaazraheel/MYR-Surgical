@@ -177,9 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="shimmer-box"></div>
       `;
       const paragraph = document.createElement("p");
+      paragraph.id = "loading-text";
       paragraph.style.textAlign = "center";
       paragraph.textContent = "Loading products, please wait...";
-      paragraph.style.fontSize = "1.2rem";
+      paragraph.style.fontSize = "1.4rem";
       paragraph.style.width = "100%";
       paragraph.style.color = "#f43f5e";
       container.parentNode.insertBefore(loader, container);
@@ -190,10 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function hideShimmerLoader(container) {
     const loader = document.querySelector(".shimmer-loader");
       loader.style.display = "none";
-      // const paragraph = container.previousElementSibling;
-      // if (paragraph && paragraph.tagName === "P") {
-      //   paragraph.remove();
-      // }
+      const paragraph = document.getElementById("loading-text");
+      paragraph.remove();
       loader.remove();
   }
   
