@@ -173,8 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="shimmer-box"></div>
         <div class="shimmer-box"></div>
         <div class="shimmer-box"></div>
-        <div class="shimmer-box"></div>
-        <div class="shimmer-box"></div>
       `;
       const paragraph = document.createElement("p");
       paragraph.id = "loading-text";
