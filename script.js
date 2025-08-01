@@ -191,6 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     const loader = container.querySelector(".shimmer-loader");
     if (loader) {
+      loader.style.display = "none";
+      // const paragraph = container.previousElementSibling;
+      // if (paragraph && paragraph.tagName === "P") {
+      //   paragraph.remove();
+      // }
       loader.remove();
     }
   }
