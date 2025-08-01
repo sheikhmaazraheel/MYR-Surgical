@@ -198,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show shimmer loaders
     showShimmerLoader(container);
     showShimmerLoader(mostSellContainer);
-    if (loader) loader.style.display = "grid"; // For index.html
 
     // Create a promise that resolves after 2 seconds
     const minLoaderTime = new Promise((resolve) => setTimeout(resolve, 2000));
