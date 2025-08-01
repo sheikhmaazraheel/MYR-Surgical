@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(`${backendURL}/products`)
     .then((res) => res.json())
     .then((products) => {
-
+    
       const category = document.body.dataset.category;
       const filtered = products.filter(
         (p) => p.category === category && !!p.available
