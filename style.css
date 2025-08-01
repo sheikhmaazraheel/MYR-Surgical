@@ -888,6 +888,41 @@ select:focus {
   transform: scale(1.2) translateY(-5px);
   cursor: pointer;
 }
+/* ============Loader ============= */
+.shimmer-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2E5077;
+}
+
+.shimmer-box {
+  width: 200px;
+  height: 120px;
+  background: linear-gradient(
+    110deg,
+    #f0f0f0 8%,
+    #e0e0e0 18%,
+    #f0f0f0 33%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 
 /* =========== FOR Checkout */
 
