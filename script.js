@@ -159,11 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cartCountElement) {
     cartCountElement.textContent = getCartProductCount();
   }
-
+   const loader=document.getElementById('loader');
   // ✅ Fetch & Render Products
   fetch(`${backendURL}/products`)
     .then((res) => res.json())
     .then((products) => {
+
       const category = document.body.dataset.category;
       const filtered = products.filter(
         (p) => p.category === category && !!p.available
