@@ -278,8 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // ✅ Fetch & Render Products with Minimum 2-Second Loader
   if (container || mostSellContainer) {
     // Show shimmer loaders
-    showShimmerLoader(container);
-    showShimmerLoader(mostSellContainer);
+    if(container) showShimmerLoader(container);
+    if (mostSellContainer) showShimmerLoader(mostSellContainer);
 
     // Create a promise that resolves after 2 seconds
     const minLoaderTime = new Promise((resolve) => setTimeout(resolve, 2000));
@@ -304,8 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all([fetchProducts, minLoaderTime])
       .then(([{ filtered, mostSelling }]) => {
         // Hide loaders after both promises resolve
-        hideShimmerLoader(container);
-        hideShimmerLoader(mostSellContainer);
+        if (container) hideShimmerLoader(container);
+        if (mostSellContainer) hideShimmerLoader(mostSellContainer);
 
         // Render products
         if (container) renderProducts(filtered, container);
