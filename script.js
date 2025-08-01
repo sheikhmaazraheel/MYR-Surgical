@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function hideShimmerLoader(container) {
-    const loader = container.querySelector(".shimmer-loader");
+    const loader = document.querySelector(".shimmer-loader");
       loader.style.display = "none";
       // const paragraph = container.previousElementSibling;
       // if (paragraph && paragraph.tagName === "P") {
