@@ -217,14 +217,14 @@ document.addEventListener("DOMContentLoaded", () => {
         product.sizes
           ?.map(
             (size) =>
-              `<button class="size-btn px-2 py-1 text-xs rounded-md border border-gray-300 hover:bg-gray-100 transition" data-size="${size}">${size}</button>`
+              `<button class="size-btn" data-size="${size}">${size}</button>`
           )
           .join("") || "";
       const colorHTML =
         product.colors
           ?.map(
             (color) =>
-              `<button class="color-swatch w-5 h-5 rounded-full border-2 border-gray-300 hover:scale-110 transition-transform" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
+              `<button class="color-swatch" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
           )
           .join("") || "";
 
@@ -236,15 +236,15 @@ document.addEventListener("DOMContentLoaded", () => {
         ${
           hasOptions
             ? `
-        <div class="size-color-row flex flex-col gap-2 mt-2">
+        <div class="size-color-row">
           ${
             sizeHTML
-              ? `<div class="option-group"><div class="option-label text-sm font-semibold">Size:</div><div class="size-options flex gap-2 mt-1">${sizeHTML}</div></div>`
+              ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
               : ""
           }
           ${
             colorHTML
-              ? `<div class="option-group"><div class="option-label text-sm font-semibold">Color:</div><div class="color-options flex gap-2 mt-1">${colorHTML}</div></div>`
+              ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
               : ""
           }
         </div>`
