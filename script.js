@@ -299,7 +299,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Hide loaders after both promises resolve
         hideShimmerLoader(container);
         hideShimmerLoader(mostSellContainer);
-        if (loader) loader.style.display = "none";
 
         // Render products
         if (container) renderProducts(filtered, container);
