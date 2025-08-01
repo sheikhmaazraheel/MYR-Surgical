@@ -896,6 +896,7 @@ select:focus {
   justify-items: center;
   max-width: 1000px;
   padding: 40px 20px;
+  margin: 0 auto;
   font-weight: bold;
   font-size: 1.1rem;
   color: #2E5077;

@@ -164,6 +164,16 @@
   .about-section h2 span {
     display: block;
   }
+  .shimmer-loader {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  .shimmer-box {
+  width: 160px;
+  height: 100px;
+  }
 }
 /* ====================== For Hamburger============= */
 /* Hamburger default */
