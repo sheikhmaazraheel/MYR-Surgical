@@ -43,11 +43,12 @@
   .hero {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-around;
     padding: 20px 40px;
-    margin: 0px 20px;
+    margin: 0px;
     height: auto;
+    max-width: 100%;
   }
   .hero-content {
     max-width: 375px;

@@ -285,12 +285,24 @@ select:focus {
   margin-bottom: 10px;
   text-align: left;
   align-self: baseline;
+  font-weight: 550;
+      background-image: linear-gradient(45deg, #f43f5e 20%, #6366f1 60%, #f43f5e 75%, #9c1f2e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 .hero-content h1 span {
-  font-size: 4rem;
-  color: #f43f5e;
-  margin-bottom: 20px;
-  white-space: nowrap;
+    font-size: 4rem;
+    color: #f43f5e;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    font-weight: 700;
+    background-image: linear-gradient(-45deg, #f43f5e 0%, #6366f1 30%, #f43f5e 75%, #9c1f2e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 .hero-content p {
   font-size: 1.2rem;
