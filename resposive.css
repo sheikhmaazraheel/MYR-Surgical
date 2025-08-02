@@ -216,7 +216,7 @@
     position: absolute;
     top: 80px; /* IMPORTANT: should match nav height */
     left: 0;
-    height: 150px;
+    height: 170px;
     padding: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 999;

@@ -286,23 +286,35 @@ select:focus {
   text-align: left;
   align-self: baseline;
   font-weight: 550;
-      background-image: linear-gradient(45deg, #f43f5e 20%, #6366f1 60%, #f43f5e 75%, #9c1f2e 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+  background-image: linear-gradient(
+    45deg,
+    #f43f5e 20%,
+    #6366f1 60%,
+    #f43f5e 75%,
+    #9c1f2e 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .hero-content h1 span {
-    font-size: 4rem;
-    color: #f43f5e;
-    margin-bottom: 20px;
-    white-space: nowrap;
-    font-weight: 700;
-    background-image: linear-gradient(-45deg, #f43f5e 0%, #6366f1 30%, #f43f5e 75%, #9c1f2e 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+  font-size: 4rem;
+  color: #f43f5e;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  font-weight: 700;
+  background-image: linear-gradient(
+    -45deg,
+    #f43f5e 0%,
+    #6366f1 30%,
+    #f43f5e 75%,
+    #9c1f2e 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .hero-content p {
   font-size: 1.2rem;
@@ -678,7 +690,7 @@ select:focus {
   width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;  
+  justify-content: flex-start;
   align-items: center;
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
   transition: transform 0.3s;
@@ -911,18 +923,13 @@ select:focus {
   margin: 0 auto;
   font-weight: bold;
   font-size: 1.1rem;
-  color: #2E5077;
+  color: #2e5077;
 }
 
 .shimmer-box {
   width: 200px;
   height: 120px;
-  background: linear-gradient(
-    110deg,
-    #f0f0f0 8%,
-    #e0e0e0 18%,
-    #f0f0f0 33%
-  );
+  background: linear-gradient(110deg, #f0f0f0 8%, #e0e0e0 18%, #f0f0f0 33%);
   background-size: 200% 100%;
   animation: shimmer 1.2s infinite;
   border-radius: 8px;
@@ -938,14 +945,13 @@ select:focus {
   }
 }
 
-
 /* =========== FOR Checkout */
 
 .checkout-container {
   max-width: 700px;
   background-color: transparent;
   padding: 30px;
-  margin:20px auto;
+  margin: 20px auto;
   border-radius: 10px;
 }
 
@@ -957,7 +963,7 @@ select:focus {
   font-family: "Fjalla One", sans-serif;
   text-transform: uppercase;
 }
-#checkout-form{
+#checkout-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -974,7 +980,9 @@ label {
   font-weight: bold;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   padding: 10px;
@@ -982,7 +990,7 @@ input, select, textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-input:focus{
+input:focus {
   border: 3px solid #f43f5e;
   outline: none;
 }
@@ -1012,7 +1020,7 @@ textarea {
   transform: scale(1.05);
 }
 
-.payment-options{
+.payment-options {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1062,8 +1070,6 @@ textarea {
   transform: scale(1.1);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
-
-
 
 .option-group {
   width: 45%;
@@ -1116,7 +1122,7 @@ textarea {
 .color-swatch.active {
   border-color: #007bff;
 }
-.size-color-row{
+.size-color-row {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -1125,16 +1131,16 @@ textarea {
 }
 
 .size-btn,
-  .color-swatch {
-    transition: all 0.2s ease-in-out;
-  }
+.color-swatch {
+  transition: all 0.2s ease-in-out;
+}
 
-  .selected-size {
-    background-color: #2563eb; /* Tailwind blue-600 */
-    color: white;
-  }
+.selected-size {
+  background-color: #2563eb; /* Tailwind blue-600 */
+  color: white;
+}
 
-  .selected-color {
-    outline: 2px solid #2563eb; /* Tailwind blue-600 */
-    outline-offset: 2px;
-  }
+.selected-color {
+  outline: 2px solid #2563eb; /* Tailwind blue-600 */
+  outline-offset: 2px;
+}
