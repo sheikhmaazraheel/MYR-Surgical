@@ -403,6 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (loadBtn) {
             try {
               loadBtn.click();
+              resultsContainer.style.display = "none";
               searchResults.classList.remove("show"); // Trigger existing loadBtn event
            } catch (err) {
               console.error("Error triggering loadBtn:", err);
