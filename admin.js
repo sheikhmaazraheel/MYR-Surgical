@@ -405,8 +405,9 @@ document.addEventListener("DOMContentLoaded", () => {
           // Programmatically trigger loadBtn click
           if (loadBtn) {
             try {
-              loadBtn.click(); // Trigger existing loadBtn event
-            } catch (err) {
+              loadBtn.click();
+              searchResults.classList.remove("show"); // Trigger existing loadBtn event
+           } catch (err) {
               console.error("Error triggering loadBtn:", err);
               alert("Failed to load product. Please try again.");
             }
@@ -414,8 +415,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("loadBtn not found");
             alert("Load button not found. Please refresh the page.");
           }
-          searchResults.classList.remove("show");
-          searchInput.value = "";
         });
       });
     }
