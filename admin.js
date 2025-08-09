@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
       resultsContainer.innerHTML = products
         .map(
           (product) => `
-        <div id="${product.name}" class="search-result block p-2 hover:bg-gray-200 flex items-center gap-2">
+        <a id="${product.name}" class="search-result block p-2 hover:bg-gray-200 flex items-center gap-2">
           <img src="${product.image || ""}" alt="${
             product.name
           }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
               product.category
             } - Rs. ${product.price.toFixed(2)}</p>
           </div>
-        </div>
+        </a>
       `
         )
         .join("");
