@@ -121,6 +121,10 @@ body {
   .hamburger {
     display: block;
   }
+  .search-results {
+    width: 350px;
+    top: 135px;
+  }
 }
 
 /* Form Styling (for Product-add.html and Product-edit.html) */
@@ -223,4 +227,57 @@ form button:hover {
 .logout-btn:hover {
   background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
   transform: scale(1.05);
+}
+.search-results {
+  position: absolute;
+  top: 155px;
+  width: 500px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  /* display: none; */
+}
+.search-results a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: #222;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.search-results a:hover {
+  background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
+  color: #fff;
+}
+.search-results img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.search-results .result-text {
+  display: flex;
+  flex-direction: column;
+}
+.search-results .result-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.search-results .result-details {
+  font-size: 0.9rem;
+  color: #555;
+}
+.search-results .no-results {
+  padding: 10px;
+  color: #555;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.search-results.show {
+  display: block;
 }
