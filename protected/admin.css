@@ -108,6 +108,10 @@ body {
   .hamburger {
     display: block;
   }
+    .search-results {
+    width: 330px;
+    top: 236px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -230,8 +234,8 @@ form button:hover {
 }
 .search-results {
   position: absolute;
-  top: 155px;
-  width: 500px;
+  top: 246px;
+  width: 660px;
   max-height: 300px;
   overflow-y: auto;
   background-color: #fff;
