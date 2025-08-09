@@ -399,9 +399,6 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault(); // Prevent default <a> behavior
           const productName = result.id;
           searchInput.value = productName;
-          searchResults.classList.remove("show");
-
-
           // Programmatically trigger loadBtn click
           if (loadBtn) {
             try {
