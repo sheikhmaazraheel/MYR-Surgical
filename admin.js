@@ -249,17 +249,25 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="py-2 px-4 text-sm">${order._id}</td>
                   <td class="py-2 px-4 text-sm">${order.name}</td>
                   <td class="py-2 px-4 text-sm">${order.contact}</td>
-                  <td class="py-2 px-4 text-sm">${order.houseNo}, ${order.Block}, ${order.Area}, ${order.city}</td>
+                  <td class="py-2 px-4 text-sm">${order.houseNo}, ${
+            order.Block
+          }, ${order.Area}, ${order.city}</td>
                   <td class="py-2 px-4 text-sm">${order.paymentMethod}</td>
-                  <td class="py-2 px-4 text-sm">Rs. ${order.totalAmount.toFixed(2)}</td>
-                  <td class="py-2 px-4 text-sm">${new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td class="py-2 px-4 text-sm">Rs. ${order.totalAmount.toFixed(
+                    2
+                  )}</td>
+                  <td class="py-2 px-4 text-sm">${new Date(
+                    order.createdAt
+                  ).toLocaleDateString()}</td>
                   <td class="py-2 px-4 text-sm">
                     <button class="delete-btn bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700" data-id="${
                       order._id
                     }">Delete</button>
                   </td>
                   <td class="py-2 px-4 text-sm">
-                    <a href="${backendURL}/orders/${order._id}/receipt" class="receipt-btn bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500" target="_blank">Download</a>
+                    <a href="${backendURL}/orders/${
+            order._id
+          }/receipt" class="receipt-btn bg-gradient-to-r from-indigo-500 to-rose-500 text-white py-1 px-2 rounded hover:from-rose-500 hover:to-indigo-500" target="_blank">Download</a>
                   </td>
                 </tr>
               `
@@ -324,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.toggle("active");
     });
   }
-    // ============== Search Functionality ===============
+  // ============== Search Functionality ===============
   const searchResults = document.getElementById("searchResults");
 
   async function fetchProducts(query) {
@@ -367,7 +375,9 @@ document.addEventListener("DOMContentLoaded", () => {
       resultsContainer.innerHTML = products
         .map(
           (product) => `
-        <a id="${product.name}" class="search-result block p-2 hover:bg-gray-200 flex items-center gap-2">
+        <a id="${
+          product.name
+        }" class="search-result block p-2 hover:bg-gray-200 flex items-center gap-2">
           <img src="${product.image || ""}" alt="${
             product.name
           }" class="w-10 h-10 object-cover rounded" onerror="this.style.display='none'">
@@ -382,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
       resultsContainer.classList.add("show");
-          // Attach click event listeners to search results
+      // Attach click event listeners to search results
       const results = document.querySelectorAll(".search-result");
       results.forEach((result) => {
         result.addEventListener("click", async (e) => {
@@ -403,6 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("loadBtn not found");
             alert("Load button not found. Please refresh the page.");
           }
+          searchResults.classList.remove("show");
         });
       });
     }
@@ -442,5 +453,4 @@ document.addEventListener("DOMContentLoaded", () => {
       searchResults.classList.remove("show");
     }
   });
-  
 });
