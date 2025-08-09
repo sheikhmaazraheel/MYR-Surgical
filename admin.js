@@ -333,7 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "GET",
       });
       const products = await res.json();
-      console.log("Products fetched:", products);
 
       if (!res.ok || !products) {
         const errorMsg = `<p class="no-results">Failed to load products.</p>`;
@@ -383,6 +382,29 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
       resultsContainer.classList.add("show");
+          // Attach click event listeners to search results
+      const results = document.querySelectorAll(".search-result");
+      results.forEach((result) => {
+        result.addEventListener("click", async (e) => {
+          e.preventDefault(); // Prevent default <a> behavior
+          const productName = result.id;
+          searchInput.value = productName;
+          searchResults.classList.remove("show");
+
+          // Programmatically trigger loadBtn click
+          if (loadBtn) {
+            try {
+              loadBtn.click(); // Trigger existing loadBtn event
+            } catch (err) {
+              console.error("Error triggering loadBtn:", err);
+              alert("Failed to load product. Please try again.");
+            }
+          } else {
+            console.error("loadBtn not found");
+            alert("Load button not found. Please refresh the page.");
+          }
+        });
+      });
     }
   }
 
@@ -420,17 +442,5 @@ document.addEventListener("DOMContentLoaded", () => {
       searchResults.classList.remove("show");
     }
   });
-  if(searchResults.classList.contains("show")) {
-    const results = document.querySelectorAll(".search-result");
-    results.forEach((result) => {
-      result.addEventListener("click", (e) => {
-        const productName = result.id;
-        searchInput.value = productName;
-        searchResults.classList.remove("show");
-        // loadBtn.click();
-        // Here you can redirect to product details page or perform any action
-      });
-    });
-    console.log("Search results:", results);
-  }
+  
 });
