@@ -251,7 +251,7 @@ form button:hover {
   padding: 10px;
   color: #222;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 .search-results a:hover {
   background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
