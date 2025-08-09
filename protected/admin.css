@@ -245,7 +245,7 @@ form button:hover {
   z-index: 1000;
   /* display: none; */
 }
-.search-results a {
+.search-results button {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -253,7 +253,7 @@ form button:hover {
   text-decoration: none;
   transition: background 0.2s;
 }
-.search-results a:hover {
+.search-results button:hover {
   background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
   color: #fff;
 }
