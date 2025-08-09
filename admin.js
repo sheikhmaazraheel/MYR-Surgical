@@ -401,6 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
           searchInput.value = productName;
           searchResults.classList.remove("show");
 
+
           // Programmatically trigger loadBtn click
           if (loadBtn) {
             try {
@@ -414,6 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Load button not found. Please refresh the page.");
           }
           searchResults.classList.remove("show");
+          searchInput.value = "";
         });
       });
     }
