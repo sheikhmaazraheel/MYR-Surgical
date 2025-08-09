@@ -421,13 +421,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   if(searchResults.classList.contains("show")) {
-    const results = searchResults.querySelectorAll(".search-result");
+    const results = document.querySelectorAll(".search-result");
     results.forEach((result) => {
       result.addEventListener("click", (e) => {
         const productName = result.id;
         searchInput.value = productName;
         searchResults.classList.remove("show");
-        loadBtn.click();
+        // loadBtn.click();
         // Here you can redirect to product details page or perform any action
       });
     });
