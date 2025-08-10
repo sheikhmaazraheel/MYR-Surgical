@@ -285,3 +285,6 @@ form button:hover {
 .search-results.show {
   display: block;
 }
+#editProductForm{
+  display: none;
+}

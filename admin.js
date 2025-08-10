@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchIdOrName");
   let currentId = null;
 
-  if (loadBtn && searchInput && editForm) {
+  if (loadBtn && searchInput) {
     loadBtn.addEventListener("click", async () => {
       const query = searchInput.value.trim();
       if (!query) return alert("Please enter product ID or name");
