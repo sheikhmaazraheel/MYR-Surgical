@@ -214,7 +214,8 @@ form button:hover {
 
 .view-website-btn,
 #logout-btn {
-  margin: 50px 20px;
+  margin: 50px auto;
+  display: block;
   padding: 12px 24px;
   background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
   color: #fff;
