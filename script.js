@@ -159,14 +159,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cartCountElement) {
     cartCountElement.textContent = getCartProductCount();
   }
-    function showShimmerLoader(container) {
+  function showShimmerLoader(container) {
     if (!container) return;
     // Check if loader already exists to avoid duplicates
-    
-    
-      const loader = document.createElement("div");
-      loader.className = "shimmer-loader";
-      loader.innerHTML = `
+
+    const loader = document.createElement("div");
+    loader.className = "shimmer-loader";
+    loader.innerHTML = `
         <div class="shimmer-box"></div>
         <div class="shimmer-box"></div>
         <div class="shimmer-box"></div>
@@ -174,35 +173,33 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="shimmer-box"></div>
         <div class="shimmer-box"></div>
       `;
-      const paragraph = document.createElement("p");
-      paragraph.id = "loading-text";
-      paragraph.style.textAlign = "center";
-      paragraph.textContent = "Loading products, please wait...";
-      paragraph.style.fontSize = "1.4rem";
-      paragraph.style.width = "100%";
-      paragraph.style.color = "#f43f5e";
-      container.parentNode.insertBefore(loader, container);
-      container.parentNode.insertBefore(paragraph, container);
+    const paragraph = document.createElement("p");
+    paragraph.id = "loading-text";
+    paragraph.style.textAlign = "center";
+    paragraph.textContent = "Loading products, please wait...";
+    paragraph.style.fontSize = "1.4rem";
+    paragraph.style.width = "100%";
+    paragraph.style.color = "#f43f5e";
+    container.parentNode.insertBefore(loader, container);
+    container.parentNode.insertBefore(paragraph, container);
     loader.style.display = "grid";
   }
 
   function hideShimmerLoader(container) {
     const loader = document.querySelector(".shimmer-loader");
-      loader.style.display = "none";
-      const paragraph = document.getElementById("loading-text");
-      paragraph.remove();
-      loader.remove();
+    loader.style.display = "none";
+    const paragraph = document.getElementById("loading-text");
+    paragraph.remove();
+    loader.remove();
   }
-  
+
   // ✅ Render Products
   function renderProducts(list, container) {
     list.forEach((product, index) => {
       const div = document.createElement("div");
       const basePrice = parseFloat(product.price);
       const discount = parseFloat(product.discount) || 0;
-      const finalPrice = Math.round(
-        basePrice - (basePrice * discount) / 100
-      );
+      const finalPrice = Math.round(basePrice - (basePrice * discount) / 100);
 
       div.className = "Product opacity-0 transition-all duration-500";
       div.id = `${product.id}`;
@@ -211,8 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
       div.dataset.price = finalPrice;
 
       const hasOptions =
-        (product.sizes?.length || 0) > 0 ||
-        (product.colors?.length || 0) > 0;
+        (product.sizes?.length || 0) > 0 || (product.colors?.length || 0) > 0;
       const sizeHTML =
         product.sizes
           ?.map(
@@ -269,10 +265,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-// ✅ Fetch & Render Products with Minimum 2-Second Loader
+  // ✅ Fetch & Render Products with Minimum 2-Second Loader
   if (container || mostSellContainer) {
     // Show shimmer loaders
-    if(container) showShimmerLoader(container);
+    if (container) showShimmerLoader(container);
     if (mostSellContainer) showShimmerLoader(mostSellContainer);
 
     // Create a promise that resolves after 2 seconds
@@ -418,14 +414,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
     let myrorderId = localStorage.getItem("myrorderId");
-  if (Object.keys(myrcart).length) {
-    if (!myrorderId) {
-      myrorderId = generateOrderId();
+    if (Object.keys(myrcart).length) {
+      if (!myrorderId) {
+        myrorderId = generateOrderId();
+      }
+      localStorage.setItem("myrorderId", myrorderId);
     }
-    localStorage.setItem("myrorderId", myrorderId);
-  }
-  orderIdSpan.textContent = myrorderId;
-
+    orderIdSpan.textContent = myrorderId;
   }
   // Generate Order ID
   function generateOrderId() {
@@ -438,7 +433,6 @@ document.addEventListener("DOMContentLoaded", () => {
     )}${String(now.getMilliseconds()).padStart(3, "0")}`;
   }
 
-  
   // Checkout button navigation
   const placeOrderBtn = document.getElementById("place-order");
   if (placeOrderBtn) {
@@ -471,11 +465,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Filter products by name or category
-      return products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query.toLowerCase()) ||
-          product.category.toLowerCase().includes(query.toLowerCase())
-      );
+      if (document.body.dataset.category) {
+        return products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query.toLowerCase()) &&
+            product.category.toLowerCase() ===
+              document.body.dataset.category.toLowerCase()
+        );
+      } else {
+        // Filter products by name or category
+        return products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase())
+        );
+      }
     } catch (err) {
       console.error("Fetch products error:", err);
       const errorMsg = `<p class="no-results">Error: ${err.message}</p>`;
