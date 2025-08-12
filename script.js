@@ -11,13 +11,14 @@ hamburger.addEventListener("click", () => {
   dropdown.classList.toggle("show");
 
   const select = document.getElementById("productSelect");
-
-  select.addEventListener("change", function () {
-    const selectedPage = this.value;
-    if (selectedPage) {
-      window.location.href = selectedPage;
-    }
-  });
+  if(select){
+    select.addEventListener("change", function () {
+      const selectedPage = this.value;
+      if (selectedPage) {
+        window.location.href = selectedPage;
+      }
+    });
+  }
 });
 
 // ============== Rendering Products ===============
