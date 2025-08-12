@@ -215,7 +215,7 @@
     align-items: center;
     background-color: #fff;
     width: 100%;
-    position: absolute;
+    position: sticky;
     top: 80px; /* IMPORTANT: should match nav height */
     left: 0;
     height: 170px;
