@@ -10,7 +10,7 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   dropdown.classList.toggle("show");
 
-  const select = document.getElementById("productSelect");
+  const select = document.getElementById("selector");
   if(select){
     select.addEventListener("change", function () {
       const selectedPage = this.value;
