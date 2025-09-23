@@ -113,13 +113,16 @@
         <label for="colors">Colors (comma separated):</label>
         <input type="text" id="colors" name="colors" />
 
-        <label for="sizes">Sizes (comma separated):</label>
-        <input type="text" id="sizes" name="sizes" />
+  <label for="sizes">Sizes (comma separated):</label>
+  <input type="text" id="sizes" name="sizes" />
 
-        <label for="image">Product Image</label>
-        <input type="file" id="image" name="image" accept="image/*" />
-        <div id="upload-status"></div>
-        <button type="submit">Upload Product</button>
+  <label for="description">Product Description</label>
+  <textarea id="description" name="description" rows="3" style="width:100%;resize:vertical" placeholder="Enter product description..."></textarea>
+
+  <label for="image">Product Image</label>
+  <input type="file" id="image" name="image" accept="image/*" />
+  <div id="upload-status"></div>
+  <button type="submit">Upload Product</button>
       </form>
       <button id="logout-btn">Logout</button>
     </main>
