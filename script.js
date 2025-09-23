@@ -225,41 +225,67 @@ document.addEventListener("DOMContentLoaded", () => {
               `<button class="color-swatch" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
           )
           .join("") || "";
-
-      div.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" />
-        <div class="Product-name">${product.name}</div>
-        <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
-        ${
-          hasOptions
-            ? `
-        <div class="size-color-row">
-          ${
-            sizeHTML
-              ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
-              : ""
-          }
-          ${
-            colorHTML
-              ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
-              : ""
-          }
-        </div>`
-            : ""
-        }
-        <button class="add-to-cart-button">Add to Cart</button>
-        <div class="quantity-controls">
-          <button class="decrease">−</button>
-          <span class="quantity">1</span>
-          <button class="increase">+</button>
-        </div>
-      `;
       if (product.discount != 0) {
-        const discountDiv = document.createElement("div");
-        discountDiv.className = "discount";
-        discountDiv.textContent = `${discountpercent}%`;
-        div.prepend(discountDiv);
-      }        
+      
+        div.innerHTML = `
+          <div class="discount">${discountpercent || 0}%</div>
+          <img src="${product.image}" alt="${product.name}" />
+          <div class="Product-name">${product.name}</div>
+          <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
+          ${
+            hasOptions
+              ? `
+          <div class="size-color-row">
+            ${
+              sizeHTML
+                ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
+                : ""
+            }
+            ${
+              colorHTML
+                ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
+                : ""
+            }
+          </div>`
+              : ""
+          }
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <div class="Product-name">${product.name}</div>
+          <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
+          ${
+            hasOptions
+              ? `
+          <div class="size-color-row">
+            ${
+              sizeHTML
+                ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
+                : ""
+            }
+            ${
+              colorHTML
+                ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
+                : ""
+            }
+          </div>`
+              : ""
+          }
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        `;
+      }
       container.appendChild(div);
       setupCartForProduct(div);
 
