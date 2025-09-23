@@ -200,7 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       const basePrice = parseFloat(product.price);
       const discount = parseFloat(product.discount) || 0;
-      const finalPrice = Math.round(basePrice - (basePrice * discount) / 100);
+      const finalPrice = Math.round(basePrice - discount);
+      const discountpercent = Math.round((discount / basePrice) * 100);
 
       div.className = "Product opacity-0 transition-all duration-500";
       div.id = `${product.id}`;
@@ -226,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("") || "";
 
       div.innerHTML = `
-        <div class="discount">${product.discount || 0}%</div>
         <img src="${product.image}" alt="${product.name}" />
         <div class="Product-name">${product.name}</div>
         <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
@@ -254,7 +254,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="increase">+</button>
         </div>
       `;
-
+      if (product.discount != 0) {
+        const discountDiv = document.createElement("div");
+        discountDiv.className = "discount";
+        discountDiv.textContent = `${discountpercent}%`;
+        div.prepend(discountDiv);
+      }        
       container.appendChild(div);
       setupCartForProduct(div);
 
