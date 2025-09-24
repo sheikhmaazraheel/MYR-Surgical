@@ -331,6 +331,18 @@ document.addEventListener("DOMContentLoaded", () => {
         div.style.transform = "scale(1)";
       }, index * 100);
     });
+    // Show cart popup if cart contains items
+        if (Object.keys(pbdcart).length > 0 && document.body.dataset.category) {
+          const cartPopup = document.getElementById("cart-popup");
+          if (!cartPopup.classList.contains("show")) {
+            cartPopup.classList.add("show-before");
+            updateCartPopup();
+            setTimeout(() => {
+              cartPopup.classList.remove("show-before");
+              cartPopup.classList.add("show");
+            }, 200);
+          }
+        }
   }
 
   // ✅ Fetch & Render Products with Minimum 2-Second Loader
