@@ -331,18 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
         div.style.transform = "scale(1)";
       }, index * 100);
     });
-    // Show cart popup if cart contains items
-        if (Object.keys(pbdcart).length > 0 && document.body.dataset.category) {
-          const cartPopup = document.getElementById("cart-popup");
-          if (!cartPopup.classList.contains("show")) {
-            cartPopup.classList.add("show-before");
-            updateCartPopup();
-            setTimeout(() => {
-              cartPopup.classList.remove("show-before");
-              cartPopup.classList.add("show");
-            }, 200);
-          }
-        }
+
   }
 
   // ✅ Fetch & Render Products with Minimum 2-Second Loader
@@ -378,8 +367,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mostSellContainer) hideShimmerLoader(mostSellContainer);
 
         // Render products
-        if (container) renderProducts(filtered, container);
-        if (mostSellContainer) renderProducts(mostSelling, mostSellContainer);
+        if (container) renderProducts(filtered, container).then(() => {
+          // Show cart popup if cart contains items
+          if (Object.keys(myrcart).length > 0) {
+            const cartPopup = document.getElementById("cart-popup");
+            if (!cartPopup.classList.contains("show")) {
+              cartPopup.classList.add("show-before");
+              updateCartPopup();
+              setTimeout(() => {
+                cartPopup.classList.remove("show-before");
+                cartPopup.classList.add("show");
+              }, 200);
+            }
+          }
+        });
+        if (mostSellContainer) renderProducts(mostSelling, mostSellContainer).then(() => {
+          // Show cart popup if cart contains items
+          if (Object.keys(myrcart).length > 0) {
+            const cartPopup = document.getElementById("cart-popup");
+            if (!cartPopup.classList.contains("show")) {
+              cartPopup.classList.add("show-before");
+              updateCartPopup();
+              setTimeout(() => {
+                cartPopup.classList.remove("show-before");
+                cartPopup.classList.add("show");
+              }, 200);
+            }
+          }
+        });
       })
       .catch((err) => {
         console.error("Error loading products:", err);
