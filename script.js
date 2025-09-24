@@ -367,7 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mostSellContainer) hideShimmerLoader(mostSellContainer);
 
         // Render products
-        if (container) renderProducts(filtered, container).then(() => {
+        if (container){ 
+          renderProducts(filtered, container)
           // Show cart popup if cart contains items
           if (Object.keys(myrcart).length > 0) {
             const cartPopup = document.getElementById("cart-popup");
@@ -380,8 +381,9 @@ document.addEventListener("DOMContentLoaded", () => {
               }, 200);
             }
           }
-        });
-        if (mostSellContainer) renderProducts(mostSelling, mostSellContainer).then(() => {
+        };
+        if (mostSellContainer) {
+          renderProducts(mostSelling, mostSellContainer)
           // Show cart popup if cart contains items
           if (Object.keys(myrcart).length > 0) {
             const cartPopup = document.getElementById("cart-popup");
@@ -394,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
               }, 200);
             }
           }
-        });
+        };
       })
       .catch((err) => {
         console.error("Error loading products:", err);
