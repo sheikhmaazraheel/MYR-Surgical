@@ -7,7 +7,7 @@
   padding: 8px;
   border-radius: 6px;
   min-height: 40px;
-  box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   transition: background 0.2s;
 }
 html {
@@ -1155,4 +1155,59 @@ textarea {
 .selected-color {
   outline: 2px solid #2563eb; /* Tailwind blue-600 */
   outline-offset: 2px;
+}
+/* Cart Popup Bar */
+#cart-popup {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 40%;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  transform: translateY(125%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-left: 30vw;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#cart-popup.show {
+  transform: translateY(0);
+}
+#cart-popup.show-before {
+  transform: translateY(-80%);
+}
+
+#cart-popup .view-cart-btn {
+  background-color: transparent;
+  color: #fff;
+  padding: 8px 15px;
+  padding-right: 100px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+.popupCartCount {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #2e5077;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popupCartTotal {
+  justify-self: flex-end;
 }
