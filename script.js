@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCartStorage();
         addToCartBtn.style.display = "inline-block";
         qtyControls.classList.remove("active");
-      if (Object.keys(pbdcart).length === 0) {
+      if (Object.keys(myrcart).length === 0) {
           const cartPopup = document.getElementById("cart-popup");
           if (cartPopup.classList.contains("show")) {
             cartPopup.classList.remove("show");
