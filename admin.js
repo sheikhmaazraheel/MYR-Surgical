@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentId = product.id;
         editForm.style.display = "block";
 
+        // Populate form fields
         editForm["edit-id"].value = product.id;
         editForm["edit-name"].value = product.name;
         editForm["edit-price"].value = product.price;
@@ -139,8 +140,35 @@ document.addEventListener("DOMContentLoaded", () => {
         editForm["edit-available"].value = product.available ? "true" : "false";
         editForm["edit-colors"].value = (product.colors || []).join(",");
         editForm["edit-sizes"].value = (product.sizes || []).join(",");
+        editForm["edit-description"].value = product.description || "";
+
+        // Display existing images
+        const imagePreview = document.getElementById("edit-image-preview");
+        if (imagePreview) {
+          imagePreview.innerHTML = product.images?.length
+            ? product.images
+                .map(
+                  (img, index) =>
+                    `<div style="margin: 5px; position: relative;">
+                     <img src="${img}" alt="Product Image ${
+                      index + 1
+                    }" style="max-width: 100px; height: auto; border-radius: 4px;">
+                   </div>`
+                )
+                .join("")
+            : "<p>No images available</p>";
+        }
+
+        // Validate number of uploaded images
+        const fileInput = editForm["edit-images"];
+        fileInput?.addEventListener("change", () => {
+          if (fileInput.files.length > 10) {
+            alert("You can upload a maximum of 10 images.");
+            fileInput.value = "";
+          }
+        });
       } catch (err) {
-        console.error(err);
+        console.error("Load product error:", err);
         alert("Failed to load product");
       }
     });
@@ -158,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         return;
       }
+
       try {
         const res = await fetch(`${backendURL}/products/${currentId}`, {
           method: "PUT",
@@ -168,8 +197,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
         alert(result.message || "Product updated");
         editForm.style.display = "none";
+        editForm.reset();
+        const imagePreview = document.getElementById("edit-image-preview");
+        if (imagePreview) imagePreview.innerHTML = "";
       } catch (err) {
-        console.error(err);
+        console.error("Update product error:", err);
         alert("Failed to update product");
       }
     });
@@ -405,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
               loadBtn.click();
               resultsContainer.style.display = "none";
               searchResults.classList.remove("show"); // Trigger existing loadBtn event
-           } catch (err) {
+            } catch (err) {
               console.error("Error triggering loadBtn:", err);
               alert("Failed to load product. Please try again.");
             }

@@ -11,7 +11,7 @@ hamburger.addEventListener("click", () => {
   dropdown.classList.toggle("show");
 
   const select = document.getElementById("selector");
-  if(select){
+  if (select) {
     select.addEventListener("change", function () {
       const selectedPage = this.value;
       if (selectedPage) {
@@ -42,12 +42,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Utility Functions
   function getCartProductCount() {
     // Sum all quantities in cart
-    return Object.values(myrcart).reduce((sum, item) => sum + (item.quantity || 0), 0);
+    return Object.values(myrcart).reduce(
+      (sum, item) => sum + (item.quantity || 0),
+      0
+    );
   }
 
   function getCartTotal() {
     // Sum total price for all items
-    return Object.values(myrcart).reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+    return Object.values(myrcart).reduce(
+      (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+      0
+    );
   }
 
   function updateCartStorage() {
@@ -77,6 +83,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const id = productEl.dataset.id;
     const name = productEl.dataset.name;
     const price = parseFloat(productEl.dataset.price);
+    productEl.addEventListener("click", (e) => {
+      if (
+        !e.target.closest(
+          ".add-to-cart-button, .quantity-controls, .size-btn, .color-swatch"
+        )
+      ) {
+        // Open popup logic here (see next snippet)
+        const popup = document.getElementById("product-popup");
+        const images = JSON.parse(productEl.dataset.images);
+        const currentImageIndex = 0;
+
+        // Populate popup (similar to previous response)
+        document.getElementById("product-name").textContent =
+          productEl.dataset.name;
+        document.getElementById("product-description").textContent =
+          productEl.dataset.description || "";
+        document.getElementById("product-price").textContent =
+          productEl.dataset.price;
+
+        // Load carousel images
+        const carouselImages = document.querySelector(".carousel-images");
+        carouselImages.innerHTML = "";
+        images.forEach((src, index) => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = productEl.dataset.name;
+          img.classList.toggle("active", index === 0);
+          carouselImages.appendChild(img);
+        });
+
+        popup.style.display = "flex";
+      }
+    });
 
     if (!addToCartBtn || !qtyControls || !qtyDisplay) return;
 
@@ -132,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       qtyControls.classList.add("active");
       qtyDisplay.textContent = quantity;
     });
-    
+
     // Quantity Controls
     increaseBtn?.addEventListener("click", () => {
       quantity++;
@@ -151,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCartStorage();
         addToCartBtn.style.display = "inline-block";
         qtyControls.classList.remove("active");
-      if (Object.keys(myrcart).length === 0) {
+        if (Object.keys(myrcart).length === 0) {
           const cartPopup = document.getElementById("cart-popup");
           if (cartPopup.classList.contains("show")) {
             cartPopup.classList.remove("show");
@@ -159,14 +198,13 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           updateCartPopup();
         }
-      }
-       else {
+      } else {
         myrcart[id].quantity = quantity;
         updateCartStorage();
         qtyDisplay.textContent = quantity;
         qtyDisplay.style.transform = "scale(1.2)";
         setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
-      updateCartPopup();
+        updateCartPopup();
       }
     });
   }
@@ -234,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
       div.dataset.id = product.id;
       div.dataset.name = product.name;
       div.dataset.price = finalPrice;
+      div.dataset.images = JSON.stringify(product.images || []);
 
       const hasOptions =
         (product.sizes?.length || 0) > 0 || (product.colors?.length || 0) > 0;
@@ -252,10 +291,11 @@ document.addEventListener("DOMContentLoaded", () => {
           )
           .join("") || "";
       if (product.discount != 0) {
-      
         div.innerHTML = `
           <div class="discount">${discountpercent || 0}%</div>
-          <img src="${product.image}" alt="${product.name}" />
+          <img src="${product.images?.[0] || ""}" alt="${
+          product.name
+        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
           <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
@@ -289,7 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       } else {
         div.innerHTML = `
-          <img src="${product.image}" alt="${product.name}" />
+          <img src="${product.images?.[0] || ""}" alt="${
+          product.name
+        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
           <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
@@ -331,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
         div.style.transform = "scale(1)";
       }, index * 100);
     });
-
   }
 
   // ✅ Fetch & Render Products with Minimum 2-Second Loader
@@ -367,8 +408,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mostSellContainer) hideShimmerLoader(mostSellContainer);
 
         // Render products
-        if (container){ 
-          renderProducts(filtered, container)
+        if (container) {
+          renderProducts(filtered, container);
           // Show cart popup if cart contains items
           if (Object.keys(myrcart).length > 0) {
             const cartPopup = document.getElementById("cart-popup");
@@ -381,9 +422,9 @@ document.addEventListener("DOMContentLoaded", () => {
               }, 200);
             }
           }
-        };
+        }
         if (mostSellContainer) {
-          renderProducts(mostSelling, mostSellContainer)
+          renderProducts(mostSelling, mostSellContainer);
           // Show cart popup if cart contains items
           if (Object.keys(myrcart).length > 0) {
             const cartPopup = document.getElementById("cart-popup");
@@ -396,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
               }, 200);
             }
           }
-        };
+        }
       })
       .catch((err) => {
         console.error("Error loading products:", err);
@@ -541,7 +582,45 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  // Popup controls
+  const popup = document.getElementById("product-popup");
+  const closeBtn = document.querySelector(".close-btn");
+  const prevBtn = document.querySelector(".prev-btn");
+  const nextBtn = document.querySelector(".next-btn");
+  let currentImageIndex = 0;
+  let images = [];
 
+  closeBtn?.addEventListener("click", () => {
+    popup.style.display = "none";
+  });
+
+  popup?.addEventListener("click", (e) => {
+    if (e.target === popup) {
+      popup.style.display = "none";
+    }
+  });
+
+  // Carousel navigation
+  prevBtn?.addEventListener("click", () => {
+    if (currentImageIndex > 0) {
+      currentImageIndex--;
+      updateCarousel();
+    }
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    if (currentImageIndex < images.length - 1) {
+      currentImageIndex++;
+      updateCarousel();
+    }
+  });
+
+  function updateCarousel() {
+    const carouselImgs = document.querySelectorAll(".carousel-images img");
+    carouselImgs.forEach((img, index) => {
+      img.classList.toggle("active", index === currentImageIndex);
+    });
+  }
   // ============== Search Functionality ===============
   const searchInput = document.getElementById("searchInput");
   const searchResults = document.getElementById("searchResults");

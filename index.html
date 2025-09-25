@@ -193,11 +193,26 @@
     </section>
     <!-- =======================  MOST SELL ITEMS ===================== z-->
     <section id="most-sell">
-
       <h1>Our Most Selling Products</h1>
-            <!-- -------- Loader --->
-    <!-- ----------Product Grid -->
+      <!-- -------- Loader --->
+      <!-- ----------Product Grid -->
       <div class="Product-grid" id="most-sell-products"></div>
+      <!-- Popup Modal -->
+      <div id="product-popup" class="popup">
+        <div class="popup-content">
+          <span class="close-btn">&times;</span>
+          <div class="image-carousel">
+            <button class="carousel-btn prev-btn">&#10094;</button>
+            <div class="carousel-images">
+              <!-- Images will be dynamically inserted -->
+            </div>
+            <button class="carousel-btn next-btn">&#10095;</button>
+          </div>
+          <h2 id="product-name"></h2>
+          <p id="product-description"></p>
+          <p id="product-price"></p>
+        </div>
+      </div>
     </section>
     <!-- ======================== Floating WA ICON -->
     <a

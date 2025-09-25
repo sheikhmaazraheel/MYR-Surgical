@@ -22,7 +22,10 @@
       sizes="16x16"
       href="https://sheikhmaazraheel.github.io/MYR-Surgical/favicon_io/favicon-16x16.png"
     />
-    <link rel="manifest" href="https://sheikhmaazraheel.github.io/MYR-Surgical/favicon_io/site.webmanifest" />
+    <link
+      rel="manifest"
+      href="https://sheikhmaazraheel.github.io/MYR-Surgical/favicon_io/site.webmanifest"
+    />
     <link
       rel="shortcut icon"
       href="https://sheikhmaazraheel.github.io/MYR-Surgical/favicon_io/favicon.ico"
@@ -124,17 +127,34 @@
         <label for="colors">Colors (comma separated):</label>
         <input type="text" id="edit-colors" name="colors" />
 
-  <label for="sizes">Sizes (comma separated):</label>
-  <input type="text" id="edit-sizes" name="sizes" />
+        <label for="sizes">Sizes (comma separated):</label>
+        <input type="text" id="edit-sizes" name="sizes" />
 
-  <label for="description">Product Description</label>
-  <textarea id="edit-description" name="description" rows="3" style="width:100%;resize:vertical" placeholder="Enter product description..."></textarea>
+        <label for="description">Product Description</label>
+        <textarea
+          id="edit-description"
+          name="description"
+          rows="3"
+          style="width: 100%; resize: vertical"
+          placeholder="Enter product description..."
+        ></textarea>
 
-  <label for="edit-image">Product Image (optional)</label>
-  <input type="file" id="edit-image" name="image" accept="image/*" />
+        <!-- Add this inside the <form id="editProductForm"> -->
+        <div
+          id="edit-image-preview"
+          style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px"
+        ></div>
+        <label for="edit-images">Product Images (up to 10):</label>
+        <input
+          type="file"
+          id="edit-images"
+          name="images"
+          accept="image/*"
+          multiple
+        />
 
-  <button type="submit">Save Changes</button>
-  <button type="button" id="deleteProductBtn">Delete</button>
+        <button type="submit">Save Changes</button>
+        <button type="button" id="deleteProductBtn">Delete</button>
       </form>
       <button id="logout-btn">Logout</button>
     </main>
