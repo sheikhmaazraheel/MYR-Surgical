@@ -637,94 +637,96 @@ document.addEventListener("DOMContentLoaded", () => {
         div.style.transform = "scale(1)";
       }, index * 100);
     });
-      const hasOptions =
-        (product.sizes?.length || 0) > 0 || (product.colors?.length || 0) > 0;
-      const sizeHTML =
-        product.sizes
-          ?.map(
-            (size) =>
-              `<button class="size-btn" data-size="${size}">${size}</button>`
-          )
-          .join("") || "";
-      const colorHTML =
-        product.colors
-          ?.map(
-            (color) =>
-              `<button class="color-swatch" style="background-color: ${color}" data-color="${color}" title="${color}"></button>`
-          )
-          .join("") || "";
-      // Truncate description for card
-      const desc = product.description
-        ? product.description.length > 80
-          ? product.description.slice(0, 80) + "..."
-          : product.description
-        : "No description provided.";
-      if (product.discount != 0) {
-        div.innerHTML = `
-          <div class="discount">${discountpercent || 0}%</div>
-          <img src="${product.images?.[0] || ""}" alt="${
-          product.name
-        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
-          <div class="Product-name">${product.name}</div>
-          <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
-          <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${desc}</div>
-          ${
-            hasOptions
-              ? `
-          <div class="size-color-row">
-            ${
-              sizeHTML
-                ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
-                : ""
+    attachProductPopup(list, container);
+  }
+
+  // ✅ Fetch & Render Products with Minimum 2-Second Loader
+  if (container || mostSellContainer) {
+    // Show shimmer loaders
+    if (container) showShimmerLoader(container);
+    if (mostSellContainer) showShimmerLoader(mostSellContainer);
+
+    // Create a promise that resolves after 2 seconds
+    const minLoaderTime = new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Fetch products
+    const fetchProducts = fetch(`${backendURL}/products`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then((products) => {
+        const category = document.body.dataset.category;
+        const filtered = category
+          ? products.filter((p) => p.category === category && !!p.available)
+          : products.filter((p) => !!p.available);
+        const mostSelling = products.filter((p) => p.mostSell && !!p.available);
+
+        return { filtered, mostSelling };
+      });
+
+    // Wait for both fetch and minimum loader time
+    Promise.all([fetchProducts, minLoaderTime])
+      .then(([{ filtered, mostSelling }]) => {
+        // Hide loaders after both promises resolve
+        if (container) hideShimmerLoader(container);
+        if (mostSellContainer) hideShimmerLoader(mostSellContainer);
+
+        // Render products
+        if (container) {
+          renderProducts(filtered, container);
+          // Show cart popup if cart contains items
+          if (Object.keys(myrcart).length > 0) {
+            const cartPopup = document.getElementById("cart-popup");
+            if (!cartPopup.classList.contains("show")) {
+              cartPopup.classList.add("show-before");
+              updateCartPopup();
+              setTimeout(() => {
+                cartPopup.classList.remove("show-before");
+                cartPopup.classList.add("show");
+              }, 200);
             }
-            ${
-              colorHTML
-                ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
-                : ""
-            }
-          </div>`
-              : ""
           }
-          <button class="add-to-cart-button">Add to Cart</button>
-          <div class="quantity-controls">
-            <button class="decrease">−</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
-          </div>
-        `;
-      } else {
-        div.innerHTML = `
-          <img src="${product.images?.[0] || ""}" alt="${
-          product.name
-        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
-          <div class="Product-name">${product.name}</div>
-          <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
-      <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${desc}</div>
-          ${
-            hasOptions
-              ? `
-          <div class="size-color-row">
-            ${
-              sizeHTML
-                ? `<div class="option-group"><div class="option-label">Size:</div><div class="size-options">${sizeHTML}</div></div>`
-                : ""
+        }
+        if (mostSellContainer) {
+          renderProducts(mostSelling, mostSellContainer);
+          // Show cart popup if cart contains items
+          if (Object.keys(myrcart).length > 0) {
+            const cartPopup = document.getElementById("cart-popup");
+            if (!cartPopup.classList.contains("show")) {
+              cartPopup.classList.add("show-before");
+              updateCartPopup();
+              setTimeout(() => {
+                cartPopup.classList.remove("show-before");
+                cartPopup.classList.add("show");
+              }, 200);
             }
-            ${
-              colorHTML
-                ? `<div class="option-group"><div class="option-label">Color:</div><div class="color-options">${colorHTML}</div></div>`
-                : ""
-            }
-          </div>`
-              : ""
           }
-          <button class="add-to-cart-button">Add to Cart</button>
-          <div class="quantity-controls">
-            <button class="decrease">−</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
-          </div>
-        `;
-      }
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading products:", err);
+        hideShimmerLoader(container);
+        hideShimmerLoader(mostSellContainer);
+      });
+  }
+  const cartItemsTbody = document.getElementById("cart-items");
+  const orderIdSpan = document.getElementById("order-id");
+  const quantityHeading = document.getElementById("Quantity-heading");
+  const cartSummary = document.getElementById("cart-summary");
+  const cartTable = document.getElementById("cart-table");
+  const cartHeadings = document.getElementById("summary-headings");
+  const totalRow = document.getElementById("total");
+  const totalColumn = document.getElementById("totalColumn");
+  const checkoutForm = document.getElementById("checkout-form");
+
+  let subtotal = 0;
+  let deliveryCharges = 0;
+  let total = 0;
+
+  if (cartTable) {
+    cartItemsTbody.innerHTML = "";
+
     Object.entries(myrcart).forEach(([id, item]) => {
       const price = item.price || 0;
       const qty = item.quantity || 0;
