@@ -33,16 +33,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const basePrice = parseFloat(product.price);
     const discount = parseFloat(product.discount) || 0;
     const finalPrice = Math.round(basePrice - discount);
-    const discountPercent = basePrice ? Math.round((discount / basePrice) * 100) : 0;
+    const discountPercent = basePrice
+      ? Math.round((discount / basePrice) * 100)
+      : 0;
 
     // Images array for carousel
-    const imagesArr = Array.isArray(product.images) && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
+    const imagesArr =
+      Array.isArray(product.images) && product.images.length > 0
+        ? product.images
+        : product.image
+        ? [product.image]
+        : [];
 
     // Carousel HTML
     let carouselHTML = `<div class="image-carousel" style="position:relative;text-align:center;">
       <button class="carousel-btn prev-btn" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;color:black;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;"><</button>
       <div class="carousel-images" style="display:inline-block;max-width:100%;max-height:260px;">
-        ${imagesArr.map((img, idx) => `<img src="${img}" alt="${product.name} - ${idx+1}" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;display:${idx===0?'block':'none'};" class="carousel-img${idx===0?' active':''}" />`).join("")}
+        ${imagesArr
+          .map(
+            (img, idx) =>
+              `<img src="${img}" alt="${product.name} - ${
+                idx + 1
+              }" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;display:${
+                idx === 0 ? "block" : "none"
+              };" class="carousel-img${idx === 0 ? " active" : ""}" />`
+          )
+          .join("")}
       </div>
       <button class="carousel-btn next-btn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;color:black;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">></button>
     </div>`;
@@ -50,12 +66,20 @@ document.addEventListener("DOMContentLoaded", () => {
     popupBody.innerHTML = `
       ${carouselHTML}
       <div class="popup-details-section" style="padding:0 12px;">
-        <div class="popup-product-name" style="font-size:1.3rem;font-weight:600;color:#222;margin-bottom:8px;">${product.name}</div>
+        <div class="popup-product-name" style="font-size:1.3rem;font-weight:600;color:#222;margin-bottom:8px;">${
+          product.name
+        }</div>
         <div class="popup-product-price" style="font-size:1.1rem;margin-bottom:8px;">
           <span style="color:#6366f1;font-weight:700;">Rs.${finalPrice}</span>
-          ${discount ? `<span style="text-decoration:line-through;color:#888;margin-left:8px;">Rs.${basePrice}</span> <span style="color:#f43f5e;font-weight:600;margin-left:8px;">${discountPercent}% OFF</span>` : ""}
+          ${
+            discount
+              ? `<span style="text-decoration:line-through;color:#888;margin-left:8px;">Rs.${basePrice}</span> <span style="color:#f43f5e;font-weight:600;margin-left:8px;">${discountPercent}% OFF</span>`
+              : ""
+          }
         </div>
-        <div class="popup-product-description product-description" style="margin-bottom:12px;">${product.description ? product.description : "No description provided."}</div>
+        <div class="popup-product-description product-description" style="margin-bottom:12px;">${
+          product.description ? product.description : "No description provided."
+        }</div>
         <div class="popup-cart-controls" style="margin-bottom:12px;">
           <button class="add-to-cart-button">Add to Cart</button>
           <div class="quantity-controls">
@@ -69,16 +93,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Carousel logic
     let currentImageIndex = 0;
-    const carouselImgs = popupBody.querySelectorAll('.carousel-img');
-    const prevBtn = popupBody.querySelector('.prev-btn');
-    const nextBtn = popupBody.querySelector('.next-btn');
+    const carouselImgs = popupBody.querySelectorAll(".carousel-img");
+    const prevBtn = popupBody.querySelector(".prev-btn");
+    const nextBtn = popupBody.querySelector(".next-btn");
     function updateCarousel() {
       carouselImgs.forEach((img, idx) => {
-        img.style.display = idx === currentImageIndex ? 'block' : 'none';
-        img.classList.toggle('active', idx === currentImageIndex);
+        img.style.display = idx === currentImageIndex ? "block" : "none";
+        img.classList.toggle("active", idx === currentImageIndex);
       });
     }
-    prevBtn.addEventListener('click', (e) => {
+    prevBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentImageIndex > 0) {
         currentImageIndex--;
@@ -87,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       updateCarousel();
     });
-    nextBtn.addEventListener('click', (e) => {
+    nextBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentImageIndex < imagesArr.length - 1) {
         currentImageIndex++;
@@ -99,20 +123,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cart logic for popup
     let quantity = 1;
-    const addToCartBtn = popupBody.querySelector('.add-to-cart-button');
-    const qtyControls = popupBody.querySelector('.quantity-controls');
-    const qtyDisplay = popupBody.querySelector('.quantity');
-    const increaseBtn = popupBody.querySelector('.increase');
-    const decreaseBtn = popupBody.querySelector('.decrease');
+    const addToCartBtn = popupBody.querySelector(".add-to-cart-button");
+    const qtyControls = popupBody.querySelector(".quantity-controls");
+    const qtyDisplay = popupBody.querySelector(".quantity");
+    const increaseBtn = popupBody.querySelector(".increase");
+    const decreaseBtn = popupBody.querySelector(".decrease");
 
     qtyDisplay.textContent = quantity;
-    increaseBtn.addEventListener('click', () => {
+    increaseBtn.addEventListener("click", () => {
       quantity++;
       qtyDisplay.textContent = quantity;
       qtyDisplay.style.transform = "scale(1.2)";
       setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
     });
-    decreaseBtn.addEventListener('click', () => {
+    decreaseBtn.addEventListener("click", () => {
       if (quantity > 1) {
         quantity--;
         qtyDisplay.textContent = quantity;
@@ -121,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    addToCartBtn.addEventListener('click', () => {
+    addToCartBtn.addEventListener("click", () => {
       // Use discounted price
       myrcart[product.id] = {
         name: product.name,
@@ -146,17 +170,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     popup.style.display = "flex";
     // Close logic
-    const closeBtn = popup.querySelector('.close-btn');
-    closeBtn.onclick = () => { popup.style.display = 'none'; };
-    popup.onclick = (e) => { if (e.target === popup) popup.style.display = 'none'; };
+    const closeBtn = popup.querySelector(".close-btn");
+    closeBtn.onclick = () => {
+      popup.style.display = "none";
+    };
+    popup.onclick = (e) => {
+      if (e.target === popup) popup.style.display = "none";
+    };
   }
 
   // Attach click event to product cards to show popup
   function attachProductPopup(list, container) {
-    container.querySelectorAll('.Product').forEach((card, idx) => {
-      card.addEventListener('click', (e) => {
+    container.querySelectorAll(".Product").forEach((card, idx) => {
+      card.addEventListener("click", (e) => {
         // Prevent click on cart controls from opening popup
-        if (e.target.closest('.add-to-cart-button, .quantity-controls, .size-btn, .color-swatch')) return;
+        if (
+          e.target.closest(
+            ".add-to-cart-button, .quantity-controls, .size-btn, .color-swatch"
+          )
+        )
+          return;
         showProductPopup(list[idx]);
       });
     });
@@ -568,10 +601,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
       <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
-        product.description
-          ? product.description
-          : "No description provided."
-          }</div>
+        product.description ? product.description : "No description provided."
+      }</div>
           ${
             hasOptions
               ? `
