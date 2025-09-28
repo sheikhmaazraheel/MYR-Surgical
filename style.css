@@ -1,12 +1,6 @@
 /* Product Description Styling */
 .product-description {
-  margin-top: 8px;
-  font-size: 1rem;
-  color: #444;
-  background: #f8fafc;
-  padding: 8px;
-  border-radius: 6px;
-  min-height: 40px;
+
   box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   transition: background 0.2s;
 }
@@ -26,6 +20,8 @@
   -webkit-line-clamp: 2; /* number of lines before truncating */
   -webkit-box-orient: vertical;
   cursor: pointer; /* show user it’s clickable */
+    box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
+  transition: background 0.2s;
 }
 
 html {
@@ -534,6 +530,7 @@ select:focus {
   box-sizing: border-box;
   max-width: 280px;
   transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
 }
 .Product:hover {
   transform: translateY(-6px) scale(1.03);

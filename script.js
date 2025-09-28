@@ -579,7 +579,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
-          <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
+          <div class="product-description" style="margin-top:8px;font-size:0.8rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
             product.description
               ? product.description
               : "No description provided."
@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
-      <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
+      <div class="product-description" style="margin-top:8px;font-size:0.8rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
         product.description ? product.description : "No description provided."
       }</div>
           ${
