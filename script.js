@@ -35,13 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const finalPrice = Math.round(basePrice - discount);
     const discountPercent = basePrice ? Math.round((discount / basePrice) * 100) : 0;
 
-    // Use first image if images array exists, else fallback to product.image
-    const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : product.image;
+    // Images array for carousel
+    const imagesArr = Array.isArray(product.images) && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
+
+    // Carousel HTML
+    let carouselHTML = `<div class="image-carousel" style="position:relative;text-align:center;">
+      <button class="carousel-btn prev-btn" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">&#8592;</button>
+      <div class="carousel-images" style="display:inline-block;max-width:100%;max-height:260px;">
+        ${imagesArr.map((img, idx) => `<img src="${img}" alt="${product.name} - ${idx+1}" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;display:${idx===0?'block':'none'};" class="carousel-img${idx===0?' active':''}" />`).join("")}
+      </div>
+      <button class="carousel-btn next-btn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">&#8594;</button>
+    </div>`;
 
     popupBody.innerHTML = `
-      <div class="popup-image-section" style="text-align:center;">
-        <img src="${imageUrl}" alt="${product.name}" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;" />
-      </div>
+      ${carouselHTML}
       <div class="popup-details-section" style="padding:0 12px;">
         <div class="popup-product-name" style="font-size:1.3rem;font-weight:600;color:#222;margin-bottom:8px;">${product.name}</div>
         <div class="popup-product-price" style="font-size:1.1rem;margin-bottom:8px;">
@@ -60,9 +67,84 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Setup cart logic for popup
-    setupCartForProduct(popupBody);
+    // Carousel logic
+    let currentImageIndex = 0;
+    const carouselImgs = popupBody.querySelectorAll('.carousel-img');
+    const prevBtn = popupBody.querySelector('.prev-btn');
+    const nextBtn = popupBody.querySelector('.next-btn');
+    function updateCarousel() {
+      carouselImgs.forEach((img, idx) => {
+        img.style.display = idx === currentImageIndex ? 'block' : 'none';
+        img.classList.toggle('active', idx === currentImageIndex);
+      });
+    }
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+        updateCarousel();
+      }
+    });
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (currentImageIndex < imagesArr.length - 1) {
+        currentImageIndex++;
+        updateCarousel();
+      }
+    });
+
+    // Cart logic for popup
+    let quantity = 1;
+    const addToCartBtn = popupBody.querySelector('.add-to-cart-button');
+    const qtyControls = popupBody.querySelector('.quantity-controls');
+    const qtyDisplay = popupBody.querySelector('.quantity');
+    const increaseBtn = popupBody.querySelector('.increase');
+    const decreaseBtn = popupBody.querySelector('.decrease');
+
+    qtyDisplay.textContent = quantity;
+    increaseBtn.addEventListener('click', () => {
+      quantity++;
+      qtyDisplay.textContent = quantity;
+      qtyDisplay.style.transform = "scale(1.2)";
+      setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
+    });
+    decreaseBtn.addEventListener('click', () => {
+      if (quantity > 1) {
+        quantity--;
+        qtyDisplay.textContent = quantity;
+        qtyDisplay.style.transform = "scale(1.2)";
+        setTimeout(() => (qtyDisplay.style.transform = "scale(1)"), 150);
+      }
+    });
+
+    addToCartBtn.addEventListener('click', () => {
+      // Use discounted price
+      myrcart[product.id] = {
+        name: product.name,
+        price: finalPrice,
+        quantity: quantity,
+      };
+      updateCartStorage();
+      // Show cart popup
+      const cartPopup = document.getElementById("cart-popup");
+      if (!cartPopup.classList.contains("show")) {
+        cartPopup.classList.add("show-before");
+        updateCartPopup();
+        setTimeout(() => {
+          cartPopup.classList.remove("show-before");
+          cartPopup.classList.add("show");
+        }, 200);
+      } else {
+        updateCartPopup();
+      }
+      popup.style.display = "none";
+    });
+
     popup.style.display = "flex";
+    // Close logic
+    const closeBtn = popup.querySelector('.close-btn');
+    closeBtn.onclick = () => { popup.style.display = 'none'; };
+    popup.onclick = (e) => { if (e.target === popup) popup.style.display = 'none'; };
   }
 
   // Attach click event to product cards to show popup
