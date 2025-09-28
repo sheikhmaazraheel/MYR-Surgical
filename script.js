@@ -23,6 +23,58 @@ hamburger.addEventListener("click", () => {
 
 // ============== Rendering Products ===============
 document.addEventListener("DOMContentLoaded", () => {
+  // ================= POPUP LOGIC =================
+  function showProductPopup(product) {
+    const popup = document.getElementById("product-popup");
+    const popupBody = popup.querySelector(".popup-body");
+    if (!popup || !popupBody) return;
+
+    // Calculate price and discount
+    const basePrice = parseFloat(product.price);
+    const discount = parseFloat(product.discount) || 0;
+    const finalPrice = Math.round(basePrice - discount);
+    const discountPercent = basePrice ? Math.round((discount / basePrice) * 100) : 0;
+
+    // Use first image if images array exists, else fallback to product.image
+    const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : product.image;
+
+    popupBody.innerHTML = `
+      <div class="popup-image-section" style="text-align:center;">
+        <img src="${imageUrl}" alt="${product.name}" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;" />
+      </div>
+      <div class="popup-details-section" style="padding:0 12px;">
+        <div class="popup-product-name" style="font-size:1.3rem;font-weight:600;color:#222;margin-bottom:8px;">${product.name}</div>
+        <div class="popup-product-price" style="font-size:1.1rem;margin-bottom:8px;">
+          <span style="color:#6366f1;font-weight:700;">Rs.${finalPrice}</span>
+          ${discount ? `<span style="text-decoration:line-through;color:#888;margin-left:8px;">Rs.${basePrice}</span> <span style="color:#f43f5e;font-weight:600;margin-left:8px;">${discountPercent}% OFF</span>` : ""}
+        </div>
+        <div class="popup-product-description product-description" style="margin-bottom:12px;">${product.description ? product.description : "No description provided."}</div>
+        <div class="popup-cart-controls" style="margin-bottom:12px;">
+          <button class="add-to-cart-button">Add to Cart</button>
+          <div class="quantity-controls">
+            <button class="decrease">−</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Setup cart logic for popup
+    setupCartForProduct(popupBody);
+    popup.style.display = "flex";
+  }
+
+  // Attach click event to product cards to show popup
+  function attachProductPopup(list, container) {
+    container.querySelectorAll('.Product').forEach((card, idx) => {
+      card.addEventListener('click', (e) => {
+        // Prevent click on cart controls from opening popup
+        if (e.target.closest('.add-to-cart-button, .quantity-controls, .size-btn, .color-swatch')) return;
+        showProductPopup(list[idx]);
+      });
+    });
+  }
   const myrcart = JSON.parse(localStorage.getItem("myrcart")) || {};
   const container = document.getElementById("Product-grid");
   const mostSellContainer = document.getElementById("most-sell-products");
@@ -89,31 +141,126 @@ document.addEventListener("DOMContentLoaded", () => {
           ".add-to-cart-button, .quantity-controls, .size-btn, .color-swatch"
         )
       ) {
-        // Open popup logic here (see next snippet)
+        // Popup Variables
         const popup = document.getElementById("product-popup");
-        const images = JSON.parse(productEl.dataset.images);
-        const currentImageIndex = 0;
+        const closeBtn = document.querySelector(".close-btn");
+        const prevBtn = document.querySelector(".prev-btn");
+        const nextBtn = document.querySelector(".next-btn");
+        let currentImageIndex = 0;
+        let images = [];
+        let currentProduct = null;
 
-        // Populate popup (similar to previous response)
-        document.getElementById("product-name").textContent =
-          productEl.dataset.name;
-        document.getElementById("product-description").textContent =
-          productEl.dataset.description || "";
-        document.getElementById("product-price").textContent =
-          productEl.dataset.price;
+        // Open Popup on Product Click
+        document.querySelectorAll(".product").forEach((productEl) => {
+          // Adjust selector if needed (e.g., .product-card)
+          productEl.addEventListener("click", (e) => {
+            if (
+              e.target.closest(
+                ".add-to-cart-button, .quantity-controls, .size-btn, .color-swatch"
+              )
+            )
+              return;
 
-        // Load carousel images
-        const carouselImages = document.querySelector(".carousel-images");
-        carouselImages.innerHTML = "";
-        images.forEach((src, index) => {
-          const img = document.createElement("img");
-          img.src = src;
-          img.alt = productEl.dataset.name;
-          img.classList.toggle("active", index === 0);
-          carouselImages.appendChild(img);
+            currentProduct = {
+              id: productEl.dataset.id,
+              name: productEl.dataset.name,
+              description: productEl.dataset.description || "",
+              price: parseFloat(productEl.dataset.price || 0),
+              discount: parseFloat(productEl.dataset.discount || 0),
+              images: JSON.parse(productEl.dataset.images || "[]"),
+            };
+
+            // Populate Details
+            document.getElementById("product-name").textContent =
+              currentProduct.name;
+            const originalPriceEl = document.getElementById(
+              "product-original-price"
+            );
+            const discountedPriceEl = document.getElementById(
+              "product-discounted-price"
+            );
+            if (currentProduct.discount > 0) {
+              originalPriceEl.textContent = `Rs. ${currentProduct.price.toFixed(
+                2
+              )}`;
+              const discountedPrice =
+                currentProduct.price * (1 - currentProduct.discount / 100);
+              discountedPriceEl.textContent = `Rs. ${discountedPrice.toFixed(
+                2
+              )}`;
+            } else {
+              originalPriceEl.textContent = "";
+              discountedPriceEl.textContent = `Rs. ${currentProduct.price.toFixed(
+                2
+              )}`;
+            }
+            document.getElementById("product-description").textContent =
+              currentProduct.description;
+
+            // Load Images
+            images = currentProduct.images;
+            const carouselImages = document.querySelector(".carousel-images");
+            carouselImages.innerHTML = "";
+            images.forEach((src, index) => {
+              const img = document.createElement("img");
+              img.src = src || "./images/placeholder.jpg";
+              img.alt = `${currentProduct.name} - Image ${index + 1}`;
+              img.classList.toggle("active", index === 0);
+              carouselImages.appendChild(img);
+            });
+
+            popup.style.display = "flex";
+            currentImageIndex = 0;
+          });
         });
 
-        popup.style.display = "flex";
+        // Close Popup
+        closeBtn.addEventListener(
+          "click",
+          () => (popup.style.display = "none")
+        );
+        popup.addEventListener("click", (e) => {
+          if (e.target === popup) popup.style.display = "none";
+        });
+
+        // Carousel Navigation
+        prevBtn.addEventListener("click", () => {
+          if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateCarousel();
+          }
+        });
+        nextBtn.addEventListener("click", () => {
+          if (currentImageIndex < images.length - 1) {
+            currentImageIndex++;
+            updateCarousel();
+          }
+        });
+
+        function updateCarousel() {
+          document
+            .querySelectorAll(".carousel-images img")
+            .forEach((img, index) => {
+              img.classList.toggle("active", index === currentImageIndex);
+            });
+        }
+
+        // Add to Cart from Popup
+        document
+          .getElementById("popup-add-to-cart")
+          .addEventListener("click", () => {
+            if (currentProduct) {
+              const productEl = document.querySelector(
+                `[data-id="${currentProduct.id}"]`
+              );
+              if (productEl) {
+                // Use existing cart logic from script.js
+                setupCartForProduct(productEl); // Assumes this updates quantity and adds to cart
+                alert(`${currentProduct.name} added to cart!`);
+              }
+              popup.style.display = "none";
+            }
+          });
       }
     });
 
@@ -334,10 +481,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
-          <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
-            product.description
-              ? product.description
-              : "No description provided."
+      <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
+        product.description
+          ? product.description
+          : "No description provided."
           }</div>
           ${
             hasOptions
@@ -373,6 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
         div.style.transform = "scale(1)";
       }, index * 100);
     });
+    attachProductPopup(list, container);
   }
 
   // ✅ Fetch & Render Products with Minimum 2-Second Loader
