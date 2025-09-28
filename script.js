@@ -527,7 +527,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Render Products
   function renderProducts(list, container) {
     list.forEach((product, index) => {
-      const div = document.createElement("div");
+        const div = document.createElement("div");
+        // Select first valid image from images array, fallback to product.image
+        let imgSrc = "";
+        if (Array.isArray(product.images) && product.images.length > 0) {
+          imgSrc = product.images.find(img => !!img && typeof img === "string" && img.trim() !== "") || "";
+        } else if (product.image && typeof product.image === "string" && product.image.trim() !== "") {
+          imgSrc = product.image;
+        }
+
       const basePrice = parseFloat(product.price);
       const discount = parseFloat(product.discount) || 0;
       const finalPrice = Math.round(basePrice - discount);
@@ -559,9 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (product.discount != 0) {
         div.innerHTML = `
           <div class="discount">${discountpercent || 0}%</div>
-          <img src="${product.images?.[0] || ""}" alt="${
-          product.name
-        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
+            <img src="${imgSrc}" alt="${product.name}" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
           <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
@@ -595,9 +601,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       } else {
         div.innerHTML = `
-          <img src="${product.images?.[0] || ""}" alt="${
-          product.name
-        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
+            <img src="${imgSrc}" alt="${product.name}" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
       <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
