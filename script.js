@@ -40,11 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Carousel HTML
     let carouselHTML = `<div class="image-carousel" style="position:relative;text-align:center;">
-      <button class="carousel-btn prev-btn" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">&#8592;</button>
+      <button class="carousel-btn prev-btn" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;color:black;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;"><</button>
       <div class="carousel-images" style="display:inline-block;max-width:100%;max-height:260px;">
         ${imagesArr.map((img, idx) => `<img src="${img}" alt="${product.name} - ${idx+1}" style="max-width:100%;max-height:260px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:16px;display:${idx===0?'block':'none'};" class="carousel-img${idx===0?' active':''}" />`).join("")}
       </div>
-      <button class="carousel-btn next-btn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">&#8594;</button>
+      <button class="carousel-btn next-btn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;color:black;border:none;border-radius:50%;width:32px;height:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.5rem;cursor:pointer;">></button>
     </div>`;
 
     popupBody.innerHTML = `
@@ -82,15 +82,19 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopPropagation();
       if (currentImageIndex > 0) {
         currentImageIndex--;
-        updateCarousel();
+      } else {
+        currentImageIndex = imagesArr.length - 1;
       }
+      updateCarousel();
     });
     nextBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (currentImageIndex < imagesArr.length - 1) {
         currentImageIndex++;
-        updateCarousel();
+      } else {
+        currentImageIndex = 0;
       }
+      updateCarousel();
     });
 
     // Cart logic for popup
