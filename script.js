@@ -527,14 +527,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Render Products
   function renderProducts(list, container) {
     list.forEach((product, index) => {
-        const div = document.createElement("div");
-        // Select first valid image from images array, fallback to product.image
-        let imgSrc = "";
-        if (Array.isArray(product.images) && product.images.length > 0) {
-          imgSrc = product.images.find(img => !!img && typeof img === "string" && img.trim() !== "") || "";
-        } else if (product.image && typeof product.image === "string" && product.image.trim() !== "") {
-          imgSrc = product.image;
-        }
+      const div = document.createElement("div");
+      // Select first valid image from images array, fallback to product.image
+      let imgSrc = "";
+      if (Array.isArray(product.images) && product.images.length > 0) {
+        imgSrc =
+          product.images.find(
+            (img) => !!img && typeof img === "string" && img.trim() !== ""
+          ) || "";
+      } else if (
+        product.image &&
+        typeof product.image === "string" &&
+        product.image.trim() !== ""
+      ) {
+        imgSrc = product.image;
+      }
 
       const basePrice = parseFloat(product.price);
       const discount = parseFloat(product.discount) || 0;
@@ -567,7 +574,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (product.discount != 0) {
         div.innerHTML = `
           <div class="discount">${discountpercent || 0}%</div>
-            <img src="${imgSrc}" alt="${product.name}" class="product-image" onerror="this.src='./images/placeholder.jpg'">
+            <img src="${imgSrc}" alt="${
+          product.name
+        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="price">Rs.${basePrice}</span> <span class="dicounted-price">Rs.${finalPrice}</span></div>
           <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
@@ -601,7 +610,9 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       } else {
         div.innerHTML = `
-            <img src="${imgSrc}" alt="${product.name}" class="product-image" onerror="this.src='./images/placeholder.jpg'">
+            <img src="${imgSrc}" alt="${
+          product.name
+        }" class="product-image" onerror="this.src='./images/placeholder.jpg'">
           <div class="Product-name">${product.name}</div>
           <div><span class="dicounted-price">Rs.${finalPrice}</span></div>
       <div class="product-description" style="margin-top:8px;font-size:1rem;color:#444;background:#f8fafc;padding:8px;border-radius:6px;min-height:40px;">${
@@ -631,6 +642,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="increase">+</button>
           </div>
         `;
+      }
+      const descEl = div.querySelector(".product-description");
+      if (descEl && product.description && product.description.length > 100) {
+        descEl.addEventListener("click", (e) => {
+          e.stopPropagation(); // prevent opening product popup directly
+          // Reuse existing popup
+          showProductPopup(product);
+        });
       }
       container.appendChild(div);
       setupCartForProduct(div);

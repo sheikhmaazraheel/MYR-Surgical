@@ -10,6 +10,24 @@
   box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   transition: background 0.2s;
 }
+.product-description {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #444;
+  background: #f8fafc;
+  padding: 8px;
+  border-radius: 6px;
+  min-height: 40px;
+  max-height: 48px; /* ≈ 2 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 2; /* for other browsers */
+  -webkit-line-clamp: 2; /* number of lines before truncating */
+  -webkit-box-orient: vertical;
+  cursor: pointer; /* show user it’s clickable */
+}
+
 html {
   scroll-behavior: smooth !important;
 }
