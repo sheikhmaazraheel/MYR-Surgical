@@ -171,10 +171,15 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.style.display = "flex";
     // Close logic
     const closeBtn = popup.querySelector(".close-btn");
-    closeBtn.onclick = () => {
-      popup.style.display = "none";
-    };
-    popup.onclick = (e) => {
+    if (closeBtn) {
+      // Remove previous listeners to avoid stacking
+      closeBtn.onclick = null;
+      closeBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        popup.style.display = "none";
+      });
+    }
+    popup.onclick = function(e) {
       if (e.target === popup) popup.style.display = "none";
     };
   }
