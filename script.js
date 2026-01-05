@@ -1,5 +1,5 @@
 const backendURL = "https://myr-backend-7nx6.onrender.com";
-const githubBase = "https://myrsurgical.com";
+const githubBase = "https://www.myrsurgical.com";
 
 // For Hamburger
 const myrcart = JSON.parse(localStorage.getItem("myrcart")) || {};
