@@ -1,5 +1,5 @@
  const backend_URL = "https://api.myrsurgical.com";
- const githubBase = "https://www.myrsurgical.com";
+ const github_Base = "https://www.myrsurgical.com";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Shared utilities
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.removeItem("myrcart");
           localStorage.removeItem("myrorderId");
           setTimeout(() => {
-            window.location.href = `${githubBase}/thankyou.html?orderId=${result.orderId}`;
+            window.location.href = `${github_Base}/thankyou.html?orderId=${result.orderId}`;
           }, 1000);
         } else {
           if (statusDiv) statusDiv.textContent = `❌ Failed to place order: ${result.message || "Unknown error."}`;
