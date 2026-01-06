@@ -1,4 +1,4 @@
- const backendURL = "https://api.myrsurgical.com";
+ const backend_URL = "https://api.myrsurgical.com";
  const githubBase = "https://www.myrsurgical.com";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const res = await fetch(`${backendURL}/orders`, {
+        const res = await fetch(`${backend_URL}/orders`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const res = await fetch(`${backendURL}/orders/${orderId}`, {
+        const res = await fetch(`${backend_URL}/orders/${orderId}`, {
           method: "GET",
           credentials: "include",
         });
