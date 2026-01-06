@@ -7,7 +7,7 @@ async function checkAuth() {
   try {
     const res = await fetch(`${backendURL}/check-auth`, {
       method: "GET",
-      /*credentials: "include",*/
+      credentials: "include",
     });
     const data = await res.json();
     console.log("Check-auth response:", data);
@@ -33,7 +33,7 @@ if (loginForm) {
         headers: {
           "Content-Type": "application/json",
         },
-        /*credentials: "include",*/
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const editForm = document.getElementById("editProductForm");
   const adminPage = document.getElementById("adminpage");
 
-  // if (productForm || editForm || adminPage) {
-  //   checkAuth(); // Only if on admin page
-  // }
+   if (productForm || editForm || adminPage) {
+     checkAuth(); // Only if on admin page
+  }
   // Validation function for alphanumeric ID
   function isValidId(id) {
     const regex = /^[a-zA-Z0-9]+$/;
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(`${backendURL}/upload`, {
           method: "POST",
           body: formData,
-          /*credentials: "include",*/
+          credentials: "include",
         });
         const result = await res.json();
         statusDiv.textContent =
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const res = await fetch(`${backendURL}/products`, {
-          /*credentials: "include",*/
+          credentials: "include",
         });
 
         const products = await res.json();
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(`${backendURL}/products/${currentId}`, {
           method: "PUT",
           body: formData,
-          /*credentials: "include",*/
+          credentials: "include",
         });
 
         const result = await res.json();
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           const res = await fetch(`${backendURL}/products/${currentId}`, {
             method: "DELETE",
-            /*credentials: "include",*/
+            credentials: "include",
           });
 
           const result = await res.json();
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const res = await fetch(`${backendURL}/logout`, {
           method: "POST",
-          /*credentials: "include",*/
+          credentials: "include",
         });
         const result = await res.json();
         if (result.success) {
@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${backendURL}/orders`, {
         method: "GET",
-        /*credentials: "include",*/
+        credentials: "include",
       });
       const orders = await res.json();
       console.log("Orders response:", orders);
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
           try {
             const res = await fetch(`${backendURL}/orders/${orderId}`, {
               method: "DELETE",
-              /*credentials: "include",*/
+              credentials: "include",
             });
             const result = await res.json();
             console.log("Delete order response:", result);
