@@ -1,4 +1,4 @@
-const backendURL = "https://myr-backend-7nx6.onrender.com";
+const backendURL = "https://api.myrsurgical.com";
 const githubBase = "https://www.myrsurgical.com";
 
 // For Hamburger
