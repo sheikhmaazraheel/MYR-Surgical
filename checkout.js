@@ -131,7 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })),
         totalAmount: total,
       };
-
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Placing Order...";
       try {
         const res = await fetch(`${backend_URL}/orders`, {
           method: "POST",
