@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Total:</strong> Rs.${total.toFixed(2)}</p>
       `;
     }
-
+    const submitBtn = document.getElementById("confirm-Order");    
     // Form submission
     checkoutForm.addEventListener("submit", async (e) => {
       e.preventDefault();
