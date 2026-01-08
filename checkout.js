@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Total:</strong> Rs.${total.toFixed(2)}</p>
       `;
     }
-    const submitBtn = document.getElementById("confirm-Order");    
+        
     // Form submission
     checkoutForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -107,10 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(validationError);
         return;
       }
-
+      const submitBtn = document.getElementById("confirm-Order");
       const statusDiv = document.getElementById("form-status");
       if (statusDiv) statusDiv.textContent = "Processing order...";
-
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Placing Order...";
       const orderData = {
         orderId: localStorage.getItem("myrorderId") || `MYR-${Date.now()}`,
         name: checkoutForm.name.value.trim(),
