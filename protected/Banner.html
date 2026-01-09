@@ -34,7 +34,7 @@
 
     <link rel="stylesheet" href="admin.css" />
   </head>
-  <body>
+<body>
     <nav class="top-nav">
       <img src="https://www.myrsurgical.com/images/logo.jpeg" alt="logo" />
     </nav>
@@ -62,24 +62,25 @@
         </li>
       </ul>
     </nav>
-    <main class="main-content">
-      <div class="dashboard">
-        <h1>WELCOME TO <br /><span>Dashboard of MYR Surgical</span></h1>
-        <p>
-          You can easily manage your products, orders, and customer interactions
-          with our user-friendly interface.
-        </p>
-        <p>
-          Our platform is designed to streamline your workflow, allowing you to
-          control every aspect of your business from a single dashboard.
-        </p>
-        <a href="https://www.myrsurgical.com" class="view-website-btn"
-          >View Your Website</a
-        >
-        <button id="logout-btn">Logout</button>
-      </div>
+
+    <main class="main-content" style="text-align: center">
+      <h1>Admin Panel – Banner Management</h1>
+      <form id="bannerForm">
+        <label for="image">Banner Image</label>
+         <input type="file" id="image" name="image" required />
+
+        <label for="url">Clickable URL (optional)</label>
+        <input type="text" id="url" name="url" />
+        
+        <label for="startDate">Start Date(optional)</label>
+        <input type="date" name="startDate" />
+        <label for="endDate">End Date(optional)</label>
+        <input type="date" name="endDate" />
+        <div id="upload-status"></div>
+        <button type="submit">Upload Banner</button>
+      </form>
+      <button id="logout-btn">Logout</button>
     </main>
-    <span id="adminpage"></span>
     <script src="https://www.myrsurgical.com/admin.js"></script>
-  </body>
+</body>
 </html>
