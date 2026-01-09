@@ -56,8 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const productForm = document.getElementById("addProductForm");
   const editForm = document.getElementById("editProductForm");
   const adminPage = document.getElementById("adminpage");
+  const bannerForm = document.getElementById("bannerForm");
 
-  if (productForm || editForm || adminPage) {
+  if (productForm || editForm || adminPage || bannerForm) {
     checkAuth(); // Only if on admin page
   }
   // Validation function for alphanumeric ID
@@ -485,7 +486,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   // Banner Management
-  const bannerForm = document.getElementById("bannerForm");
   const bannerList = document.getElementById("bannerList");
   const statusDiv = document.getElementById("upload-status");
 
