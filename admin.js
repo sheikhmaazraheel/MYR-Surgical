@@ -488,6 +488,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Banner Management
   const bannerList = document.getElementById("bannerList");
   const statusDiv = document.getElementById("upload-status");
+  bannerList.addEventListener("click", (e) => {
+    const id = e.target.dataset.id;
+
+    if (e.target.classList.contains("btn-toggle")) {
+      toggleBanner(id);
+    }
+
+    if (e.target.classList.contains("btn-delete")) {
+      deleteBanner(id);
+    }
+  });
 
   bannerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -559,12 +570,13 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${b.endDate ? new Date(b.endDate).toLocaleDateString() : "—"}</td>
 
           <td>
-            <button class="btn btn-toggle" onclick="toggleBanner('${b._id}')">
-              ${b.active ? "Deactivate" : "Activate"}
-            </button>
-            <button class="btn btn-delete" onclick="deleteBanner('${b._id}')">
-              Delete
-            </button>
+<button class="btn btn-toggle" data-id="${b._id}">
+  ${b.active ? "Deactivate" : "Activate"}
+</button>
+<button class="btn btn-delete" data-id="${b._id}">
+  Delete
+</button>
+
           </td>
         </tr>
       `
