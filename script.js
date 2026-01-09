@@ -23,6 +23,34 @@ hamburger.addEventListener("click", () => {
 
 // ============== Rendering Products ===============
 document.addEventListener("DOMContentLoaded", () => {
+  //=============== Banner Logic ==================
+  let banners = [];
+  let index = 0;
+
+  async function loadBanners() {
+    const res = await fetch("https://YOUR_BACKEND.onrender.com/banners");
+    banners = await res.json();
+
+    if (banners.length === 0) return;
+
+    document.getElementById("top-banner").style.display = "block";
+    showBanner();
+    setInterval(nextBanner, 3000);
+  }
+
+  function showBanner() {
+    const banner = banners[index];
+    document.getElementById("banner-img").src = banner.imageUrl;
+    document.getElementById("banner-link").href = banner.link || "#";
+  }
+
+  function nextBanner() {
+    index = (index + 1) % banners.length;
+    showBanner();
+  }
+
+  loadBanners();
+
   // ================= POPUP LOGIC =================
   function showProductPopup(product) {
     const popup = document.getElementById("product-popup");
@@ -174,12 +202,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeBtn) {
       // Remove previous listeners to avoid stacking
       closeBtn.onclick = null;
-      closeBtn.addEventListener("click", function(e) {
+      closeBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         popup.style.display = "none";
       });
     }
-    popup.onclick = function(e) {
+    popup.onclick = function (e) {
       if (e.target === popup) popup.style.display = "none";
     };
   }

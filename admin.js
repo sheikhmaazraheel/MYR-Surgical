@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const editForm = document.getElementById("editProductForm");
   const adminPage = document.getElementById("adminpage");
 
-   if (productForm || editForm || adminPage) {
-     checkAuth(); // Only if on admin page
+  if (productForm || editForm || adminPage) {
+    checkAuth(); // Only if on admin page
   }
   // Validation function for alphanumeric ID
   function isValidId(id) {
@@ -484,4 +484,47 @@ document.addEventListener("DOMContentLoaded", () => {
       searchResults.classList.remove("show");
     }
   });
+  // Banner Management
+  const bannerForm = document.getElementById("bannerForm");
+  const bannerList = document.getElementById("bannerList");
+
+  bannerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(bannerForm);
+
+    await fetch(`${backend_URL}/admin/banners`, {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    });
+
+    bannerForm.reset();
+    loadBanners();
+  });
+
+  async function loadBanners() {
+    const res = await fetch(`${backend_URL}/banners`);
+    const banners = await res.json();
+
+    bannerList.innerHTML = banners
+      .map(
+        (b) =>
+          `<div>
+       <img src="${b.imageUrl}" width="200">
+       <button onclick="deleteBanner('${b._id}')">Delete</button>
+     </div>`
+      )
+      .join("");
+  }
+
+  async function deleteBanner(id) {
+    await fetch(`${backend_URL}/admin/banners/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    loadBanners();
+  }
+
+  loadBanners();
 });

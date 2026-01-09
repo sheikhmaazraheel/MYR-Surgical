@@ -34,7 +34,7 @@
 
     <link rel="stylesheet" href="admin.css" />
   </head>
-<body>
+  <body>
     <nav class="top-nav">
       <img src="https://www.myrsurgical.com/images/logo.jpeg" alt="logo" />
     </nav>
@@ -67,12 +67,12 @@
       <h1>Admin Panel – Banner Management</h1>
       <form id="bannerForm">
         <label for="image">Banner Image</label>
-         <input type="file" id="image" name="image" required />
+        <input type="file" id="image" name="image" required />
 
         <label for="url">Clickable URL (optional)</label>
         <input type="text" id="url" name="url" />
-        
-        <label for="startDate">Start Date(optional)</label>
+
+        <label for="startDate">Start Date</label>
         <input type="date" name="startDate" />
         <label for="endDate">End Date(optional)</label>
         <input type="date" name="endDate" />
@@ -80,7 +80,8 @@
         <button type="submit">Upload Banner</button>
       </form>
       <button id="logout-btn">Logout</button>
+      <div id="bannerList"></div>
     </main>
     <script src="https://www.myrsurgical.com/admin.js"></script>
-</body>
+  </body>
 </html>

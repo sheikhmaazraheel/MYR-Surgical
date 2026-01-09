@@ -1,6 +1,5 @@
 /* Product Description Styling */
 .product-description {
-
   box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   transition: background 0.2s;
 }
@@ -20,7 +19,7 @@
   -webkit-line-clamp: 2; /* number of lines before truncating */
   -webkit-box-orient: vertical;
   cursor: pointer; /* show user it’s clickable */
-    box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   transition: background 0.2s;
 }
 
@@ -1374,6 +1373,16 @@ button:disabled {
 
 .add-to-cart-btn:hover {
   background-color: #c82333;
+}
+/* Top Banner */
+#top-banner {
+  width: 100%;
+  overflow: hidden;
+}
+
+#top-banner img {
+  width: 100%;
+  display: block;
 }
 
 /* Responsive */
