@@ -600,4 +600,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadBanners();
   }
+  loadBanners();
 });
