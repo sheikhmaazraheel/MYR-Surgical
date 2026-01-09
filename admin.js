@@ -523,20 +523,56 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function loadBanners() {
-    const res = await fetch(`${backendURL}/admin/banners`, {
-  credentials: "include"
-});
-    const banners = await res.json();
+    try {
+      const res = await fetch(`${backendURL}/admin/banners`, {
+        credentials: "include",
+      });
 
-    bannerList.innerHTML = banners
-      .map(
-        (b) =>
-          `<div>
-       <img src="${b.imageUrl}" width="200">
-       <button onclick="deleteBanner('${b._id}')">Delete</button>
-     </div>`
-      )
-      .join("");
+      const banners = await res.json();
+
+      if (!Array.isArray(banners)) {
+        console.error("Invalid banners response:", banners);
+        return;
+      }
+
+      bannerList.innerHTML = banners
+        .map(
+          (b) => `
+        <tr>
+          <td>
+            <img src="${b.imageUrl}" />
+          </td>
+
+          <td>
+            ${b.link ? `<a href="${b.link}" target="_blank">Open</a>` : "—"}
+          </td>
+
+          <td>
+            <span class="badge ${b.active ? "active" : "inactive"}">
+              ${b.active ? "Active" : "Inactive"}
+            </span>
+          </td>
+
+          <td>${
+            b.startDate ? new Date(b.startDate).toLocaleDateString() : "—"
+          }</td>
+          <td>${b.endDate ? new Date(b.endDate).toLocaleDateString() : "—"}</td>
+
+          <td>
+            <button class="btn btn-toggle" onclick="toggleBanner('${b._id}')">
+              ${b.active ? "Deactivate" : "Activate"}
+            </button>
+            <button class="btn btn-delete" onclick="deleteBanner('${b._id}')">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `
+        )
+        .join("");
+    } catch (err) {
+      console.error("Failed to load banners:", err);
+    }
   }
 
   async function deleteBanner(id) {
@@ -546,6 +582,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     loadBanners();
   }
+  async function toggleBanner(id) {
+    await fetch(`${backendURL}/admin/banners/${id}/toggle`, {
+      method: "PATCH",
+      credentials: "include",
+    });
+    loadBanners();
+  }
 
-  loadBanners();
+  async function deleteBanner(id) {
+    if (!confirm("Delete this banner permanently?")) return;
+
+    await fetch(`${backendURL}/admin/banners/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    loadBanners();
+  }
 });
