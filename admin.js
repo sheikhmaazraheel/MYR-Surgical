@@ -493,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData(bannerForm);
 
-    await fetch(`${backend_URL}/admin/banners`, {
+    await fetch(`${backendURL}/admin/banners`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function loadBanners() {
-    const res = await fetch(`${backend_URL}/banners`);
+    const res = await fetch(`${backendURL}/banners`);
     const banners = await res.json();
 
     bannerList.innerHTML = banners
@@ -519,7 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function deleteBanner(id) {
-    await fetch(`${backend_URL}/admin/banners/${id}`, {
+    await fetch(`${backendURL}/admin/banners/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
