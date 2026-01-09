@@ -523,7 +523,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function loadBanners() {
-    const res = await fetch(`${backendURL}/admin/banners`);
+    const res = await fetch(`${backendURL}/admin/banners`, {
+  credentials: "include"
+});
     const banners = await res.json();
 
     bannerList.innerHTML = banners
