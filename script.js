@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let index = 0;
 
   async function loadBanners() {
-    const res = await fetch("https://YOUR_BACKEND.onrender.com/banners");
+    const res = await fetch(`${backendURL}/banners`);
     banners = await res.json();
 
     if (banners.length === 0) return;
