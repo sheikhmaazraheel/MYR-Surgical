@@ -20,37 +20,55 @@ hamburger.addEventListener("click", () => {
     });
   }
 });
+const bannerContainer = document.getElementById("top-banner");
+const bannerImg = document.getElementById("banner-image");
+const bannerLink = document.getElementById("banner-link");
+
+async function loadBanners() {
+  try {
+    const res = await fetch("https://api.myrsurgical.com/banners");
+    const banners = await res.json();
+
+    console.log("Banners received:", banners); // keep this
+
+    if (!Array.isArray(banners) || banners.length === 0) {
+      bannerContainer.classList.add("hidden");
+      return;
+    }
+
+    let index = 0;
+
+    function showBanner() {
+      const banner = banners[index];
+
+      bannerImg.src = banner.imageUrl;
+      bannerImg.onload = () => {
+        bannerContainer.classList.remove("hidden");
+      };
+
+      if (banner.link) {
+        bannerLink.href = banner.link;
+        bannerLink.style.pointerEvents = "auto";
+      } else {
+        bannerLink.href = "#";
+        bannerLink.style.pointerEvents = "none";
+      }
+
+      index = (index + 1) % banners.length;
+    }
+
+    showBanner();
+    setInterval(showBanner, 3000);
+  } catch (err) {
+    console.error("Banner load failed:", err);
+    bannerContainer.classList.add("hidden");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadBanners);
 
 // ============== Rendering Products ===============
 document.addEventListener("DOMContentLoaded", () => {
-  //=============== Banner Logic ==================
-  let banners = [];
-  let index = 0;
-
-  async function loadBanners() {
-    const res = await fetch(`${backendURL}/banners`);
-    banners = await res.json();
-
-    if (banners.length === 0) return;
-
-    document.getElementById("top-banner").style.display = "block";
-    showBanner();
-    setInterval(nextBanner, 3000);
-  }
-
-  function showBanner() {
-    const banner = banners[index];
-    document.getElementById("banner-img").src = banner.imageUrl;
-    document.getElementById("banner-link").href = banner.link || "#";
-  }
-
-  function nextBanner() {
-    index = (index + 1) % banners.length;
-    showBanner();
-  }
-
-  loadBanners();
-
   // ================= POPUP LOGIC =================
   function showProductPopup(product) {
     const popup = document.getElementById("product-popup");

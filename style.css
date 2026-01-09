@@ -1375,15 +1375,25 @@ button:disabled {
   background-color: #c82333;
 }
 /* Top Banner */
-#top-banner {
+.top-banner {
   width: 100%;
+  max-height: 120px;
   overflow: hidden;
+  position: relative;
+  background: #fff;
+  z-index: 9999;
 }
 
-#top-banner img {
+.top-banner img {
   width: 100%;
+  height: auto;
   display: block;
 }
+
+.top-banner.hidden {
+  display: none;
+}
+
 
 /* Responsive */
 @media (min-width: 768px) {
