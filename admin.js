@@ -487,24 +487,43 @@ document.addEventListener("DOMContentLoaded", () => {
   // Banner Management
   const bannerForm = document.getElementById("bannerForm");
   const bannerList = document.getElementById("bannerList");
+  const statusDiv = document.getElementById("upload-status");
 
   bannerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    statusDiv.textContent = "Uploading banner...";
+    statusDiv.style.color = "blue";
+
     const formData = new FormData(bannerForm);
 
-    await fetch(`${backendURL}/admin/banners`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+    try {
+      const res = await fetch(`${backendURL}/admin/banners`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
-    bannerForm.reset();
-    loadBanners();
+      const result = await res.json();
+
+      if (result.success) {
+        statusDiv.textContent = "✅ Banner uploaded successfully";
+        statusDiv.style.color = "green";
+        bannerForm.reset();
+        loadBanners();
+      } else {
+        statusDiv.textContent = "❌ Upload failed: " + result.message;
+        statusDiv.style.color = "red";
+      }
+    } catch (err) {
+      console.error(err);
+      statusDiv.textContent = "❌ Server error during upload";
+      statusDiv.style.color = "red";
+    }
   });
 
   async function loadBanners() {
-    const res = await fetch(`${backendURL}/banners`);
+    const res = await fetch(`${backendURL}/admin/banners`);
     const banners = await res.json();
 
     bannerList.innerHTML = banners
