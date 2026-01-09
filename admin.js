@@ -493,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData(bannerForm);
 
-    await fetch(`${backendURL}/banners`, {
+    await fetch(`${backendURL}/admin/banners`, {
       method: "POST",
       credentials: "include",
       body: formData,
